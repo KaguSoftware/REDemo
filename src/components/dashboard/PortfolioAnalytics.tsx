@@ -38,7 +38,7 @@ function endsSoon(row: PropertyHealthRow): boolean {
 /** Mirrors the card below: header row, two meters, a 4-tile grid, a list block. */
 function AnalyticsSkeleton() {
 	return (
-		<Card className="mb-4">
+		<Card>
 			<SkeletonGroup label="Portföy sağlığı yükleniyor">
 				<div className="flex items-center gap-2 mb-4">
 					<Skeleton className="w-4 h-4 rounded-sm" />
@@ -114,7 +114,7 @@ export function PortfolioAnalytics() {
 		.join(" + ");
 
 	return (
-		<Card className="mb-4">
+		<Card>
 			<div className="flex items-center gap-2 mb-4">
 				<TrendingUp className="w-4 h-4 text-base-content/50" />
 				<CardLabel>Portföy sağlığı</CardLabel>

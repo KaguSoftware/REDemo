@@ -71,7 +71,7 @@ export function AttentionPanel() {
 	return (
 		<div
 			className={cn(
-				"mb-4 rounded-box border overflow-hidden",
+				"rounded-box border overflow-hidden",
 				hasUrgent ? "border-error/40 bg-error/10" : "border-warning/40 bg-warning/10",
 			)}
 		>

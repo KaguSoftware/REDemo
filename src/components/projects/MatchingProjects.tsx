@@ -58,7 +58,7 @@ export function MatchingProjects({ minPrice, maxPrice, currency }: Props) {
 	if (matches.length === 0) return null;
 
 	return (
-		<Card className="mb-4">
+		<Card>
 			<div className="flex items-center gap-2">
 				<Building2 className="w-4 h-4 text-primary/70 shrink-0" />
 				<CardLabel>Bu bütçeye uyan projeler</CardLabel>

@@ -46,7 +46,7 @@ export function NewsFeed() {
 	if (data.length === 0) return null;
 
 	return (
-		<Card className="mb-4">
+		<Card>
 			<div className="flex items-center gap-2 mb-3">
 				<Newspaper className="w-4 h-4 text-base-content/50" />
 				<CardLabel>Sektörden haberler</CardLabel>
@@ -85,7 +85,7 @@ export function NewsFeed() {
  */
 function NewsSkeleton() {
 	return (
-		<Card className="mb-4">
+		<Card>
 			<div className="flex items-center gap-2 mb-3">
 				<Skeleton className="w-4 h-4 rounded-sm" />
 				<Skeleton className="h-3 w-32" />

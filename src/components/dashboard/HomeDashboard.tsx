@@ -7,7 +7,7 @@ import { useAppStore } from "@/src/store";
 import { listProperties } from "@/src/lib/db/properties";
 import { listLeads } from "@/src/lib/db/leads";
 import { useCachedResource } from "@/src/lib/useCachedResource";
-import { AppShell, Card, CardLabel, Badge, Skeleton, SkeletonGroup, type BadgeTone } from "@/src/components/ui";
+import { AppShell, Card, Badge, Skeleton, SkeletonGroup, Stack, Section, type BadgeTone } from "@/src/components/ui";
 import { AttentionPanel } from "@/src/components/properties/AttentionPanel";
 import { DashboardStats } from "@/src/components/properties/DashboardStats";
 import { PortfolioAnalytics } from "./PortfolioAnalytics";
@@ -36,10 +36,11 @@ function statusTone(status: string): BadgeTone {
 	return status === "vacant" ? "slate" : status === "occupied" ? "emerald" : "blue";
 }
 
-/** Five rows matching the recents lists: py-2.5 + text-sm, with a trailing badge. */
+/** Five rows matching the recents lists exactly — including the hairline rules
+ *  the real list now draws top and bottom, or the block resizes on arrival. */
 function RecentSkeleton() {
 	return (
-		<SkeletonGroup label="Yükleniyor" className="divide-y divide-base-300">
+		<SkeletonGroup label="Yükleniyor" className="divide-y divide-base-300 border-y border-base-300">
 			{[0, 1, 2, 3, 4].map((i) => (
 				<div key={i} className="flex items-center gap-3 py-2.5">
 					<div className="min-w-0 flex-1">
@@ -90,40 +91,38 @@ export function HomeDashboard() {
 		<AppShell title="Genel bakış" subtitle="Her şey bir bakışta" width="wide">
 			{!user ? (
 				<Card className="p-10 text-center">
-					<p className="text-sm text-base-content/70">Genel bakışı görmek için giriş yapın.</p>
-					<p className="text-xs text-base-content/50 mt-1">Üst çubuktaki &quot;Giriş yap&quot; düğmesini kullanın.</p>
+					<p className="text-body text-base-content/70">Genel bakışı görmek için giriş yapın.</p>
+					<p className="text-label text-base-content/50 mt-1">Üst çubuktaki &quot;Giriş yap&quot; düğmesini kullanın.</p>
 				</Card>
 			) : (
-				<>
-					<AttentionPanel />
-					<DashboardStats />
-					<div className="mb-4">
+				/* The page owns its rhythm. Every band used to carry its own `mb-4`
+				   — including CommissionSummary, which was wrapped in a bare
+				   <div className="mb-4"> purely because its component had forgotten
+				   to — so the spacing was the sum of six files' independent
+				   decisions. `loose` marks the two real seams: what needs doing
+				   today, then the state of the book, then everything else. */
+				<Stack gap="loose">
+					{/* 1. What needs doing today, and the money. An owner opens this
+					    at 9am to find overdue rent; that answer leads. */}
+					<Stack>
+						<AttentionPanel />
+						<DashboardStats />
+					</Stack>
+
+					{/* 2. The state of the book. */}
+					<Stack>
+						<PortfolioAnalytics />
 						<CommissionSummary />
-					</div>
-					<PortfolioAnalytics />
+					</Stack>
 
-					{/* Market headlines. Own cache key, own failure mode — nothing
-					    above or below it waits on the feeds. */}
-					<NewsFeed />
-
-					{/* Quick actions */}
-					<div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-						{QUICK_ACTIONS.map(({ href, label, icon: Icon }) => (
-							<Link
-								key={href}
-								href={href}
-								className="flex items-center gap-2.5 bg-base-100 rounded-box border border-base-300 px-4 py-3.5 text-sm font-semibold text-base-content/80 hover:border-base-content/25 hover:bg-base-200/50 transition-colors duration-150"
-							>
-								<Icon className="w-4 h-4 text-primary shrink-0" />
-								<span className="truncate">{label}</span>
-							</Link>
-						))}
-					</div>
-
-					{/* Recents */}
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-						<Card>
-							<SectionHeader label="Son eklenen taşınmazlar" href="/properties" />
+					{/* 3. Recent activity, as plain regions. These were two Cards, which
+					    is the habit this pass exists to break: a heading and space
+					    group a list perfectly well, and the page stays one surface. */}
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-10">
+						<Section
+							title="Son eklenen taşınmazlar"
+							action={<SeeAll href="/properties" />}
+						>
 							{/* `null` (not loaded) and `[]` (loaded, genuinely empty) are
 							    different answers. Collapsing them with `?.length` told an
 							    agent with a full portfolio "Henüz taşınmaz yok" for the
@@ -131,23 +130,23 @@ export function HomeDashboard() {
 							{recentProperties == null ? (
 								<RecentSkeleton />
 							) : recentProperties.length === 0 ? (
-								<p className="text-sm text-base-content/50 py-4">Henüz taşınmaz yok.</p>
+								<p className="text-body text-base-content/50 py-4">Henüz taşınmaz yok.</p>
 							) : (
-								<ul className="divide-y divide-base-300">
+								<ul className="divide-y divide-base-300 border-y border-base-300">
 									{recentProperties.slice(0, 5).map((p) => (
 										<li key={p.id}>
 											<Link
 												href={`/properties/${p.id}`}
-												className="flex items-center gap-3 py-2.5 text-sm hover:bg-base-200 -mx-2 px-2 rounded-field transition-colors"
+												className="flex items-center gap-3 py-2.5 hover:bg-base-200 -mx-2 px-2 rounded-field transition-colors"
 											>
 												<div className="min-w-0 flex-1">
-													<p className="font-medium text-base-content truncate">{p.address_line}</p>
-													<p className="text-xs text-base-content/50 truncate">
+													<p className="text-body text-base-content truncate">{p.address_line}</p>
+													<p className="text-label text-base-content/50 truncate">
 														{[p.city, p.nitelik].filter(Boolean).join(" · ") || p.homeowner_name}
 													</p>
 												</div>
 												{p.list_price != null && (
-													<span className="font-numeric text-xs font-semibold text-base-content/70 whitespace-nowrap hidden sm:inline">
+													<span className="font-numeric text-label font-semibold text-base-content/70 whitespace-nowrap hidden sm:inline">
 														{fmtMoney(Number(p.list_price), p.currency)}
 													</span>
 												)}
@@ -159,25 +158,24 @@ export function HomeDashboard() {
 									))}
 								</ul>
 							)}
-						</Card>
+						</Section>
 
-						<Card>
-							<SectionHeader label="Son eklenen müşteriler" href="/leads" />
+						<Section title="Son eklenen müşteriler" action={<SeeAll href="/leads" />}>
 							{recentLeads == null ? (
 								<RecentSkeleton />
 							) : recentLeads.length === 0 ? (
-								<p className="text-sm text-base-content/50 py-4">Henüz müşteri yok.</p>
+								<p className="text-body text-base-content/50 py-4">Henüz müşteri yok.</p>
 							) : (
-								<ul className="divide-y divide-base-300">
+								<ul className="divide-y divide-base-300 border-y border-base-300">
 									{recentLeads.slice(0, 5).map((l) => (
 										<li key={l.id}>
 											<Link
 												href="/leads"
-												className="flex items-center gap-3 py-2.5 text-sm hover:bg-base-200 -mx-2 px-2 rounded-field transition-colors"
+												className="flex items-center gap-3 py-2.5 hover:bg-base-200 -mx-2 px-2 rounded-field transition-colors"
 											>
 												<div className="min-w-0 flex-1">
-													<p className="font-medium text-base-content truncate">{l.full_name}</p>
-													<p className="text-xs text-base-content/50 truncate">
+													<p className="text-body text-base-content truncate">{l.full_name}</p>
+													<p className="text-label text-base-content/50 truncate">
 														{l.interested_in || l.phone || "—"}
 													</p>
 												</div>
@@ -189,25 +187,48 @@ export function HomeDashboard() {
 									))}
 								</ul>
 							)}
-						</Card>
+						</Section>
 					</div>
-				</>
+
+					{/* 4. The periphery, deliberately quiet. The quick actions were
+					    four bordered, shadowed boxes with the same visual weight as
+					    the KPI tiles — four navigation links dressed as data. They
+					    are links now. The news feed sits last because it is the one
+					    thing here that is not this office's own work. */}
+					<Stack>
+						<Section title="Kısayollar" size="subtitle">
+							<div className="flex flex-wrap gap-x-6 gap-y-3">
+								{QUICK_ACTIONS.map(({ href, label, icon: Icon }) => (
+									<Link
+										key={href}
+										href={href}
+										className="inline-flex items-center gap-2 text-body font-medium text-base-content/70 hover:text-primary transition-colors"
+									>
+										<Icon className="w-4 h-4 text-primary shrink-0" />
+										{label}
+									</Link>
+								))}
+							</div>
+						</Section>
+
+						{/* Market headlines. Own cache key, own failure mode — nothing
+						    above it waits on the feeds. */}
+						<NewsFeed />
+					</Stack>
+				</Stack>
 			)}
 		</AppShell>
 	);
 }
 
-function SectionHeader({ label, href }: { label: string; href: string }) {
+function SeeAll({ href }: { href: string }) {
 	return (
-		<div className="flex items-center justify-between mb-2">
-			<CardLabel>{label}</CardLabel>
-			<Link
-				href={href}
-				className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
-			>
-				Tümünü gör
-				<ArrowRight className="w-3.5 h-3.5" />
-			</Link>
-		</div>
+		<Link
+			href={href}
+			className="inline-flex items-center gap-1 text-label font-semibold text-primary hover:underline"
+		>
+			Tümünü gör
+			<ArrowRight className="w-3.5 h-3.5" />
+		</Link>
 	);
 }
