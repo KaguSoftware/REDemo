@@ -148,7 +148,7 @@ export default function ProfileSettingsPage() {
 	const avatarUrl = getAvatarUrl(profile?.avatar_path ?? null);
 
 	return (
-		<AppShell title="Profiliniz" subtitle={team?.name} width="3xl">
+		<AppShell title="Profiliniz" subtitle={team?.name} width="narrow">
 			{!loaded ? (
 				<SpinnerBlock />
 			) : (

@@ -230,15 +230,15 @@ export function PropertyDetail({ propertyId }: Props) {
 		sale?.status === "active" ? "amber" : sale?.status === "closed" ? "emerald" : "slate";
 
 	return (
-		<AppShell title="Taşınmaz" subtitle={data.city ?? undefined}>
-			{/* Address header */}
-			<div className="mb-5">
-				<h1 className="font-display text-xl sm:text-2xl font-semibold text-base-content leading-tight wrap-break-word">
-					{data.address_line}
-				</h1>
-				{data.city && <p className="text-sm text-base-content/60 mt-1">{data.city}</p>}
-			</div>
-
+		// The page used to open "Taşınmaz / İstanbul" in the chrome bar and then
+		// repeat "<address> / İstanbul" 24px below it in a SECOND <h1> — two
+		// top-level headings with different content, the semantic one and the
+		// visually dominant one disagreeing, and the city printed twice. The
+		// address is what identifies this record, so it is the title.
+		<AppShell
+			title={data.address_line}
+			subtitle={[data.city, data.nitelik].filter(Boolean).join(" · ") || undefined}
+		>
 			{/* Gallery */}
 			<PropertyGallery propertyId={propertyId} />
 

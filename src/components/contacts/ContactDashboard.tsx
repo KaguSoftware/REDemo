@@ -192,7 +192,7 @@ export function ContactDashboard() {
 		<AppShell
 			title="Müşteriler"
 			subtitle="Müşteriler, kiracılar, alıcılar ve kefiller"
-			width="7xl"
+			width="wide"
 		>
 			{!user ? (
 				<Card className="p-10 text-center">

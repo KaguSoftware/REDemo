@@ -18,7 +18,7 @@ export default async function NewPropertyPage({
 
 	return (
 		<ServerSeed>
-			<AppShell title="Taşınmaz ekle" subtitle="Yeni ilan oluşturun" width="3xl">
+			<AppShell title="Taşınmaz ekle" subtitle="Yeni ilan oluşturun" width="narrow">
 				<Card>
 					<PropertyForm mode="create" defaultProjectId={project ?? null} />
 				</Card>

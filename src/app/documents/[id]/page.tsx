@@ -17,7 +17,7 @@ export default async function DocumentPage({
 
 	return (
 		<ServerSeed>
-			<AppShell title="Sözleşme" subtitle="Belgeyi düzenleyin veya PDF indirin" width="5xl">
+			<AppShell title="Sözleşme" subtitle="Belgeyi düzenleyin veya PDF indirin" width="reading">
 				<DocumentEditorPage documentId={id} />
 			</AppShell>
 		</ServerSeed>

@@ -190,7 +190,7 @@ export function PropertyDashboard() {
 		<AppShell
 			title="Portföy"
 			subtitle="İlanlar, kiracılar ve sözleşmeler"
-			width="7xl"
+			width="wide"
 		>
 			{!user ? (
 				<Card className="p-10 text-center">

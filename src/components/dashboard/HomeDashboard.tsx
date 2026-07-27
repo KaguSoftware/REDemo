@@ -87,7 +87,7 @@ export function HomeDashboard() {
 	);
 
 	return (
-		<AppShell title="Genel bakış" subtitle="Her şey bir bakışta" width="7xl">
+		<AppShell title="Genel bakış" subtitle="Her şey bir bakışta" width="wide">
 			{!user ? (
 				<Card className="p-10 text-center">
 					<p className="text-sm text-base-content/70">Genel bakışı görmek için giriş yapın.</p>

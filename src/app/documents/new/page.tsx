@@ -11,7 +11,7 @@ export default async function NewDocumentPage() {
 
 	return (
 		<ServerSeed>
-			<AppShell title="Yeni belge" subtitle="Bir taşınmaz için sözleşme oluşturun" width="5xl">
+			<AppShell title="Yeni belge" subtitle="Bir taşınmaz için sözleşme oluşturun" width="reading">
 				<DocumentWizard />
 			</AppShell>
 		</ServerSeed>

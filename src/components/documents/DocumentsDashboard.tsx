@@ -121,7 +121,7 @@ export function DocumentsDashboard() {
 	const hasFilter = debouncedQ !== "" || kind !== "" || status !== "";
 
 	return (
-		<AppShell title="Belgeler" subtitle="Oluşturulan sözleşmeler ve belgeler" width="7xl">
+		<AppShell title="Belgeler" subtitle="Oluşturulan sözleşmeler ve belgeler" width="wide">
 			{!user ? (
 				<Card className="p-10 text-center">
 					<p className="text-sm text-base-content/70">Belgelerinizi görmek için giriş yapın.</p>

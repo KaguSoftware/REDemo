@@ -4,7 +4,7 @@ import { RouteLoading, DetailSkeleton } from "@/src/components/ui";
 // is the same fallback that page uses before `team` resolves.
 export default function Loading() {
 	return (
-		<RouteLoading title="Ekip" subtitle="Ekip ve davetler">
+		<RouteLoading subtitle="Ekip ve davetler">
 			<DetailSkeleton />
 		</RouteLoading>
 	);
