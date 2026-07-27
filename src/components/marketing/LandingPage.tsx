@@ -76,11 +76,11 @@ const PLANS = [
  */
 function AttentionPreview() {
 	return (
-		<div aria-hidden className="rounded-2xl bg-base-100 border border-base-300/70 shadow-pop p-5">
+		<div aria-hidden className="rounded-box bg-base-100 border border-base-300/70 shadow-pop p-5">
 			<p className="text-sm font-semibold text-base-content/60">Bugün dikkat isteyen</p>
 			<ul className="mt-4 space-y-3">
-				<li className="flex items-start gap-3 rounded-xl bg-base-200/60 p-3.5">
-					<span className="mt-0.5 h-8 w-8 shrink-0 rounded-lg bg-error/10 text-error flex items-center justify-center">
+				<li className="flex items-start gap-3 rounded-box bg-base-200/60 p-3.5">
+					<span className="mt-0.5 h-8 w-8 shrink-0 rounded-field bg-error/10 text-error flex items-center justify-center">
 						<Wallet className="w-4 h-4" />
 					</span>
 					<div className="min-w-0">
@@ -90,8 +90,8 @@ function AttentionPreview() {
 						</p>
 					</div>
 				</li>
-				<li className="flex items-start gap-3 rounded-xl bg-base-200/60 p-3.5">
-					<span className="mt-0.5 h-8 w-8 shrink-0 rounded-lg bg-warning/10 text-warning flex items-center justify-center">
+				<li className="flex items-start gap-3 rounded-box bg-base-200/60 p-3.5">
+					<span className="mt-0.5 h-8 w-8 shrink-0 rounded-field bg-warning/10 text-warning flex items-center justify-center">
 						<CalendarClock className="w-4 h-4" />
 					</span>
 					<div className="min-w-0">
@@ -99,8 +99,8 @@ function AttentionPreview() {
 						<p className="mt-0.5 text-xs text-base-content/60">28 Şubat · yenileme bekliyor</p>
 					</div>
 				</li>
-				<li className="flex items-start gap-3 rounded-xl bg-base-200/60 p-3.5">
-					<span className="mt-0.5 h-8 w-8 shrink-0 rounded-lg bg-base-300 text-base-content/60 flex items-center justify-center">
+				<li className="flex items-start gap-3 rounded-box bg-base-200/60 p-3.5">
+					<span className="mt-0.5 h-8 w-8 shrink-0 rounded-field bg-base-300 text-base-content/60 flex items-center justify-center">
 						<PhoneMissed className="w-4 h-4" />
 					</span>
 					<div className="min-w-0">
@@ -131,7 +131,7 @@ export function LandingPage() {
 						<div className="enter enter-3 mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
 							<Link
 								href="/signup"
-								className="w-full sm:w-auto px-8 h-12 inline-flex items-center justify-center rounded-xl text-base font-semibold bg-primary text-primary-content hover:brightness-110 active:scale-[0.98] transition-[filter,transform] shadow-soft"
+								className="w-full sm:w-auto px-8 h-12 inline-flex items-center justify-center rounded-box text-base font-semibold bg-primary text-primary-content hover:brightness-110 active:scale-[0.98] transition-[filter,transform] shadow-soft"
 							>
 								Ücretsiz deneyin
 							</Link>
@@ -159,8 +159,8 @@ export function LandingPage() {
 				</h2>
 				<div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
 					{/* Lead cell: portfolio — wide, tinted */}
-					<div className="reveal sm:col-span-2 lg:col-span-4 rounded-2xl bg-primary/[0.06] border border-primary/15 p-7 sm:p-9">
-						<span className="h-11 w-11 rounded-xl bg-primary text-primary-content flex items-center justify-center">
+					<div className="reveal sm:col-span-2 lg:col-span-4 rounded-box bg-primary/[0.06] border border-primary/15 p-7 sm:p-9">
+						<span className="h-11 w-11 rounded-box bg-primary text-primary-content flex items-center justify-center">
 							<Building2 className="w-5 h-5" />
 						</span>
 						<h3 className="font-display mt-5 text-2xl font-bold text-base-content">Portföy yönetimi</h3>
@@ -171,22 +171,22 @@ export function LandingPage() {
 					</div>
 					{/* Standard cells */}
 					{SMALL_FEATURES.slice(0, 1).map(({ icon: Icon, title, body }) => (
-						<div key={title} className="reveal lg:col-span-2 rounded-2xl bg-base-100 border border-base-300/70 p-7 shadow-card transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-pop motion-reduce:transform-none">
+						<div key={title} className="reveal lg:col-span-2 rounded-box bg-base-100 border border-base-300/70 p-7 shadow-card transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-pop motion-reduce:transform-none">
 							<Icon className="w-5 h-5 text-primary" />
 							<h3 className="mt-4 text-lg font-bold text-base-content">{title}</h3>
 							<p className="mt-2 text-sm text-base-content/70 leading-relaxed">{body}</p>
 						</div>
 					))}
 					{SMALL_FEATURES.slice(1).map(({ icon: Icon, title, body }) => (
-						<div key={title} className="reveal lg:col-span-2 rounded-2xl bg-base-100 border border-base-300/70 p-7 shadow-card transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-pop motion-reduce:transform-none">
+						<div key={title} className="reveal lg:col-span-2 rounded-box bg-base-100 border border-base-300/70 p-7 shadow-card transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-pop motion-reduce:transform-none">
 							<Icon className="w-5 h-5 text-primary" />
 							<h3 className="mt-4 text-lg font-bold text-base-content">{title}</h3>
 							<p className="mt-2 text-sm text-base-content/70 leading-relaxed">{body}</p>
 						</div>
 					))}
 					{/* Full-width closing cell: mobile — deliberate dark tile for contrast */}
-					<div className="reveal sm:col-span-2 lg:col-span-6 rounded-2xl bg-neutral text-neutral-content p-7 sm:p-9 flex flex-col sm:flex-row sm:items-center gap-5">
-						<span className="h-11 w-11 shrink-0 rounded-xl bg-neutral-content/10 flex items-center justify-center">
+					<div className="reveal sm:col-span-2 lg:col-span-6 rounded-box bg-neutral text-neutral-content p-7 sm:p-9 flex flex-col sm:flex-row sm:items-center gap-5">
+						<span className="h-11 w-11 shrink-0 rounded-box bg-neutral-content/10 flex items-center justify-center">
 							<Smartphone className="w-5 h-5" />
 						</span>
 						<div>
@@ -211,7 +211,7 @@ export function LandingPage() {
 					{PLANS.map((p) => (
 						<div
 							key={p.name}
-							className={`reveal rounded-2xl bg-base-100 border p-6 sm:p-8 flex flex-col ${
+							className={`reveal rounded-box bg-base-100 border p-6 sm:p-8 flex flex-col ${
 								p.highlight ? "border-primary/60 shadow-card" : "border-base-300 shadow-soft"
 							}`}
 						>
@@ -236,7 +236,7 @@ export function LandingPage() {
 							</ul>
 							<Link
 								href="/signup"
-								className={`mt-auto w-full h-11 inline-flex items-center justify-center rounded-xl text-sm font-semibold transition-[filter,background-color,transform] active:scale-[0.98] ${
+								className={`mt-auto w-full h-11 inline-flex items-center justify-center rounded-box text-sm font-semibold transition-[filter,background-color,transform] active:scale-[0.98] ${
 									p.highlight
 										? "bg-primary text-primary-content hover:brightness-110"
 										: "border border-base-300 text-base-content hover:bg-base-200"
@@ -260,7 +260,7 @@ export function LandingPage() {
 					</p>
 					<Link
 						href="/signup"
-						className="mt-7 inline-flex px-8 h-12 items-center justify-center rounded-xl text-base font-semibold bg-base-100 text-base-content hover:bg-base-200 active:scale-[0.98] transition-[background-color,transform]"
+						className="mt-7 inline-flex px-8 h-12 items-center justify-center rounded-box text-base font-semibold bg-base-100 text-base-content hover:bg-base-200 active:scale-[0.98] transition-[background-color,transform]"
 					>
 						Ücretsiz deneyin
 					</Link>

@@ -255,7 +255,7 @@ export function SalesDetailsForm({ state, onChange, errors = {} }: Props) {
 					</FormField>
 				</div>
 				{(commissionPreview.buyer || commissionPreview.seller) && (
-					<div className="rounded-xl bg-base-200 border border-base-300 p-3.5 text-sm text-base-content/70 space-y-1.5">
+					<div className="rounded-box bg-base-200 border border-base-300 p-3.5 text-sm text-base-content/70 space-y-1.5">
 						{commissionPreview.buyer && (
 							<p><span className="font-bold">Alıcı:</span> matrah {fmtMoney(commissionPreview.buyer.matrah)} {state.currency}
 								{" · "}KDV {fmtMoney(commissionPreview.buyer.kdv)}

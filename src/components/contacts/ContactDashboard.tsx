@@ -204,7 +204,7 @@ export function ContactDashboard() {
 					{/* Filter bar: type tabs + search + lead status + add */}
 					<div className="mb-4 flex flex-col gap-2">
 						<div
-							className="inline-flex self-start rounded-xl bg-base-200 p-1"
+							className="inline-flex self-start rounded-box bg-base-200 p-1"
 							role="tablist"
 							aria-label="Kayıt türü"
 						>
@@ -216,9 +216,9 @@ export function ContactDashboard() {
 									aria-selected={typeFilter === t.value}
 									onClick={() => setTypeFilter(t.value)}
 									className={cn(
-										"px-3.5 h-8 rounded-lg text-sm font-semibold transition-colors",
+										"px-3.5 h-8 rounded-field text-sm font-semibold transition-colors",
 										typeFilter === t.value
-											? "bg-base-100 text-base-content shadow-card"
+											? "bg-base-100 text-base-content"
 											: "text-base-content/60 hover:text-base-content",
 									)}
 								>
@@ -255,12 +255,12 @@ export function ContactDashboard() {
 									Ekle
 								</Button>
 								{addOpen && (
-									<div className="absolute right-0 z-30 mt-1.5 w-44 rounded-xl border border-base-300 bg-base-100 shadow-pop p-1" role="menu">
+									<div className="absolute right-0 z-30 mt-1.5 w-44 rounded-box border border-base-300 bg-base-100 shadow-pop p-1" role="menu">
 										<button
 											type="button"
 											role="menuitem"
 											onClick={() => { setAddOpen(false); setEditing({ mode: "create-lead" }); }}
-											className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-left text-base-content/80 hover:bg-base-200 transition-colors"
+											className="w-full flex items-center gap-2.5 px-3 py-2 rounded-field text-sm font-medium text-left text-base-content/80 hover:bg-base-200 transition-colors"
 										>
 											<Users className="w-4 h-4 text-base-content/60" />
 											Müşteri ekle
@@ -269,7 +269,7 @@ export function ContactDashboard() {
 											type="button"
 											role="menuitem"
 											onClick={() => { setAddOpen(false); setEditing({ mode: "create-tenant" }); }}
-											className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-left text-base-content/80 hover:bg-base-200 transition-colors"
+											className="w-full flex items-center gap-2.5 px-3 py-2 rounded-field text-sm font-medium text-left text-base-content/80 hover:bg-base-200 transition-colors"
 										>
 											<UserPlus className="w-4 h-4 text-base-content/60" />
 											Kiracı ekle

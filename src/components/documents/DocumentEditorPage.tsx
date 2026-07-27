@@ -248,7 +248,7 @@ export function DocumentEditorPage({ documentId }: { documentId: string }) {
 					)}
 				</div>
 
-				<div className="flex gap-1 rounded-xl bg-base-200 p-1" role="tablist" aria-label="Görünüm">
+				<div className="flex gap-1 rounded-box bg-base-200 p-1" role="tablist" aria-label="Görünüm">
 					{(["edit", "preview"] as const).map((m) => (
 						<button
 							key={m}
@@ -257,7 +257,7 @@ export function DocumentEditorPage({ documentId }: { documentId: string }) {
 							aria-selected={viewMode === m}
 							onClick={() => switchMode(m)}
 							className={cn(
-								"px-3 h-9 rounded-lg text-sm font-medium transition-colors",
+								"px-3 h-9 rounded-field text-sm font-medium transition-colors",
 								viewMode === m
 									? "bg-base-100 text-base-content shadow-sm"
 									: "text-base-content/60 hover:text-base-content",
@@ -293,7 +293,7 @@ export function DocumentEditorPage({ documentId }: { documentId: string }) {
 						</div>
 					)}
 
-					<div className="rounded-2xl bg-base-200 border border-base-300 px-3 sm:px-6 pt-2">
+					<div className="rounded-box bg-base-200 border border-base-300 px-3 sm:px-6 pt-2">
 						<ContractEditor
 							initialDoc={liveContent ?? doc.content}
 							palette={branding?.palette ?? DEFAULT_PALETTE}
@@ -317,7 +317,7 @@ export function DocumentEditorPage({ documentId }: { documentId: string }) {
 					</div>
 				</>
 			) : (
-				<div className="h-[60vh] sm:h-[72vh] bg-base-200 rounded-2xl overflow-hidden border border-base-300">
+				<div className="h-[60vh] sm:h-[72vh] bg-base-200 rounded-box overflow-hidden border border-base-300">
 					{previewJson && (
 						<PDFBlobProvider
 							document={

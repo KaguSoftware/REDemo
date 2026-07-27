@@ -95,7 +95,7 @@ export function NavDrawer({ open, onClose }: { open: boolean; onClose: () => voi
 					<button
 						onClick={onClose}
 						aria-label="Menüyü kapat"
-						className="-mr-2 h-11 w-11 inline-flex items-center justify-center rounded-xl text-base-content/50 hover:bg-base-200"
+						className="-mr-2 h-11 w-11 inline-flex items-center justify-center rounded-field text-base-content/50 hover:bg-base-200"
 					>
 						<X className="w-5 h-5" />
 					</button>
@@ -110,7 +110,7 @@ export function NavDrawer({ open, onClose }: { open: boolean; onClose: () => voi
 								href={href}
 								onClick={onClose}
 								className={cn(
-									"flex items-center gap-3 h-12 px-3 rounded-xl text-sm font-semibold transition-colors",
+									"flex items-center gap-3 h-12 px-3 rounded-field text-sm font-semibold transition-colors",
 									active
 										? "bg-primary/10 text-primary"
 										: "text-base-content/80 hover:bg-base-200",
@@ -152,7 +152,7 @@ export function NavDrawer({ open, onClose }: { open: boolean; onClose: () => voi
 							</div>
 							<button
 								onClick={handleSignOut}
-								className="flex items-center gap-3 w-full h-12 px-3 rounded-xl text-sm font-semibold text-error hover:bg-error/10 transition-colors"
+								className="flex items-center gap-3 w-full h-12 px-3 rounded-field text-sm font-semibold text-error hover:bg-error/10 transition-colors"
 							>
 								<LogOut className="w-5 h-5" />
 								Çıkış yap

@@ -58,7 +58,7 @@ export function TeamSizeCard() {
 				üye sınırını etkilemez.
 			</p>
 			{error && <div className="mt-3"><Alert tone="error">{error}</Alert></div>}
-			<div className="mt-3 grid grid-cols-4 gap-1 bg-base-200 rounded-xl p-1 max-w-sm">
+			<div className="mt-3 grid grid-cols-4 gap-1 bg-base-200 rounded-box p-1 max-w-sm">
 				{SIZE_BRACKETS.map((b) => (
 					<button
 						key={b.value}
@@ -66,9 +66,9 @@ export function TeamSizeCard() {
 						disabled={busy}
 						onClick={() => { if (b.value !== current) setPending(b.value); }}
 						className={cn(
-							"h-9 text-sm font-medium rounded-lg transition-colors",
+							"h-9 text-sm font-medium rounded-field transition-colors",
 							b.value === current
-								? "bg-base-100 text-base-content shadow-soft"
+								? "bg-base-100 text-base-content"
 								: "text-base-content/60 hover:text-base-content/80",
 						)}
 					>

@@ -77,7 +77,7 @@ export function NotificationBell() {
 			<button
 				onClick={openSheet}
 				aria-label={unread > 0 ? `Bildirimler (${unread} okunmamış)` : "Bildirimler"}
-				className="group relative h-11 w-11 inline-flex items-center justify-center rounded-xl text-base-content/70 hover:bg-base-200 transition-colors"
+				className="group relative h-11 w-11 inline-flex items-center justify-center rounded-box text-base-content/70 hover:bg-base-200 transition-colors"
 			>
 				<Bell className="w-5 h-5 origin-top group-hover:animate-wiggle-loop" />
 				{unread > 0 && (

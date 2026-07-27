@@ -181,7 +181,7 @@ export function PaymentList({ leaseId, currency, monthlyRent, onChanged, onRecei
 			</div>
 
 			{form && (
-				<form onSubmit={handleSubmit} className="mb-4 space-y-4 p-4 bg-base-200 rounded-2xl border border-base-300">
+				<form onSubmit={handleSubmit} className="mb-4 space-y-4 p-4 bg-base-200 rounded-box border border-base-300">
 					{form.mode === "edit" && (
 						<p className="text-xs font-semibold text-base-content/55">Ödeme düzenleniyor</p>
 					)}
@@ -243,7 +243,7 @@ export function PaymentList({ leaseId, currency, monthlyRent, onChanged, onRecei
 										onClick={() => onReceipt(p)}
 										aria-label="Makbuzu indir"
 										title="Kira makbuzunu indir"
-										className="h-9 w-9 inline-flex items-center justify-center rounded-lg text-base-content/50 hover:text-base-content/80 hover:bg-base-200 transition-colors"
+										className="h-9 w-9 inline-flex items-center justify-center rounded-field text-base-content/50 hover:text-base-content/80 hover:bg-base-200 transition-colors"
 									>
 										<Receipt className="w-4 h-4" />
 									</button>
@@ -252,7 +252,7 @@ export function PaymentList({ leaseId, currency, monthlyRent, onChanged, onRecei
 									type="button"
 									onClick={() => openEdit(p)}
 									aria-label="Ödemeyi düzenle"
-									className="h-9 w-9 inline-flex items-center justify-center rounded-lg text-base-content/50 hover:text-base-content/80 hover:bg-base-200 transition-colors"
+									className="h-9 w-9 inline-flex items-center justify-center rounded-field text-base-content/50 hover:text-base-content/80 hover:bg-base-200 transition-colors"
 								>
 									<Pencil className="w-4 h-4" />
 								</button>
@@ -260,7 +260,7 @@ export function PaymentList({ leaseId, currency, monthlyRent, onChanged, onRecei
 									type="button"
 									onClick={() => setDeleting(p)}
 									aria-label="Ödemeyi sil"
-									className="h-9 w-9 inline-flex items-center justify-center rounded-lg text-base-content/50 hover:text-error hover:bg-error/10 transition-colors"
+									className="h-9 w-9 inline-flex items-center justify-center rounded-field text-base-content/50 hover:text-error hover:bg-error/10 transition-colors"
 								>
 									<Trash2 className="w-4 h-4" />
 								</button>

@@ -123,7 +123,7 @@ export function ActivityTimeline({ leadId, tenantId }: Props) {
 	if (!subject) return null;
 
 	return (
-		<div className="rounded-2xl bg-base-200 border border-base-300 p-4 space-y-3">
+		<div className="rounded-box bg-base-200 border border-base-300 p-4 space-y-3">
 			<div className="flex items-center justify-between gap-3">
 				<p className="text-sm font-semibold text-base-content/60">Görüşme geçmişi</p>
 				{isWritable && !composing && (
@@ -135,7 +135,7 @@ export function ActivityTimeline({ leadId, tenantId }: Props) {
 			</div>
 
 			{composing && (
-				<div className="rounded-xl bg-base-100 border border-base-300 p-3 space-y-3">
+				<div className="rounded-box bg-base-100 border border-base-300 p-3 space-y-3">
 					<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 						<Dropdown options={KIND_OPTIONS} value={kind} onChange={setKind} aria-label="Kayıt türü" />
 						<DatePicker value={occurredOn} onChange={setOccurredOn} required aria-label="Tarih" />
@@ -173,7 +173,7 @@ export function ActivityTimeline({ leadId, tenantId }: Props) {
 						return (
 							<li
 								key={it.id}
-								className="group flex items-start gap-3 rounded-xl bg-base-100 border border-base-300/70 px-3 py-2.5"
+								className="group flex items-start gap-3 rounded-box bg-base-100 border border-base-300/70 px-3 py-2.5"
 							>
 								<Icon className={cn("w-4 h-4 mt-0.5 shrink-0", meta.tone)} />
 								<div className="min-w-0 flex-1">

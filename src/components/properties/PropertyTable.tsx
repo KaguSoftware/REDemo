@@ -325,7 +325,7 @@ export function PropertyTable({ isLoading = false }: { isLoading?: boolean }) {
 						tabIndex={0}
 						onClick={() => open(p.id)}
 						onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(p.id); } }}
-						className="w-full text-left bg-base-100 border border-base-300 rounded-2xl shadow-card p-4 active:bg-base-200 transition-colors cursor-pointer"
+						className="w-full text-left bg-base-100 border border-base-300 rounded-box p-4 active:bg-base-200 transition-colors cursor-pointer"
 					>
 						<div className="flex items-start justify-between gap-3">
 							<input
@@ -336,7 +336,7 @@ export function PropertyTable({ isLoading = false }: { isLoading?: boolean }) {
 								aria-label={`${p.address_line} kaydını seç`}
 								className="checkbox checkbox-sm checkbox-primary mt-1 shrink-0"
 							/>
-							<Thumb src={covers?.[p.id]} className="w-14 h-14 rounded-xl shrink-0" />
+							<Thumb src={covers?.[p.id]} className="w-14 h-14 rounded-box shrink-0" />
 							<div className="min-w-0 flex-1">
 								<p className="text-base font-bold text-base-content line-clamp-2">{p.address_line}</p>
 								<p className="text-sm text-base-content/60 mt-0.5 truncate">{p.homeowner_name}{p.city ? ` · ${p.city}` : ""}</p>
@@ -403,7 +403,7 @@ export function PropertyTable({ isLoading = false }: { isLoading?: boolean }) {
 										/>
 									</td>
 									<td className="pl-4 pr-0 py-2">
-										<Thumb src={covers?.[p.id]} className="w-11 h-11 rounded-lg" />
+										<Thumb src={covers?.[p.id]} className="w-11 h-11 rounded-field" />
 									</td>
 									<td className="px-4 py-3 text-sm font-medium text-base-content min-w-0">{p.homeowner_name}</td>
 									<td className="px-4 py-3 text-sm text-base-content/70 min-w-0">{p.address_line}{p.city ? `, ${p.city}` : ""}</td>

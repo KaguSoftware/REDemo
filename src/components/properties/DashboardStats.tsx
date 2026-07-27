@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useAppStore, useTeamReady } from "@/src/store";
 import { getDashboardStats } from "@/src/lib/db/stats";
 import { useCachedResource } from "@/src/lib/useCachedResource";
-import { cn, StatsSkeleton } from "@/src/components/ui";
+import { cn, StatsSkeleton, SurfaceButton } from "@/src/components/ui";
 import { Home, KeyRound, Wallet, Users } from "lucide-react";
 
 function fmtAmount(n: number): string {
@@ -99,19 +99,21 @@ function StatCard({
 	hint?: string;
 }) {
 	return (
-		<button
-			type="button"
-			onClick={onClick}
-			title={hint}
-			className="text-left bg-base-100 rounded-2xl border border-base-300 shadow-card px-4 py-3.5 min-w-0 hover:border-base-content/30 hover:shadow-pop transition-all cursor-pointer">
+		<SurfaceButton onClick={onClick} title={hint} padding="md">
 			<div className="flex items-center gap-1.5 mb-1">
 				<Icon className="w-3.5 h-3.5 text-base-content/50" />
 				<p className="text-xs font-semibold text-base-content/55">{label}</p>
 			</div>
+			{/* Money is the reason an office owner opens this app, and it used to
+			    be the worst-rendered thing on the page. The value shrank to
+			    `text-sm` — nav-label size — as soon as it exceeded 12 characters,
+			    which is precisely what a two-currency total does. It also used
+			    font-display rather than font-numeric, so the tabular numerals
+			    this project commits to never touched its headline figures.
+			    Now: one size, always tabular, wrapping rather than shrinking. */}
 			<p
 				className={cn(
-					"font-display font-semibold text-base-content truncate",
-					value.length > 12 ? "text-sm leading-6" : "text-xl",
+					"font-numeric text-xl font-semibold text-base-content wrap-break-word",
 					danger && "text-error",
 				)}
 				title={value}
@@ -119,6 +121,6 @@ function StatCard({
 				{value}
 			</p>
 			<p className="text-xs text-base-content/60 mt-0.5 truncate" title={detail}>{detail}</p>
-		</button>
+		</SurfaceButton>
 	);
 }

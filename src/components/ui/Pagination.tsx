@@ -51,7 +51,7 @@ export function Pagination({ page, pageCount, total, pageSize, onPageChange, cla
 					onClick={() => onPageChange(page - 1)}
 					disabled={page <= 1}
 					aria-label="Önceki sayfa"
-					className="h-8 w-8 inline-flex items-center justify-center rounded-lg text-base-content/60 hover:bg-base-200 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+					className="h-8 w-8 inline-flex items-center justify-center rounded-field text-base-content/60 hover:bg-base-200 disabled:opacity-30 disabled:pointer-events-none transition-colors"
 				>
 					<ChevronLeft className="w-4 h-4" />
 				</button>
@@ -63,7 +63,7 @@ export function Pagination({ page, pageCount, total, pageSize, onPageChange, cla
 					onClick={() => onPageChange(page + 1)}
 					disabled={page >= pageCount}
 					aria-label="Sonraki sayfa"
-					className="h-8 w-8 inline-flex items-center justify-center rounded-lg text-base-content/60 hover:bg-base-200 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+					className="h-8 w-8 inline-flex items-center justify-center rounded-field text-base-content/60 hover:bg-base-200 disabled:opacity-30 disabled:pointer-events-none transition-colors"
 				>
 					<ChevronRight className="w-4 h-4" />
 				</button>

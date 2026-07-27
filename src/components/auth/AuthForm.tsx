@@ -182,7 +182,7 @@ export function AuthForm({ mode, next, standalone = true, onClose }: AuthFormPro
 	return (
 		<div className="space-y-4">
 			{inviteTeam && (
-				<div className="rounded-xl bg-primary/10 border border-primary/20 px-4 py-3 text-sm text-base-content/80">
+				<div className="rounded-box bg-primary/10 border border-primary/20 px-4 py-3 text-sm text-base-content/80">
 					<span className="font-semibold">{inviteTeam}</span> ekibine katılmaya davet edildiniz.
 					{mode === "signup" ? " Kabul etmek için hesabınızı oluşturun." : " Kabul etmek için giriş yapın."}
 				</div>

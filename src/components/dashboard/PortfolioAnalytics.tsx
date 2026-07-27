@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useAppStore, useTeamReady } from "@/src/store";
 import { getDashboardStats, type PropertyHealthRow } from "@/src/lib/db/stats";
 import { useCachedResource } from "@/src/lib/useCachedResource";
-import { Card, CardLabel, Badge, cn, Skeleton, SkeletonGroup } from "@/src/components/ui";
+import { Card, CardLabel, Badge, cn, Skeleton, SkeletonGroup, Surface } from "@/src/components/ui";
 import { fmtMoney } from "@/src/lib/format";
 import {
 	TrendingUp, FileText, CalendarClock, Wallet, PhoneMissed, Building2,
@@ -55,10 +55,10 @@ function AnalyticsSkeleton() {
 				</div>
 				<div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 mt-5">
 					{[0, 1, 2, 3].map((i) => (
-						<div key={i} className="rounded-xl border border-base-300 px-3 py-2.5">
+						<Surface key={i} tier="inset" padding="sm">
 							<Skeleton className="h-3 w-20" />
-							<Skeleton className="h-5 w-10 mt-2" />
-						</div>
+							<Skeleton className="h-7 w-10 mt-1" />
+						</Surface>
 					))}
 				</div>
 				<div className="mt-5">
@@ -178,7 +178,7 @@ export function PortfolioAnalytics() {
 				{attentionRows.length === 0 ? (
 					<p className="text-sm text-base-content/50">Portföyünüz sağlıklı görünüyor ✓</p>
 				) : (
-					<ul className="divide-y divide-base-300 rounded-xl border border-base-300 overflow-hidden">
+					<ul className="divide-y divide-base-300 rounded-box border border-base-300 overflow-hidden">
 						{attentionRows.map((row) => (
 							<li key={row.id}>
 								<Link
@@ -217,17 +217,15 @@ function StatTile({
 	sub?: string;
 	tone?: "warning" | "error";
 }) {
+	// This used to be the app's SECOND stat-tile design, sitting roughly 30px
+	// below DashboardStats' first one: same 14px icon, same 12px label, same
+	// 4-across grid — but rounded-xl vs rounded-2xl, px-3 py-2.5 vs px-4 py-3.5,
+	// text-lg vs text-xl, tinted vs shadowed. Near-repetition is what the eye
+	// reads as sloppiness rather than system, so both are now the same Surface
+	// at the same padding, differing only where they mean something different:
+	// this one is inset (it lives inside a panel) and carries a tone.
 	return (
-		<div
-			className={cn(
-				"rounded-xl border px-3 py-2.5 min-w-0",
-				tone === "error"
-					? "border-error/40 bg-error/10"
-					: tone === "warning"
-						? "border-warning/40 bg-warning/10"
-						: "border-base-300 bg-base-200/40",
-			)}
-		>
+		<Surface tier="inset" tone={tone ?? "neutral"} padding="sm">
 			<div className="flex items-center gap-1.5">
 				<Icon
 					className={cn(
@@ -239,7 +237,7 @@ function StatTile({
 			</div>
 			<p
 				className={cn(
-					"font-display text-lg font-semibold mt-1",
+					"font-numeric text-xl font-semibold mt-1",
 					tone === "error" ? "text-error" : tone === "warning" ? "text-warning" : "text-base-content",
 				)}
 			>
@@ -250,7 +248,7 @@ function StatTile({
 					{sub}
 				</p>
 			)}
-		</div>
+		</Surface>
 	);
 }
 
@@ -273,7 +271,7 @@ function Meter({
 			</div>
 			<div className="h-2 rounded-full bg-base-200 overflow-hidden" role="meter" aria-valuenow={Math.round(ratio * 100)} aria-valuemin={0} aria-valuemax={100} aria-label={label}>
 				<div
-					className={`h-full rounded-full transition-all ${danger ? "bg-warning" : "bg-success"}`}
+					className={`h-full rounded-full transition-[width] duration-300 ${danger ? "bg-warning" : "bg-success"}`}
 					style={{ width: `${Math.round(ratio * 100)}%` }}
 				/>
 			</div>

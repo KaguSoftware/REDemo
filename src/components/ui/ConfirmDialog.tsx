@@ -83,12 +83,12 @@ export function ConfirmDialog({
 				aria-modal="true"
 				aria-labelledby="confirm-dialog-title"
 				onClick={(e) => e.stopPropagation()}
-				className="w-full max-w-sm bg-base-100 rounded-2xl shadow-pop p-5 sm:p-6 animate-[sheetIn_.18s_ease-out]"
+				className="w-full max-w-sm bg-base-100 rounded-box shadow-pop p-5 sm:p-6 animate-[sheetIn_.18s_ease-out]"
 			>
 				<div className="flex items-start gap-3">
 					<div
 						className={cn(
-							"shrink-0 h-10 w-10 rounded-xl flex items-center justify-center",
+							"shrink-0 h-10 w-10 rounded-field flex items-center justify-center",
 							tone === "danger" ? "bg-error/10 text-error" : "bg-primary/10 text-primary",
 						)}
 					>

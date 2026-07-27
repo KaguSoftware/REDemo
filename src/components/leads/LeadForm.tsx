@@ -206,7 +206,7 @@ export function LeadForm({ mode, initial, onClose, onDone }: Props) {
 					<Textarea value={interested_in} onChange={(e) => setInterestedIn(e.target.value)} placeholder="örn. bahçeli 3+1, merkeze yakın" />
 				</FormField>
 
-				<div className="rounded-2xl bg-base-200 border border-base-300 p-4 space-y-4">
+				<div className="rounded-box bg-base-200 border border-base-300 p-4 space-y-4">
 					<p className="text-sm font-semibold text-base-content/60">Arama tercihleri (isteğe bağlı)</p>
 					{/* Budget leads the block: it's the first thing asked on a call and
 					    the strongest signal when matching against the portfolio. */}

@@ -157,7 +157,7 @@ export function InsuranceCard({ propertyId, initial }: Props) {
 							<li
 								key={row.id}
 								id={`sigorta-${row.kind}`}
-								className="flex items-center justify-between gap-3 p-3 rounded-xl bg-base-200 border border-base-300"
+								className="flex items-center justify-between gap-3 p-3 rounded-box bg-base-200 border border-base-300"
 							>
 								<div className="min-w-0">
 									<div className="flex items-center gap-2 flex-wrap">

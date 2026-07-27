@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Plus, Home, Users, UserPlus, FilePlus2, Lock } from "lucide-react";
 import { useAppStore, useIsWritable } from "@/src/store";
+import { Button } from "./Button";
 import { cn } from "./cn";
 
 interface AddItem {
@@ -56,19 +57,20 @@ export function AddMenu() {
 
 	return (
 		<div ref={rootRef} className="relative">
-			<button
-				type="button"
+			{/* Was a hand-rolled sixth Button variant. It is the same primary
+			    action as every other <Button>, so it uses the real one. */}
+			<Button
+				size="sm"
 				onClick={() => setOpen((o) => !o)}
-				className="h-9 inline-flex items-center gap-1.5 px-3 rounded-xl bg-primary text-primary-content text-sm font-semibold shadow-soft hover:brightness-110 transition-all"
 				aria-haspopup="menu"
 				aria-expanded={open}
 			>
 				<Plus className="w-4 h-4" />
 				<span className="hidden sm:inline">Ekle</span>
-			</button>
+			</Button>
 
 			{open && !writable && (
-				<div className="absolute right-0 z-40 mt-1.5 w-64 rounded-xl border border-base-300 bg-base-100 shadow-pop p-4 text-sm text-base-content/70">
+				<div className="absolute right-0 z-40 mt-1.5 w-64 rounded-box border border-base-300 bg-base-100 shadow-pop p-4 text-sm text-base-content/70">
 					<p className="flex items-center gap-2 font-semibold text-base-content">
 						<Lock className="w-4 h-4" /> Çalışma alanı salt okunur
 					</p>
@@ -83,7 +85,7 @@ export function AddMenu() {
 			)}
 			{open && writable && (
 				<div
-					className="absolute right-0 z-40 mt-1.5 w-48 rounded-xl border border-base-300 bg-base-100 shadow-pop p-1 animate-dropdown-in"
+					className="absolute right-0 z-40 mt-1.5 w-48 rounded-box border border-base-300 bg-base-100 shadow-pop p-1 animate-dropdown-in"
 					role="menu"
 				>
 					{ITEMS.map(({ href, label, icon: Icon }) => (
@@ -92,7 +94,7 @@ export function AddMenu() {
 							type="button"
 							onClick={() => go(href)}
 							className={cn(
-								"w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-left text-base-content/80",
+								"w-full flex items-center gap-3 px-3 py-2.5 rounded-field text-sm font-medium text-left text-base-content/80",
 								"hover:bg-base-200 transition-colors",
 							)}
 							role="menuitem"

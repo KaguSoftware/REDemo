@@ -18,7 +18,7 @@ interface Props {
 export function ClientPickerCardList({ clients, selectedId, onSelect, emptyHint }: Props) {
 	if (clients.length === 0) {
 		return (
-			<div className="text-center py-12 bg-base-200 rounded-2xl border border-dashed border-base-300">
+			<div className="text-center py-12 bg-base-200 rounded-box border border-dashed border-base-300">
 				<p className="text-sm text-base-content/60 mb-2">Henüz müşteri yok.</p>
 				{emptyHint && <p className="text-xs text-base-content/50 px-6">{emptyHint}</p>}
 			</div>
@@ -35,7 +35,7 @@ export function ClientPickerCardList({ clients, selectedId, onSelect, emptyHint 
 						type="button"
 						onClick={() => onSelect(selected ? null : c.id)}
 						className={cn(
-							"text-left p-4 rounded-2xl border transition-all shadow-soft",
+							"text-left p-4 rounded-box border transition-colors duration-150",
 							selected
 								? "border-primary bg-primary/5 ring-2 ring-primary/20"
 								: "border-base-300 bg-base-100 hover:border-base-content/30 active:bg-base-200",

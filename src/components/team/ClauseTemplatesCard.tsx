@@ -196,7 +196,7 @@ export function ClauseTemplatesCard() {
 			)}
 
 			{/* Kind tabs */}
-			<div className="mt-4 flex gap-1 rounded-xl bg-base-200 p-1 w-fit" role="tablist" aria-label="Belge türü">
+			<div className="mt-4 flex gap-1 rounded-box bg-base-200 p-1 w-fit" role="tablist" aria-label="Belge türü">
 				{(Object.keys(KIND_LABELS) as TemplateKind[]).map((k) => (
 					<button
 						key={k}
@@ -205,7 +205,7 @@ export function ClauseTemplatesCard() {
 						aria-selected={tab === k}
 						onClick={() => setTab(k)}
 						className={cn(
-							"px-3 h-9 rounded-lg text-sm font-medium transition-colors",
+							"px-3 h-9 rounded-field text-sm font-medium transition-colors",
 							tab === k
 								? "bg-base-100 text-base-content shadow-sm"
 								: "text-base-content/60 hover:text-base-content",
@@ -283,7 +283,7 @@ export function ClauseTemplatesCard() {
 									disabled={locked}
 									onClick={() => insertToken(p.token)}
 									title={`Örnek: ${p.example}`}
-									className="rounded-lg border border-base-300 bg-base-200 px-2 py-1 font-mono text-[11px] text-base-content/70 hover:border-base-content/30 hover:text-base-content transition-colors disabled:opacity-50"
+									className="rounded-field border border-base-300 bg-base-200 px-2 py-1 font-mono text-[11px] text-base-content/70 hover:border-base-content/30 hover:text-base-content transition-colors disabled:opacity-50"
 								>
 									{`{${p.token}}`}
 									<span className="ml-1 font-sans text-base-content/50">{p.label}</span>

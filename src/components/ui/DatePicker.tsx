@@ -209,14 +209,14 @@ export function DatePicker({
 					aria-label="Tarih seç"
 					// Right-anchored so the calendar grows leftward inside narrow
 					// containers (sheets, filter rows) instead of widening them.
-					className="absolute right-0 z-40 mt-1.5 w-70 max-w-[calc(100vw-2rem)] rounded-xl border border-base-300 bg-base-100 shadow-pop p-3 animate-dropdown-in"
+					className="absolute right-0 z-40 mt-1.5 w-70 max-w-[calc(100vw-2rem)] rounded-box border border-base-300 bg-base-100 shadow-pop p-3 animate-dropdown-in"
 				>
 					<div className="flex items-center justify-between mb-2">
 						<button
 							type="button"
 							onClick={() => shiftMonth(-1)}
 							aria-label="Önceki ay"
-							className="h-9 w-9 inline-flex items-center justify-center rounded-lg text-base-content/60 hover:text-base-content hover:bg-base-200 transition-colors"
+							className="h-9 w-9 inline-flex items-center justify-center rounded-field text-base-content/60 hover:text-base-content hover:bg-base-200 transition-colors"
 						>
 							<ChevronLeft className="w-4 h-4" />
 						</button>
@@ -227,7 +227,7 @@ export function DatePicker({
 							type="button"
 							onClick={() => shiftMonth(1)}
 							aria-label="Sonraki ay"
-							className="h-9 w-9 inline-flex items-center justify-center rounded-lg text-base-content/60 hover:text-base-content hover:bg-base-200 transition-colors"
+							className="h-9 w-9 inline-flex items-center justify-center rounded-field text-base-content/60 hover:text-base-content hover:bg-base-200 transition-colors"
 						>
 							<ChevronRight className="w-4 h-4" />
 						</button>
@@ -258,7 +258,7 @@ export function DatePicker({
 									aria-current={isToday ? "date" : undefined}
 									aria-pressed={isSelected}
 									className={cn(
-										"h-9 rounded-lg text-sm tabular-nums transition-colors",
+										"h-9 rounded-field text-sm tabular-nums transition-colors",
 										"hover:bg-base-200 disabled:opacity-30 disabled:hover:bg-transparent disabled:cursor-not-allowed",
 										isSelected && "bg-primary text-primary-content font-semibold hover:bg-primary",
 										!isSelected && isToday && "font-semibold text-primary",

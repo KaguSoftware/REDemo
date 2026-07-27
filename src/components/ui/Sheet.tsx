@@ -63,7 +63,7 @@ export function Sheet({ open, onClose, title, footer, children, size = "md" }: S
 				className={cn(
 					// Mobile: fill the screen. Desktop: centered card.
 					"flex flex-col bg-base-100 w-full h-full overflow-hidden",
-					"sm:h-auto sm:max-h-[88vh] sm:rounded-2xl sm:shadow-pop",
+					"sm:h-auto sm:max-h-[88vh] sm:rounded-box sm:shadow-pop",
 					"animate-[sheetIn_.18s_ease-out]",
 					maxW,
 				)}
@@ -74,7 +74,7 @@ export function Sheet({ open, onClose, title, footer, children, size = "md" }: S
 					<button
 						onClick={onClose}
 						aria-label="Kapat"
-						className="-mr-2 h-11 w-11 inline-flex items-center justify-center rounded-xl text-base-content/50 hover:text-base-content/80 hover:bg-base-200 transition-colors"
+						className="-mr-2 h-11 w-11 inline-flex items-center justify-center rounded-field text-base-content/50 hover:text-base-content/80 hover:bg-base-200 transition-colors"
 					>
 						<X className="w-5 h-5" />
 					</button>

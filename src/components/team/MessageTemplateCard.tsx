@@ -191,7 +191,7 @@ export function MessageTemplateCard({
 											type="button"
 											onClick={() => insertToken(t.token)}
 											title={t.description}
-											className="px-2 py-1 rounded-lg border border-base-300 bg-base-200 text-xs font-mono hover:border-primary/40 hover:bg-base-100 transition-colors"
+											className="px-2 py-1 rounded-field border border-base-300 bg-base-200 text-xs font-mono hover:border-primary/40 hover:bg-base-100 transition-colors"
 										>
 											{t.token}
 										</button>
@@ -205,7 +205,7 @@ export function MessageTemplateCard({
 
 							<div>
 								<p className="text-sm font-medium mb-1.5">Önizleme</p>
-								<pre className="rounded-xl bg-base-200 border border-base-300 p-3 text-sm whitespace-pre-wrap break-words font-sans">
+								<pre className="rounded-box bg-base-200 border border-base-300 p-3 text-sm whitespace-pre-wrap break-words font-sans">
 									{preview}
 								</pre>
 							</div>

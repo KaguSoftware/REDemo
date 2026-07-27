@@ -200,7 +200,7 @@ export function ReceiptWizard({ onExit }: Props) {
 					{loadingLeases ? (
 						<div className="flex justify-center py-8"><Spinner size="sm" /></div>
 					) : leases.length === 0 ? (
-						<div className="text-center py-12 bg-base-200 rounded-2xl border border-dashed border-base-300">
+						<div className="text-center py-12 bg-base-200 rounded-box border border-dashed border-base-300">
 							<p className="text-sm text-base-content/60">Bu taşınmaz için kayıtlı kira sözleşmesi bulunamadı.</p>
 						</div>
 					) : (
@@ -213,7 +213,7 @@ export function ReceiptWizard({ onExit }: Props) {
 										type="button"
 										onClick={() => setLeaseId(l.id)}
 										className={cn(
-											"text-left p-4 rounded-2xl border transition-all shadow-soft",
+											"text-left p-4 rounded-box border transition-colors duration-150",
 											selected
 												? "border-primary bg-primary/5 ring-2 ring-primary/20"
 												: "border-base-300 bg-base-100 hover:border-base-content/30 active:bg-base-200",
@@ -250,7 +250,7 @@ export function ReceiptWizard({ onExit }: Props) {
 					{loadingPayments ? (
 						<div className="flex justify-center py-8"><Spinner size="sm" /></div>
 					) : payments.length === 0 ? (
-						<div className="text-center py-12 bg-base-200 rounded-2xl border border-dashed border-base-300">
+						<div className="text-center py-12 bg-base-200 rounded-box border border-dashed border-base-300">
 							<p className="text-sm text-base-content/60 mb-1">Bu kira sözleşmesi için kayıtlı ödeme yok.</p>
 							<p className="text-xs text-base-content/50 px-6">
 								Önce taşınmaz sayfasındaki Ödemeler listesinden bir ödeme kaydedin.
@@ -267,7 +267,7 @@ export function ReceiptWizard({ onExit }: Props) {
 										type="button"
 										onClick={() => setPaymentId(p.id)}
 										className={cn(
-											"text-left p-4 rounded-2xl border transition-all shadow-soft",
+											"text-left p-4 rounded-box border transition-colors duration-150",
 											selected
 												? "border-primary bg-primary/5 ring-2 ring-primary/20"
 												: "border-base-300 bg-base-100 hover:border-base-content/30 active:bg-base-200",
@@ -304,7 +304,7 @@ export function ReceiptWizard({ onExit }: Props) {
 			{step === "confirm" && property && lease && payment && (
 				<div className="space-y-4">
 					<h2 className="font-display text-lg font-semibold text-base-content">Makbuzu onaylayın</h2>
-					<div className="p-5 rounded-2xl border border-base-300 bg-base-100 shadow-soft space-y-3">
+					<div className="p-5 rounded-box border border-base-300 bg-base-100 space-y-3">
 						<dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm">
 							<div>
 								<dt className="text-base-content/50 text-xs font-semibold uppercase tracking-wide">Kiraya veren</dt>

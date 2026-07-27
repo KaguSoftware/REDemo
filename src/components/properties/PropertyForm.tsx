@@ -381,7 +381,7 @@ export function PropertyForm({ mode, initial, onDone, onCancel, defaultProjectId
 			</div>
 
 			{/* Address — Turkish parts */}
-			<div className="space-y-4 p-4 rounded-2xl bg-base-200 border border-base-300">
+			<div className="space-y-4 p-4 rounded-box bg-base-200 border border-base-300">
 				<p className="text-sm font-semibold text-base-content/60">Adres</p>
 
 				{/* Location — paste a maps link or tap/drag the pin. Reverse-geocoded
@@ -493,7 +493,7 @@ export function PropertyForm({ mode, initial, onDone, onCancel, defaultProjectId
 			</FormField>
 
 			{/* Tapu Bilgileri (title deed) — used by the sales agreement PDF. */}
-			<div className="space-y-4 p-4 rounded-2xl bg-base-200 border border-base-300">
+			<div className="space-y-4 p-4 rounded-box bg-base-200 border border-base-300">
 				<div>
 					<p className="text-sm font-semibold text-base-content/60">Tapu Bilgileri</p>
 					<p className="text-xs text-base-content/50 mt-0.5">Tapu bilgileri — Satış Sözleşmesi PDF&apos;ine eklenir (isteğe bağlı).</p>

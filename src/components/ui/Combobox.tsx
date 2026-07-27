@@ -161,7 +161,7 @@ export function Combobox({
 					role="listbox"
 					// Right-anchored and viewport-capped for the same reason as
 					// Dropdown: a menu must never widen its container.
-					className="absolute right-0 z-40 mt-1.5 min-w-full w-max max-w-[min(18rem,calc(100vw-2rem))] max-h-64 overflow-y-auto overflow-x-hidden rounded-xl border border-base-300 bg-base-100 shadow-pop p-1 animate-dropdown-in"
+					className="absolute right-0 z-40 mt-1.5 min-w-full w-max max-w-[min(18rem,calc(100vw-2rem))] max-h-64 overflow-y-auto overflow-x-hidden rounded-box border border-base-300 bg-base-100 shadow-pop p-1 animate-dropdown-in"
 				>
 					{matches.map((opt, i) => {
 						const isSelected = opt === value;
@@ -176,7 +176,7 @@ export function Combobox({
 								onMouseEnter={() => setHighlighted(i)}
 								onClick={() => commit(opt)}
 								className={cn(
-									"w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg text-left text-sm transition-colors",
+									"w-full flex items-center justify-between gap-2 px-3 py-2 rounded-field text-left text-sm transition-colors",
 									i === highlighted ? "bg-base-200" : "hover:bg-base-200/60",
 								)}
 							>

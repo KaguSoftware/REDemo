@@ -105,7 +105,7 @@ export function PropertyGallery({ propertyId, canEdit = true }: Props) {
 			/>
 
 			{/* Hero — capped so the image doesn't dominate the detail view */}
-			<div className="relative w-full max-w-2xl mx-auto h-48 sm:h-64 rounded-2xl overflow-hidden bg-base-200 border border-base-300">
+			<div className="relative w-full max-w-2xl mx-auto h-48 sm:h-64 rounded-box overflow-hidden bg-base-200 border border-base-300">
 				{loading ? (
 					<div className="absolute inset-0 flex items-center justify-center">
 						<Spinner />
@@ -132,7 +132,7 @@ export function PropertyGallery({ propertyId, canEdit = true }: Props) {
 								type="button"
 								onClick={() => fileRef.current?.click()}
 								disabled={uploading}
-								className="inline-flex items-center h-11 px-4 text-sm font-semibold rounded-xl bg-primary text-primary-content hover:brightness-110 transition-all shadow-soft disabled:opacity-50"
+								className="inline-flex items-center h-11 px-4 text-sm font-semibold rounded-field bg-primary text-primary-content hover:brightness-110 transition-[filter] duration-150 disabled:opacity-50"
 							>
 								{uploading ? "Yükleniyor…" : "+ Fotoğraf ekle"}
 							</button>
@@ -149,7 +149,7 @@ export function PropertyGallery({ propertyId, canEdit = true }: Props) {
 					{images.map((img, i) => (
 						<div
 							key={img.id}
-							className={`relative shrink-0 snap-start w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden border-2 group cursor-pointer transition-all ${
+							className={`relative shrink-0 snap-start w-20 h-20 sm:w-24 sm:h-24 rounded-field overflow-hidden border-2 group cursor-pointer transition-colors duration-150 ${
 								i === featuredIdx
 									? "border-primary ring-2 ring-primary/30"
 									: "border-base-300 hover:border-base-content/40"
@@ -179,7 +179,7 @@ export function PropertyGallery({ propertyId, canEdit = true }: Props) {
 							type="button"
 							onClick={() => fileRef.current?.click()}
 							disabled={uploading}
-							className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg border-2 border-dashed border-base-300 hover:border-primary hover:bg-primary/5 flex items-center justify-center text-base-content/50 hover:text-primary transition-all disabled:opacity-50"
+							className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-field border-2 border-dashed border-base-300 hover:border-primary hover:bg-primary/5 flex items-center justify-center text-base-content/50 hover:text-primary transition-colors duration-150 disabled:opacity-50"
 							aria-label="Daha fazla fotoğraf ekle"
 						>
 							<span className="text-2xl">{uploading ? "…" : "+"}</span>

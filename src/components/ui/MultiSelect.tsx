@@ -57,7 +57,7 @@ export function MultiSelect({ label, options, selected, onChange, className }: M
 				type="button"
 				onClick={() => setOpen((o) => !o)}
 				className={cn(
-					"w-full h-12 flex items-center justify-between gap-2 bg-base-100 border rounded-xl px-3.5 text-base sm:text-sm shadow-soft outline-none transition-all",
+					"w-full h-12 flex items-center justify-between gap-2 bg-base-100 border rounded-field px-3.5 text-base sm:text-sm outline-none transition-[border-color,box-shadow] duration-150",
 					"focus:border-primary focus:ring-4 focus:ring-primary/15",
 					open ? "border-primary ring-4 ring-primary/15" : "border-base-300",
 					selected.length ? "text-base-content" : "text-base-content/40",
@@ -74,7 +74,7 @@ export function MultiSelect({ label, options, selected, onChange, className }: M
 					// Right-anchored and viewport-capped for the same reason as Dropdown:
 					// a menu wider than a narrow trigger must grow leftward, not push
 					// its container wide.
-					className="absolute right-0 z-40 mt-1.5 min-w-full w-max max-w-[min(18rem,calc(100vw-2rem))] max-h-64 overflow-y-auto overflow-x-hidden rounded-xl border border-base-300 bg-base-100 shadow-pop p-1"
+					className="absolute right-0 z-40 mt-1.5 min-w-full w-max max-w-[min(18rem,calc(100vw-2rem))] max-h-64 overflow-y-auto overflow-x-hidden rounded-box border border-base-300 bg-base-100 shadow-pop p-1"
 					role="listbox"
 				>
 					{options.length === 0 ? (
@@ -88,7 +88,7 @@ export function MultiSelect({ label, options, selected, onChange, className }: M
 									type="button"
 									onClick={() => toggle(opt)}
 									className={cn(
-										"w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm text-left transition-colors",
+										"w-full flex items-center gap-2.5 px-2.5 py-2 rounded-field text-sm text-left transition-colors",
 										checked ? "bg-primary/5 text-base-content" : "text-base-content/80 hover:bg-base-200",
 									)}
 									role="option"

@@ -18,7 +18,7 @@ export function PaperPileLoader({ size = "sm", className }: { size?: "sm" | "lg"
 			{SHEETS.map((i) => (
 				<motion.span
 					key={i}
-					className={cn("absolute border border-base-300 bg-base-100 shadow-soft", sheet)}
+					className={cn("absolute border border-base-300 bg-base-100", sheet)}
 					style={{ bottom: i * step }}
 					animate={{ y: [0, -(step - 0.5), 0], rotate: [0, i % 2 === 0 ? -6 : 6, 0] }}
 					transition={{

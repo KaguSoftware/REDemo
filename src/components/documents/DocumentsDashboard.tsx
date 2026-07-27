@@ -198,7 +198,7 @@ export function DocumentsDashboard() {
 									<Link
 										key={d.id}
 										href={`/documents/${d.id}`}
-										className="block bg-base-100 border border-base-300 rounded-2xl shadow-card p-4 active:bg-base-200 transition-colors"
+										className="block bg-base-100 border border-base-300 rounded-box p-4 active:bg-base-200 transition-colors"
 									>
 										<div className="flex items-start justify-between gap-3">
 											{d.pdf_path && (
@@ -283,7 +283,7 @@ export function DocumentsDashboard() {
 																href={`/documents/${d.id}`}
 																aria-label={`${d.title} belgesini aç`}
 																title="Belgeyi aç"
-																className="h-8 w-8 inline-flex items-center justify-center rounded-lg text-base-content/50 hover:text-base-content/80 hover:bg-base-200 transition-colors"
+																className="h-8 w-8 inline-flex items-center justify-center rounded-field text-base-content/50 hover:text-base-content/80 hover:bg-base-200 transition-colors"
 															>
 																<PencilLine className="w-4 h-4" />
 															</Link>
@@ -294,7 +294,7 @@ export function DocumentsDashboard() {
 																	disabled={downloadingId === d.id}
 																	aria-label={`${d.title} PDF indir`}
 																	title="Kaydedilen PDF'i aç"
-																	className="h-8 w-8 inline-flex items-center justify-center rounded-lg text-base-content/50 hover:text-base-content/80 hover:bg-base-200 transition-colors disabled:opacity-50"
+																	className="h-8 w-8 inline-flex items-center justify-center rounded-field text-base-content/50 hover:text-base-content/80 hover:bg-base-200 transition-colors disabled:opacity-50"
 																>
 																	<Download className="w-4 h-4" />
 																</button>

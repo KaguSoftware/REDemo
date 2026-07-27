@@ -44,21 +44,21 @@ export function AccountMenu() {
 				aria-label="Hesap menüsü"
 				aria-haspopup="menu"
 				aria-expanded={open}
-				className="h-9 w-9 inline-flex items-center justify-center rounded-xl text-base-content/70 hover:bg-base-200 transition-colors"
+				className="h-9 w-9 inline-flex items-center justify-center rounded-field text-base-content/70 hover:bg-base-200 transition-colors"
 			>
 				<MoreVertical className="w-4.5 h-4.5" />
 			</button>
 
 			{open && (
 				<div
-					className="absolute right-0 z-40 mt-1.5 w-48 rounded-xl border border-base-300 bg-base-100 shadow-pop p-1 animate-dropdown-in"
+					className="absolute right-0 z-40 mt-1.5 w-48 rounded-box border border-base-300 bg-base-100 shadow-pop p-1 animate-dropdown-in"
 					role="menu"
 				>
 					<button
 						type="button"
 						onClick={signOutAndRedirect}
 						className={cn(
-							"w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-left text-base-content/80",
+							"w-full flex items-center gap-3 px-3 py-2.5 rounded-field text-sm font-medium text-left text-base-content/80",
 							"hover:bg-base-200 transition-colors",
 						)}
 						role="menuitem"
@@ -70,7 +70,7 @@ export function AccountMenu() {
 						type="button"
 						onClick={signOutAndRedirect}
 						className={cn(
-							"w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-left text-base-content/80",
+							"w-full flex items-center gap-3 px-3 py-2.5 rounded-field text-sm font-medium text-left text-base-content/80",
 							"hover:bg-base-200 transition-colors",
 						)}
 						role="menuitem"
@@ -82,7 +82,7 @@ export function AccountMenu() {
 						href="mailto:contact@kagusoftware.com"
 						onClick={() => setOpen(false)}
 						className={cn(
-							"w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-left text-base-content/80",
+							"w-full flex items-center gap-3 px-3 py-2.5 rounded-field text-sm font-medium text-left text-base-content/80",
 							"hover:bg-base-200 transition-colors",
 						)}
 						role="menuitem"

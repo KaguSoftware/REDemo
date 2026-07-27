@@ -977,21 +977,21 @@ export function DocumentWizard() {
 					<div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
 						<button
 							onClick={() => { setKind("rental"); setPropertyId(null); setClientId(null); setPropertiesLoaded(false); setStep("property"); }}
-							className="text-left p-5 rounded-2xl border-2 border-base-300 hover:border-primary/60 active:bg-primary/5 transition-colors"
+							className="text-left p-5 rounded-box border-2 border-base-300 hover:border-primary/60 active:bg-primary/5 transition-colors"
 						>
 							<p className="font-display text-base font-semibold text-base-content">Kira Sözleşmesi</p>
 							<p className="text-sm text-base-content/60 mt-1">Boş bir kiralık taşınmazı yeni bir kiracıya kiralayın.</p>
 						</button>
 						<button
 							onClick={() => { setKind("sales"); setPropertyId(null); setClientId(null); setPropertiesLoaded(false); setStep("property"); }}
-							className="text-left p-5 rounded-2xl border-2 border-base-300 hover:border-primary/60 active:bg-primary/5 transition-colors"
+							className="text-left p-5 rounded-box border-2 border-base-300 hover:border-primary/60 active:bg-primary/5 transition-colors"
 						>
 							<p className="font-display text-base font-semibold text-base-content">Satış Sözleşmesi</p>
 							<p className="text-sm text-base-content/60 mt-1">Satılık bir taşınmazı yeni bir alıcıya satın.</p>
 						</button>
 						<button
 							onClick={() => setReceiptMode(true)}
-							className="text-left p-5 rounded-2xl border-2 border-base-300 hover:border-primary/60 active:bg-primary/5 transition-colors"
+							className="text-left p-5 rounded-box border-2 border-base-300 hover:border-primary/60 active:bg-primary/5 transition-colors"
 						>
 							<p className="font-display text-base font-semibold text-base-content">Kira Makbuzu</p>
 							<p className="text-sm text-base-content/60 mt-1">Kayıtlı bir kira ödemesi için makbuz PDF&apos;i oluşturun.</p>
@@ -1081,7 +1081,7 @@ export function DocumentWizard() {
 							</p>
 						</div>
 						{/* Edit / PDF preview toggle */}
-						<div className="flex gap-1 rounded-xl bg-base-200 p-1" role="tablist" aria-label="Görünüm">
+						<div className="flex gap-1 rounded-box bg-base-200 p-1" role="tablist" aria-label="Görünüm">
 							{(["edit", "preview"] as const).map((m) => (
 								<button
 									key={m}
@@ -1090,7 +1090,7 @@ export function DocumentWizard() {
 									aria-selected={viewMode === m}
 									onClick={() => switchMode(m)}
 									className={cn(
-										"px-3 h-9 rounded-lg text-sm font-medium transition-colors",
+										"px-3 h-9 rounded-field text-sm font-medium transition-colors",
 										viewMode === m
 											? "bg-base-100 text-base-content shadow-sm"
 											: "text-base-content/60 hover:text-base-content",
@@ -1131,7 +1131,7 @@ export function DocumentWizard() {
 									<Input value={docSubtitle} onChange={(e) => setDocSubtitle(e.target.value)} />
 								</FormField>
 							</div>
-							<div className="rounded-2xl bg-base-200 border border-base-300 px-3 sm:px-6 pt-2">
+							<div className="rounded-box bg-base-200 border border-base-300 px-3 sm:px-6 pt-2">
 							<ContractEditor
 								initialDoc={docJson}
 								palette={previewBranding?.palette ?? DEFAULT_PALETTE}
@@ -1152,7 +1152,7 @@ export function DocumentWizard() {
 							</div>
 						</>
 					) : (
-						<div className="h-[60vh] sm:h-[72vh] bg-base-200 rounded-2xl overflow-hidden border border-base-300">
+						<div className="h-[60vh] sm:h-[72vh] bg-base-200 rounded-box overflow-hidden border border-base-300">
 							{previewJson ? (
 								<PDFBlobProvider
 									document={
@@ -1207,9 +1207,9 @@ export function DocumentWizard() {
 							← Geri
 						</Button>
 						<Button
+							variant="success"
 							onClick={handleConfirm}
 							disabled={!docJson || submitting}
-							className="bg-success text-success-content hover:brightness-110 shadow-soft"
 						>
 							{submitting ? (
 								<span className="inline-flex items-center gap-2">

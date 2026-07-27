@@ -71,7 +71,7 @@ export function AttentionPanel() {
 	return (
 		<div
 			className={cn(
-				"mb-4 rounded-2xl border shadow-card overflow-hidden",
+				"mb-4 rounded-box border overflow-hidden",
 				hasUrgent ? "border-error/40 bg-error/10" : "border-warning/40 bg-warning/10",
 			)}
 		>
@@ -108,7 +108,7 @@ export function AttentionPanel() {
 							setEditing((v) => !v);
 						}
 					}}
-					className="h-7 w-7 inline-flex items-center justify-center rounded-lg text-base-content/50 hover:text-base-content/80 hover:bg-base-100/70 transition-colors"
+					className="h-7 w-7 inline-flex items-center justify-center rounded-field text-base-content/50 hover:text-base-content/80 hover:bg-base-100/70 transition-colors"
 				>
 					<Settings2 className="w-4 h-4" />
 				</span>
@@ -241,7 +241,7 @@ function ThresholdEditor({ initial, onClose }: { initial: UserSettings; onClose:
 	];
 
 	return (
-		<div className="mx-4 mb-3 rounded-xl bg-base-100/80 border border-base-300 p-3">
+		<div className="mx-4 mb-3 rounded-box bg-base-100/80 border border-base-300 p-3">
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
 				{fields.map(({ key, label, max }) => (
 					<label key={key} className="block">
@@ -251,7 +251,7 @@ function ThresholdEditor({ initial, onClose }: { initial: UserSettings; onClose:
 							max={max}
 							value={form[key]}
 							onChange={(n) => setForm((f) => ({ ...f, [key]: n ?? f[key] }))}
-							className="mt-1 h-9 rounded-lg px-2.5 text-sm"
+							className="mt-1 h-9 rounded-field px-2.5 text-sm"
 						/>
 					</label>
 				))}
@@ -283,7 +283,7 @@ function Section({
 				<Icon className={cn("w-3.5 h-3.5", tone === "red" ? "text-error" : "text-warning")} />
 				<p className="text-xs font-semibold text-base-content/60">{title}</p>
 			</div>
-			<div className="divide-y divide-base-300 rounded-xl bg-base-100/70 border border-base-300">
+			<div className="divide-y divide-base-300 rounded-box bg-base-100/70 border border-base-300">
 				{children}
 			</div>
 		</div>

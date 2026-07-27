@@ -194,7 +194,7 @@ function ClusterPopover({
 			<div
 				role="listbox"
 				aria-label={`Bu konumda ${cell.items.length} taşınmaz`}
-				className="absolute bg-base-100 rounded-2xl border border-base-300 shadow-pop overflow-hidden animate-[popIn_.14s_ease-out]"
+				className="absolute bg-base-100 rounded-box border border-base-300 shadow-pop overflow-hidden animate-[popIn_.14s_ease-out]"
 				style={{ left, top, width: CARD_W, maxHeight: Math.min(280, containerSize.h - 16) }}
 				onClick={(e) => e.stopPropagation()}
 			>
@@ -302,7 +302,7 @@ export function PropertyMapInner({
 		return () => { cancelled = true; };
 	}, []);
 	if (!mounted) {
-		return <div className={`${heightClass} w-full rounded-2xl bg-base-200 animate-pulse`} />;
+		return <div className={`${heightClass} w-full rounded-box bg-base-200 animate-pulse`} />;
 	}
 
 	return (
@@ -320,7 +320,7 @@ export function PropertyMapInner({
 				center={initialView.center}
 				zoom={initialView.zoom}
 				scrollWheelZoom
-				className="h-full w-full rounded-2xl"
+				className="h-full w-full rounded-box"
 				style={{ zIndex: 0 }}
 			>
 				{/* CartoDB Positron — light, near-monochrome tiles. No key needed. */}

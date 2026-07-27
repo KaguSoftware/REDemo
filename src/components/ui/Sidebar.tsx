@@ -119,9 +119,9 @@ export function Sidebar() {
 				<div className="flex items-center gap-3 min-w-0">
 					{logoUrl ? (
 						// eslint-disable-next-line @next/next/no-img-element
-						<img src={logoUrl} alt="" className="h-9 w-9 rounded-xl object-contain bg-white/10 p-1 shrink-0" />
+						<img src={logoUrl} alt="" className="h-9 w-9 rounded-box object-contain bg-white/10 p-1 shrink-0" />
 					) : (
-						<span className="h-9 w-9 shrink-0 rounded-xl bg-primary text-primary-content flex items-center justify-center font-display text-base font-bold select-none">
+						<span className="h-9 w-9 shrink-0 rounded-box bg-primary text-primary-content flex items-center justify-center font-display text-base font-bold select-none">
 							{(team?.name ?? "Kagu").charAt(0).toUpperCase()}
 						</span>
 					)}
@@ -194,7 +194,7 @@ export function Sidebar() {
 
 			{/* Footer: identity (theme toggle lives next to the workspace name) */}
 			<div className="px-3 pb-4 pt-3 border-t border-white/10 space-y-2">
-				<div className="flex items-center gap-2.5 rounded-xl bg-white/5 px-2.5 py-2">
+				<div className="flex items-center gap-2.5 rounded-box bg-white/5 px-2.5 py-2">
 					<span className="h-8 w-8 shrink-0 rounded-full bg-primary text-primary-content flex items-center justify-center text-xs font-bold uppercase select-none overflow-hidden">
 						{avatarUrl ? (
 							// eslint-disable-next-line @next/next/no-img-element
@@ -208,7 +208,7 @@ export function Sidebar() {
 						onClick={handleSignOut}
 						title="Çıkış yap"
 						aria-label="Çıkış yap"
-						className="h-8 w-8 shrink-0 inline-flex items-center justify-center rounded-lg text-white/45 hover:text-error hover:bg-white/10 transition-colors"
+						className="h-8 w-8 shrink-0 inline-flex items-center justify-center rounded-field text-white/45 hover:text-error hover:bg-white/10 transition-colors"
 					>
 						<LogOut className="w-4 h-4" />
 					</button>

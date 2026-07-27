@@ -18,12 +18,12 @@ function fmt(p: number | null, ccy: string) {
 export function PropertyPickerCardList({ properties, selectedId, onSelect, emptyHint }: Props) {
 	if (properties.length === 0) {
 		return (
-			<div className="text-center py-12 bg-base-200 rounded-2xl border border-dashed border-base-300">
+			<div className="text-center py-12 bg-base-200 rounded-box border border-dashed border-base-300">
 				<p className="text-sm text-base-content/60 mb-2">Uygun taşınmaz yok.</p>
 				{emptyHint && <p className="text-xs text-base-content/50 mb-4 px-6">{emptyHint}</p>}
 				<Link
 					href="/properties/new"
-					className="inline-flex items-center h-11 px-4 text-sm font-semibold rounded-xl bg-primary text-primary-content hover:brightness-110 transition-all shadow-soft"
+					className="inline-flex items-center h-11 px-4 text-sm font-semibold rounded-field bg-primary text-primary-content hover:brightness-110 transition-[filter] duration-150"
 				>
 					+ Taşınmaz ekle
 				</Link>
@@ -41,7 +41,7 @@ export function PropertyPickerCardList({ properties, selectedId, onSelect, empty
 						type="button"
 						onClick={() => onSelect(p.id)}
 						className={cn(
-							"text-left p-4 rounded-2xl border transition-all shadow-soft",
+							"text-left p-4 rounded-box border transition-colors duration-150",
 							selected
 								? "border-primary bg-primary/5 ring-2 ring-primary/20"
 								: "border-base-300 bg-base-100 hover:border-base-content/30 active:bg-base-200",

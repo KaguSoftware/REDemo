@@ -37,7 +37,7 @@ const PropertyMapInner = dynamic(
 	{
 		ssr: false,
 		loading: () => (
-			<div className="h-64 sm:h-96 w-full rounded-2xl bg-base-200 animate-pulse" />
+			<div className="h-64 sm:h-96 w-full rounded-box bg-base-200 animate-pulse" />
 		),
 	},
 );
@@ -66,7 +66,7 @@ export function PropertyMap() {
 	);
 
 	return (
-		<section className="relative mb-4 bg-base-100 rounded-2xl border border-base-300 shadow-card overflow-hidden">
+		<section className="relative mb-4 bg-base-100 rounded-box border border-base-300 overflow-hidden">
 			{mappable.length === 0 ? (
 				<div className="h-64 sm:h-96 w-full flex items-center justify-center text-center px-6">
 					<div className="flex flex-col items-center">
@@ -89,7 +89,7 @@ export function PropertyMap() {
 						type="button"
 						onClick={() => setExpanded((e) => !e)}
 						aria-label={expanded ? "Haritayı küçült" : "Haritayı büyüt"}
-						className="absolute top-3 right-3 z-10 h-10 w-10 inline-flex items-center justify-center rounded-xl bg-base-100/90 backdrop-blur border border-base-300 text-base-content/70 shadow-soft hover:bg-base-100 hover:text-base-content transition-colors"
+						className="absolute top-3 right-3 z-10 h-10 w-10 inline-flex items-center justify-center rounded-box bg-base-100/90 backdrop-blur border border-base-300 text-base-content/70 hover:bg-base-100 hover:text-base-content transition-colors"
 					>
 						{expanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
 					</button>

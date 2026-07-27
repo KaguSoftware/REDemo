@@ -80,22 +80,29 @@ export const FormField = ({ label, children, hint, error, id, onDelete }: FormFi
 };
 
 /**
- * Shared input style — the redesigned "cleaner" field.
- * Taller (h-12 / 44px+), 16px text on mobile (no iOS zoom), soft border that
- * lifts to the primary accent on focus with a gentle ring. Used directly via
- * the className constant OR through the <Input/Textarea/Select> wrappers below.
+ * Shared field skin. Taller (h-12 / 44px+), 16px text on mobile so iOS does not
+ * zoom on focus, hairline border that lifts to the brand accent on focus.
+ *
+ * This is the app's *other* composition system — it predates Surface and is
+ * consumed as a raw string by Combobox, DatePicker and NumberInput. It is
+ * folded onto the same two decisions as everything else: `rounded-field` from
+ * the theme token (it was `rounded-lg`, and MultiSelect disagreed at
+ * `rounded-xl` on the identical control), and no resting shadow.
+ *
+ * `transition-all` replaced with the two properties that actually change —
+ * it was animating layout on every field in the app.
  */
-export const inputClass =
-	"w-full h-12 bg-base-100 border border-base-300 rounded-lg px-3.5 text-base sm:text-sm text-base-content " +
-	"placeholder:text-base-content/40 shadow-soft outline-none transition-all " +
+const FIELD_BASE =
+	"w-full bg-base-100 border border-base-300 rounded-field text-base sm:text-sm text-base-content " +
+	"placeholder:text-base-content/40 outline-none " +
+	"transition-[border-color,box-shadow] duration-150 " +
 	"focus:border-primary focus:ring-4 focus:ring-primary/15 " +
 	"disabled:bg-base-200 disabled:text-base-content/50";
 
+export const inputClass = `${FIELD_BASE} h-12 px-3.5`;
+
 /** Textarea variant — same skin, auto height. */
-export const textareaClass =
-	"w-full min-h-24 bg-base-100 border border-base-300 rounded-lg px-3.5 py-3 text-base sm:text-sm text-base-content " +
-	"placeholder:text-base-content/40 shadow-soft outline-none transition-all resize-y " +
-	"focus:border-primary focus:ring-4 focus:ring-primary/15";
+export const textareaClass = `${FIELD_BASE} min-h-24 px-3.5 py-3 resize-y`;
 
 export const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
 	function Input({ className, ...rest }, ref) {

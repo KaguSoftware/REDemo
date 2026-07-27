@@ -220,7 +220,7 @@ export function ContactTable({ rows, loading, onEditLead, onEditTenant }: Props)
 							tabIndex={0}
 							onClick={() => onEdit(r)}
 							onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onEdit(r); } }}
-							className="w-full text-left bg-base-100 border border-base-300 rounded-2xl shadow-card p-4 active:bg-base-200 transition-colors cursor-pointer"
+							className="w-full text-left bg-base-100 border border-base-300 rounded-box p-4 active:bg-base-200 transition-colors cursor-pointer"
 						>
 							<div className="flex items-start justify-between gap-3">
 								<input
@@ -260,7 +260,7 @@ export function ContactTable({ rows, loading, onEditLead, onEditTenant }: Props)
 											type="button"
 											onClick={(e) => { e.stopPropagation(); markCalledToday(r.lead); }}
 											disabled={callBusyId === r.lead.id}
-											className="inline-flex items-center gap-1.5 h-8 px-2.5 rounded-lg text-xs font-semibold text-success bg-success/10 active:bg-success/20 transition-colors disabled:opacity-50"
+											className="inline-flex items-center gap-1.5 h-8 px-2.5 rounded-field text-xs font-semibold text-success bg-success/10 active:bg-success/20 transition-colors disabled:opacity-50"
 										>
 											<PhoneCall className="w-3.5 h-3.5" />
 											Bugün arandı
@@ -358,7 +358,7 @@ export function ContactTable({ rows, loading, onEditLead, onEditTenant }: Props)
 															disabled={callBusyId === r.lead.id}
 															aria-label={`${r.lead.full_name} bugün arandı olarak işaretle`}
 															title="Bugün arandı olarak işaretle"
-															className="h-7 w-7 inline-flex items-center justify-center rounded-lg text-base-content/50 hover:text-success hover:bg-success/10 transition-colors disabled:opacity-50"
+															className="h-7 w-7 inline-flex items-center justify-center rounded-field text-base-content/50 hover:text-success hover:bg-success/10 transition-colors disabled:opacity-50"
 														>
 															<PhoneCall className="w-3.5 h-3.5" />
 														</button>
@@ -374,7 +374,7 @@ export function ContactTable({ rows, loading, onEditLead, onEditTenant }: Props)
 												onClick={(e) => { e.stopPropagation(); onEdit(r); }}
 												aria-label={`${p.full_name} kaydını düzenle`}
 												title={r.type === "lead" ? "Bu müşteriyi düzenle" : "Bu kiracıyı düzenle veya sil"}
-												className="h-8 w-8 inline-flex items-center justify-center rounded-lg text-base-content/50 hover:text-base-content/80 hover:bg-base-200 transition-colors"
+												className="h-8 w-8 inline-flex items-center justify-center rounded-field text-base-content/50 hover:text-base-content/80 hover:bg-base-200 transition-colors"
 											>
 												<Pencil className="w-4 h-4" />
 											</button>

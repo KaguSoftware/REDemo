@@ -74,7 +74,7 @@ export function ToastHost() {
 						className={cn(
 							"pointer-events-auto flex items-start gap-2.5 w-full sm:w-auto sm:max-w-sm",
 							"bg-base-100",
-							"px-4 py-3 rounded-xl border shadow-pop text-sm font-medium",
+							"px-4 py-3 rounded-box border shadow-pop text-sm font-medium",
 							leaving ? "animate-[toastOut_.18s_ease-in_forwards]" : "animate-[toastIn_.18s_ease-out]",
 							box,
 						)}
@@ -84,7 +84,7 @@ export function ToastHost() {
 						<button
 							onClick={() => dismiss(id)}
 							aria-label="Bildirimi kapat"
-							className="shrink-0 -m-1 p-1 rounded-lg opacity-60 hover:opacity-100 transition-opacity"
+							className="shrink-0 -m-1 p-1 rounded-field opacity-60 hover:opacity-100 transition-opacity"
 						>
 							<X className="w-4 h-4" />
 						</button>

@@ -327,7 +327,7 @@ export function RentalDetailsForm({ state, onChange, errors = {} }: Props) {
 					</FormField>
 				</div>
 				{overCap && (
-					<div className="rounded-xl bg-warning/10 border border-warning/30 p-3.5 text-sm text-warning">
+					<div className="rounded-box bg-warning/10 border border-warning/30 p-3.5 text-sm text-warning">
 						<span className="font-bold">Uyarı:</span> Depozito üç aylık kira bedelini aşıyor.
 						TBK m.342 uyarınca güvence bedeli üç aylık kirayı geçemez. Devam edebilirsiniz, ancak değeri gözden geçirin.
 					</div>

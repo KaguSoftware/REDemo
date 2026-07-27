@@ -44,16 +44,22 @@ export function AppShell({ title, subtitle, actions, children, width = "5xl" }: 
 	const logoUrl = getTeamLogoUrl(team?.logo_path ?? null);
 	const avatarUrl = getAvatarUrl(user?.avatar_path ?? null);
 
+	// Surface inversion: the content area is ONE continuous light plane
+	// (base-100), not a grey field with white boxes floating on it. That
+	// inversion is what lets most page content carry no chrome at all — on a
+	// grey ground every region had to be a card just to look finished, which is
+	// where the stack of identical white boxes came from. base-200 is demoted
+	// to a recessed tone for insets and table headers.
 	return (
-		<div className={cn("min-h-screen bg-base-200", user && "lg:pl-64")}>
+		<div className={cn("min-h-screen bg-base-100", user && "lg:pl-64")}>
 			{user && <Sidebar />}
-			<header className="safe-top sticky top-0 z-30 bg-base-100/85 backdrop-blur border-b border-base-300/70">
+			<header className="safe-top sticky top-0 z-30 bg-base-100/85 backdrop-blur border-b border-base-300">
 				<div className={cn("mx-auto px-3 sm:px-6 h-16 flex items-center gap-2.5", maxW)}>
 					<button
 						onClick={() => setDrawerOpen(true)}
 						aria-label="Menüyü aç"
 						className={cn(
-							"h-11 w-11 -ml-1 inline-flex items-center justify-center rounded-lg text-base-content/70 hover:bg-base-200 transition-colors",
+							"h-11 w-11 -ml-1 inline-flex items-center justify-center rounded-field text-base-content/70 hover:bg-base-200 transition-colors",
 							user && "lg:hidden", // desktop gets the persistent sidebar
 						)}
 					>

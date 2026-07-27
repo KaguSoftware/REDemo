@@ -58,7 +58,7 @@ export function NewsFeed() {
 							href={item.link}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="group flex items-start gap-3 py-2.5 -mx-2 px-2 rounded-lg hover:bg-base-200 transition-colors"
+							className="group flex items-start gap-3 py-2.5 -mx-2 px-2 rounded-field hover:bg-base-200 transition-colors"
 						>
 							<span className="flex-1 min-w-0 text-sm text-base-content/85 group-hover:text-base-content line-clamp-2">
 								{item.title}

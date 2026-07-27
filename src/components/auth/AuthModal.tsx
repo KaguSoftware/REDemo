@@ -19,8 +19,8 @@ export function AuthModal({ onClose }: AuthModalProps) {
 		<button
 			onClick={() => setMode(m)}
 			className={cn(
-				"flex-1 h-9 text-sm font-semibold rounded-lg transition-colors",
-				mode === m ? "bg-base-100 text-base-content shadow-soft" : "text-base-content/60 hover:text-base-content/80",
+				"flex-1 h-9 text-sm font-semibold rounded-field transition-colors",
+				mode === m ? "bg-base-100 text-base-content" : "text-base-content/60 hover:text-base-content/80",
 			)}
 		>
 			{label}
@@ -29,7 +29,7 @@ export function AuthModal({ onClose }: AuthModalProps) {
 
 	return (
 		<Sheet open onClose={onClose} title="Hesap">
-			<div className="flex gap-1 mb-5 bg-base-200 rounded-xl p-1">
+			<div className="flex gap-1 mb-5 bg-base-200 rounded-box p-1">
 				{tabBtn("login", "Giriş yap")}
 				{tabBtn("signup", "Kayıt ol")}
 			</div>

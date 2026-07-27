@@ -793,7 +793,7 @@ function Field({ label, value, wide, multiline }: { label: string; value: string
 
 function Highlight({ label, value }: { label: string; value: string }) {
 	return (
-		<div className="bg-primary/5 rounded-xl px-4 py-3">
+		<div className="bg-primary/5 rounded-box px-4 py-3">
 			<p className="text-xs font-semibold text-base-content/55 mb-1">{label}</p>
 			<p className="text-base font-bold text-base-content">{value}</p>
 		</div>
@@ -802,7 +802,7 @@ function Highlight({ label, value }: { label: string; value: string }) {
 
 function BalanceCell({ label, value, danger }: { label: string; value: string; danger?: boolean }) {
 	return (
-		<div className="bg-base-200 rounded-xl px-4 py-3">
+		<div className="bg-base-200 rounded-box px-4 py-3">
 			<p className="text-xs font-semibold text-base-content/55">{label}</p>
 			<p className={`font-semibold mt-0.5 ${danger ? "text-error" : "text-base-content"}`}>{value}</p>
 		</div>

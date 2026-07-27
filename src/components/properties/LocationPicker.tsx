@@ -14,7 +14,7 @@ const LocationPickerInner = dynamic(
 	() => import("./LocationPickerInner").then((m) => m.LocationPickerInner),
 	{
 		ssr: false,
-		loading: () => <div className="h-56 sm:h-64 w-full rounded-2xl bg-base-200 animate-pulse" />,
+		loading: () => <div className="h-56 sm:h-64 w-full rounded-box bg-base-200 animate-pulse" />,
 	},
 );
 
@@ -28,7 +28,7 @@ class PickerErrorBoundary extends Component<{ children: ReactNode }, { failed: b
 	render() {
 		if (this.state.failed) {
 			return (
-				<div className="h-56 sm:h-64 w-full rounded-2xl bg-base-200 border border-base-300 flex flex-col items-center justify-center text-center px-6">
+				<div className="h-56 sm:h-64 w-full rounded-box bg-base-200 border border-base-300 flex flex-col items-center justify-center text-center px-6">
 					<MapPinOff className="w-6 h-6 text-base-content/50 mb-2" />
 					<p className="text-sm font-semibold text-base-content/80">Harita kullanılamıyor</p>
 					<p className="text-xs text-base-content/60 mt-1">Yine de kaydedebilirsiniz — bir harita bağlantısı yapıştırın veya konumu sonra ekleyin.</p>

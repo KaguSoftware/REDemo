@@ -60,7 +60,7 @@ export function LocationPickerInner({ value, onPick, readOnly, heightClass = "h-
 		return () => { cancelled = true; };
 	}, []);
 	if (!mounted) {
-		return <div className={`${heightClass} w-full rounded-2xl bg-base-200 animate-pulse`} />;
+		return <div className={`${heightClass} w-full rounded-box bg-base-200 animate-pulse`} />;
 	}
 
 	return (
@@ -69,7 +69,7 @@ export function LocationPickerInner({ value, onPick, readOnly, heightClass = "h-
 			zoom={initialView.zoom}
 			scrollWheelZoom={!readOnly}
 			dragging={true}
-			className={`${heightClass} w-full rounded-2xl`}
+			className={`${heightClass} w-full rounded-box`}
 			style={{ zIndex: 0 }}
 		>
 			<TileLayer

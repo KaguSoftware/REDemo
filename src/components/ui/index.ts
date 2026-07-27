@@ -2,6 +2,13 @@ export { cn } from "./cn";
 export { ThemeToggle, ThemeToggleButton } from "./ThemeToggle";
 export { Button, type ButtonProps } from "./Button";
 export { Card, CardLabel } from "./Card";
+export {
+	Surface,
+	SurfaceButton,
+	type SurfaceTier,
+	type SurfaceTone,
+	type SurfacePadding,
+} from "./Surface";
 export { Badge, type BadgeTone } from "./Badge";
 export { Sheet } from "./Sheet";
 export { ConfirmDialog } from "./ConfirmDialog";

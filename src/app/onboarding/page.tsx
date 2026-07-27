@@ -206,7 +206,7 @@ export default function OnboardingPage() {
 							<span
 								key={i}
 								className={cn(
-									"h-1.5 rounded-full transition-all",
+									"h-1.5 rounded-full transition-[width] duration-300",
 									i === stepIndex ? "w-6 bg-primary" : "w-1.5 bg-base-300",
 								)}
 							/>
@@ -303,16 +303,16 @@ export default function OnboardingPage() {
 								/>
 							</FormField>
 							<FormField label="Kagu&apos;yu kaç kişi kullanacak?">
-								<div className="grid grid-cols-4 gap-1 bg-base-200 rounded-xl p-1">
+								<div className="grid grid-cols-4 gap-1 bg-base-200 rounded-box p-1">
 									{SIZE_BRACKETS.map((b) => (
 										<button
 											key={b.value}
 											type="button"
 											onClick={() => setSizeBracket(b.value)}
 											className={cn(
-												"h-9 text-sm font-medium rounded-lg transition-colors",
+												"h-9 text-sm font-medium rounded-field transition-colors",
 												sizeBracket === b.value
-													? "bg-base-100 text-base-content shadow-soft"
+													? "bg-base-100 text-base-content"
 													: "text-base-content/60 hover:text-base-content/80",
 											)}
 										>

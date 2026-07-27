@@ -71,7 +71,7 @@ export function MatchingProjects({ minPrice, maxPrice, currency }: Props) {
 			<ul className="mt-3 flex flex-col gap-2">
 				{matches.map((p) => (
 					<li key={p.id}>
-						<div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-base-300/70 bg-base-200/40 px-3 py-2.5">
+						<div className="flex flex-wrap items-center justify-between gap-3 rounded-box border border-base-300/70 bg-base-200/40 px-3 py-2.5">
 							<button
 								type="button"
 								onClick={() => router.push(`/projects/${p.id}`)}

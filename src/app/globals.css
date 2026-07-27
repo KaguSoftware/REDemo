@@ -102,6 +102,13 @@
 	--shadow-card: var(--lx-shadow-card);
 	--shadow-pop: var(--lx-shadow-pop);
 	--font-mono: var(--font-mono-face), ui-monospace, "SFMono-Regular", monospace;
+	/* Table density. This app's register is calm and spacious at page and
+	   section scale — but a rent table is scanned forty rows at a time, and
+	   there density IS legibility. These two values are the contract between a
+	   real data row and its skeleton: change one, change both, or the rows
+	   visibly resettle when data lands. */
+	--spacing-row: 2.75rem;       /* 44px — standard data row */
+	--spacing-row-media: 3.75rem; /* 60px — row carrying a 44px thumbnail */
 	/* Exponential ease-out for entrances/slides (no bounce, no elastic). */
 	--ease-fluid: cubic-bezier(0.22, 1, 0.36, 1);
 	/* Bell hover: a short back-and-forth jiggle. Registered here (not in a raw

@@ -4,20 +4,25 @@ import React from "react";
 import { Loader2 } from "lucide-react";
 import { cn } from "./cn";
 
-type Variant = "primary" | "secondary" | "ghost" | "danger" | "outline";
+type Variant = "primary" | "secondary" | "ghost" | "danger" | "outline" | "success";
 type Size = "md" | "sm" | "lg" | "icon";
 
+// No resting shadows. A button sits on the page, it does not float above it —
+// see Surface.tsx. Emphasis comes from fill and weight, which is also what
+// keeps a team's custom brand accent reading as the primary action.
 const VARIANTS: Record<Variant, string> = {
 	primary:
-		"bg-primary text-primary-content hover:brightness-110 active:brightness-95 shadow-soft",
+		"bg-primary text-primary-content hover:brightness-110 active:brightness-95",
 	secondary:
-		"bg-neutral text-neutral-content hover:bg-neutral/90 active:bg-neutral shadow-soft",
+		"bg-neutral text-neutral-content hover:bg-neutral/90 active:bg-neutral",
 	ghost:
 		"bg-transparent text-base-content/80 hover:bg-base-200 active:bg-base-300",
 	outline:
-		"bg-base-100 text-base-content/80 border border-base-300 hover:bg-base-200 active:bg-base-300 shadow-soft",
+		"bg-base-100 text-base-content/80 border border-base-300 hover:bg-base-200 active:bg-base-300",
 	danger:
 		"bg-base-100 text-error border border-error/40 hover:bg-error/10 active:bg-error/20",
+	success:
+		"bg-success text-success-content hover:brightness-110 active:brightness-95",
 };
 
 const SIZES: Record<Size, string> = {
@@ -47,7 +52,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				ref={ref}
 				disabled={disabled || loading}
 				className={cn(
-					"inline-flex items-center justify-center font-semibold rounded-lg whitespace-nowrap select-none",
+					"inline-flex items-center justify-center font-semibold rounded-field whitespace-nowrap select-none",
 					"transition-[filter,background-color,color,box-shadow,transform] duration-150",
 					// Physical press: subtle scale-down on :active (tactile feedback).
 					"active:scale-[0.98]",

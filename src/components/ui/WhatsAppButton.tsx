@@ -32,7 +32,7 @@ export function WhatsAppButton({
 			}}
 			aria-label={`${name ?? phone} ile WhatsApp'ta yaz`}
 			title="WhatsApp'ta aç"
-			className="inline-flex items-center justify-center h-7 w-7 rounded-lg text-success hover:bg-success/10 transition-colors align-middle"
+			className="inline-flex items-center justify-center h-7 w-7 rounded-field text-success hover:bg-success/10 transition-colors align-middle"
 		>
 			<MessageCircle className="w-4 h-4" />
 		</a>

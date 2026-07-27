@@ -112,7 +112,7 @@ export function HomeDashboard() {
 							<Link
 								key={href}
 								href={href}
-								className="flex items-center gap-2.5 bg-base-100 rounded-2xl border border-base-300 shadow-card px-4 py-3.5 text-sm font-semibold text-base-content/80 hover:border-base-content/30 hover:shadow-pop transition-all"
+								className="flex items-center gap-2.5 bg-base-100 rounded-box border border-base-300 px-4 py-3.5 text-sm font-semibold text-base-content/80 hover:border-base-content/25 hover:bg-base-200/50 transition-colors duration-150"
 							>
 								<Icon className="w-4 h-4 text-primary shrink-0" />
 								<span className="truncate">{label}</span>
@@ -138,7 +138,7 @@ export function HomeDashboard() {
 										<li key={p.id}>
 											<Link
 												href={`/properties/${p.id}`}
-												className="flex items-center gap-3 py-2.5 text-sm hover:bg-base-200 -mx-2 px-2 rounded-lg transition-colors"
+												className="flex items-center gap-3 py-2.5 text-sm hover:bg-base-200 -mx-2 px-2 rounded-field transition-colors"
 											>
 												<div className="min-w-0 flex-1">
 													<p className="font-medium text-base-content truncate">{p.address_line}</p>
@@ -173,7 +173,7 @@ export function HomeDashboard() {
 										<li key={l.id}>
 											<Link
 												href="/leads"
-												className="flex items-center gap-3 py-2.5 text-sm hover:bg-base-200 -mx-2 px-2 rounded-lg transition-colors"
+												className="flex items-center gap-3 py-2.5 text-sm hover:bg-base-200 -mx-2 px-2 rounded-field transition-colors"
 											>
 												<div className="min-w-0 flex-1">
 													<p className="font-medium text-base-content truncate">{l.full_name}</p>

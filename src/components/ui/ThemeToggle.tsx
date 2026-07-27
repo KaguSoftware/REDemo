@@ -77,7 +77,7 @@ export function ThemeToggleButton({ className }: { className?: string }) {
 			aria-label={next === "dark" ? "Koyu temaya geç" : "Açık temaya geç"}
 			title={next === "dark" ? "Koyu tema" : "Açık tema"}
 			className={cn(
-				"group shrink-0 inline-flex h-8 w-8 items-center justify-center rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-colors",
+				"group shrink-0 inline-flex h-8 w-8 items-center justify-center rounded-field text-white/50 hover:text-white hover:bg-white/10 transition-colors",
 				className,
 			)}
 		>
@@ -101,7 +101,7 @@ export function ThemeToggle({ className }: { className?: string }) {
 		<div
 			role="radiogroup"
 			aria-label="Tema"
-			className={cn("flex rounded-lg border border-base-300 bg-base-200 p-0.5", className)}
+			className={cn("flex rounded-field border border-base-300 bg-base-200 p-0.5", className)}
 		>
 			{OPTIONS.map(({ value, label, Icon }) => (
 				<button
@@ -112,9 +112,9 @@ export function ThemeToggle({ className }: { className?: string }) {
 					title={label}
 					onClick={() => onPick(value)}
 					className={cn(
-						"flex flex-1 items-center justify-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors min-h-9",
+						"flex flex-1 items-center justify-center gap-1.5 rounded-field px-2.5 py-1.5 text-xs font-medium transition-colors min-h-9",
 						pref === value
-							? "bg-base-100 text-primary shadow-soft"
+							? "bg-base-100 text-primary"
 							: "text-base-content/60 hover:text-base-content",
 					)}
 				>

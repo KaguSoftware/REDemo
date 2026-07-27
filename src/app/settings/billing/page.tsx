@@ -186,7 +186,7 @@ export default function BillingPage() {
 						<div
 							role="radiogroup"
 							aria-label="Ödeme dönemi"
-							className="flex rounded-lg border border-base-300 bg-base-200 p-0.5 max-w-md"
+							className="flex rounded-field border border-base-300 bg-base-200 p-0.5 max-w-md"
 						>
 							{BILLING_PERIODS.map((m) => (
 								<button
@@ -205,7 +205,7 @@ export default function BillingPage() {
 									{months === m && (
 										<motion.span
 											layoutId="period-pill"
-											className="absolute inset-0 rounded-md bg-base-100 shadow-soft"
+											className="absolute inset-0 rounded-md bg-base-100"
 											transition={{ type: "spring", stiffness: 500, damping: 35 }}
 										/>
 									)}

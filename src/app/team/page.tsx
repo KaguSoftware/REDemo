@@ -249,7 +249,7 @@ export default function TeamPage() {
 								Bu bağlantıya sahip olan herkes ekibinize katılabilir. Eski kopyaları geçersiz kılmak için bağlantıyı yenileyin.
 							</p>
 							<div className="mt-3 flex flex-col sm:flex-row gap-2">
-								<div className="flex-1 flex items-center gap-2 rounded-xl border border-base-300 bg-base-200 px-3 h-11 text-sm text-base-content/70 min-w-0">
+								<div className="flex-1 flex items-center gap-2 rounded-box border border-base-300 bg-base-200 px-3 h-11 text-sm text-base-content/70 min-w-0">
 									<Link2 className="w-4 h-4 shrink-0 text-base-content/50" />
 									<span className="truncate">{joinUrl ?? "Henüz etkin bağlantı yok"}</span>
 								</div>

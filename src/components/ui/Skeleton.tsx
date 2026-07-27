@@ -32,7 +32,7 @@ export function SkeletonGroup({
 
 /** A single tinted bar/box. Give it the height of the text or element it stands in for. */
 export function Skeleton({ className }: { className?: string }) {
-	return <div aria-hidden className={cn("bg-base-300/70 rounded-md", className)} />;
+	return <div aria-hidden className={cn("bg-base-300/70 rounded-sm", className)} />;
 }
 
 export function SkeletonCircle({ className }: { className?: string }) {

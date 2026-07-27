@@ -111,7 +111,7 @@ function ColorField({
 					disabled={disabled}
 					aria-label={`${label} rengini seç`}
 					aria-expanded={open}
-					className="h-9 w-9 shrink-0 rounded-lg border border-base-300 shadow-inner disabled:opacity-50"
+					className="h-9 w-9 shrink-0 rounded-field border border-base-300 shadow-inner disabled:opacity-50"
 					style={{ backgroundColor: value }}
 				/>
 				<input
@@ -126,7 +126,7 @@ function ColorField({
 						if (HEX_RE.test(v)) onChange(v.toLowerCase());
 					}}
 					onBlur={() => { if (!HEX_RE.test(draft)) setDraft(value); }}
-					className="h-9 w-24 rounded-lg border border-base-300 bg-base-100 px-2 text-xs font-mono text-base-content outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50"
+					className="h-9 w-24 rounded-field border border-base-300 bg-base-100 px-2 text-xs font-mono text-base-content outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50"
 				/>
 				{typeof window !== "undefined" && window.EyeDropper && (
 					<button
@@ -135,14 +135,14 @@ function ColorField({
 						disabled={disabled}
 						title="Ekrandan renk seç"
 						aria-label={`${label} için ekrandan renk seç`}
-						className="h-9 w-9 shrink-0 inline-flex items-center justify-center rounded-lg border border-base-300 text-base-content/60 hover:text-base-content hover:bg-base-200 transition-colors disabled:opacity-50"
+						className="h-9 w-9 shrink-0 inline-flex items-center justify-center rounded-field border border-base-300 text-base-content/60 hover:text-base-content hover:bg-base-200 transition-colors disabled:opacity-50"
 					>
 						<Pipette className="w-4 h-4" />
 					</button>
 				)}
 			</div>
 			{open && (
-				<div className="absolute z-30 mt-2 rounded-xl border border-base-300 bg-base-100 shadow-pop p-3">
+				<div className="absolute z-30 mt-2 rounded-box border border-base-300 bg-base-100 shadow-pop p-3">
 					<HexColorPicker color={value} onChange={(c) => onChange(c.toLowerCase())} />
 				</div>
 			)}
@@ -256,7 +256,7 @@ export function BrandingCard() {
 			)}
 
 			<div className="mt-4 flex items-center gap-4">
-				<div className="h-16 w-32 rounded-xl border border-dashed border-base-300 bg-base-200 flex items-center justify-center overflow-hidden">
+				<div className="h-16 w-32 rounded-box border border-dashed border-base-300 bg-base-200 flex items-center justify-center overflow-hidden">
 					{logoUrl ? (
 						// eslint-disable-next-line @next/next/no-img-element
 						<img src={logoUrl} alt="Ekip logosu" className="max-h-full max-w-full object-contain" />
@@ -313,7 +313,7 @@ export function BrandingCard() {
 				</div>
 
 				{/* Live preview mirroring the PDF's main color roles. */}
-				<div className="mt-4 rounded-xl border border-base-300 overflow-hidden" aria-hidden>
+				<div className="mt-4 rounded-box border border-base-300 overflow-hidden" aria-hidden>
 					<div className="px-3 py-2 flex items-center justify-between" style={{ backgroundColor: preview.primary }}>
 						<span className="text-[11px] font-bold tracking-wider uppercase" style={{ color: "#ffffff" }}>
 							{team.name || "Belge başlığı"}
