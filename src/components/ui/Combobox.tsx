@@ -176,7 +176,7 @@ export function Combobox({
 								onMouseEnter={() => setHighlighted(i)}
 								onClick={() => commit(opt)}
 								className={cn(
-									"w-full flex items-center justify-between gap-2 px-3 py-2 rounded-field text-left text-sm transition-colors",
+									"w-full flex items-center justify-between gap-2 px-3 py-2 rounded-field text-left text-body transition-colors",
 									i === highlighted ? "bg-base-200" : "hover:bg-base-200/60",
 								)}
 							>

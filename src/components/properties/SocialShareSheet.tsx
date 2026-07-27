@@ -135,7 +135,7 @@ export function SocialShareSheet({ property, onClose }: Props) {
 					Açıklamayı kopyala
 				</Button>
 
-				<p className="text-xs text-base-content/50">
+				<p className="text-label text-base-content/50">
 					Görselde mülk sahibinin adı ve ada/parsel bilgileri yer almaz.
 				</p>
 

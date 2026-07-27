@@ -189,7 +189,7 @@ export function Dropdown<T extends string = string>({
 				aria-label={ariaLabel}
 				className={cn(
 					"w-full h-12 flex items-center justify-between gap-2 bg-base-100 border border-base-300 rounded-field px-3.5",
-					"text-base sm:text-sm text-left outline-none transition-[border-color,box-shadow] duration-150",
+					"text-base sm:text-body text-left outline-none transition-[border-color,box-shadow] duration-150",
 					"focus:border-primary focus:ring-4 focus:ring-primary/15",
 					"disabled:bg-base-200 disabled:text-base-content/50",
 					open && "border-primary ring-4 ring-primary/15",
@@ -221,7 +221,7 @@ export function Dropdown<T extends string = string>({
 					className="absolute right-0 z-40 mt-1.5 min-w-full w-max max-w-[min(16rem,calc(100vw-2rem))] max-h-64 overflow-y-auto overflow-x-hidden rounded-box border border-base-300 bg-base-100 shadow-pop p-1 animate-dropdown-in"
 				>
 					{options.length === 0 ? (
-						<p className="px-3 py-2 text-xs text-base-content/50">Henüz seçenek yok</p>
+						<p className="px-3 py-2 text-label text-base-content/50">Henüz seçenek yok</p>
 					) : (
 						options.map((opt, i) => {
 							const isSelected = i === selectedIndex;
@@ -239,7 +239,7 @@ export function Dropdown<T extends string = string>({
 									onMouseEnter={() => !opt.disabled && setHighlighted(i)}
 									onClick={() => commit(i)}
 									className={cn(
-										"w-full flex items-center justify-between gap-2.5 px-2.5 py-2.5 rounded-field text-sm text-left transition-colors",
+										"w-full flex items-center justify-between gap-2.5 px-2.5 py-2.5 rounded-field text-body text-left transition-colors",
 										isSelected ? "bg-primary/5 text-base-content font-medium" : "text-base-content/80",
 										i === highlighted && !opt.disabled && "bg-base-200",
 										opt.disabled && "opacity-40 cursor-not-allowed",

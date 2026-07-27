@@ -18,7 +18,7 @@ export default async function LoginPage({
 			<div className="w-full max-w-md space-y-5">
 				<div className="text-center">
 					<h1 className="font-display text-2xl font-semibold text-base-content">Tekrar hoş geldiniz</h1>
-					<p className="text-sm text-base-content/60 mt-1">Kagu çalışma alanınıza giriş yapın.</p>
+					<p className="text-body text-base-content/60 mt-1">Kagu çalışma alanınıza giriş yapın.</p>
 				</div>
 				{error === "confirm" && (
 					<Alert>

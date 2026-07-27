@@ -149,7 +149,7 @@ export default function BillingPage() {
 					<div className="flex items-center justify-between gap-3">
 						<div>
 							<CardLabel>Abonelik durumu</CardLabel>
-							<p className="mt-1 text-sm text-base-content/70">
+							<p className="mt-1 text-body text-base-content/70">
 								{onTrial
 									? trialDaysLeft > 0
 										? `Ücretsiz deneme sürenizin bitmesine ${trialDaysLeft} gün kaldı.`
@@ -161,7 +161,7 @@ export default function BillingPage() {
 											: "Etkin abonelik yok — çalışma alanı salt okunur."}
 							</p>
 							{seatCount !== null && currentPlan?.max_seats != null && (
-								<p className="mt-1 text-xs text-base-content/50">
+								<p className="mt-1 text-label text-base-content/50">
 									Kullanılan üyelik: {seatCount} / {currentPlan.max_seats}
 								</p>
 							)}
@@ -196,7 +196,7 @@ export default function BillingPage() {
 									aria-checked={months === m}
 									onClick={() => setMonths(m)}
 									className={cn(
-										"relative flex flex-1 flex-col items-center justify-center gap-0.5 rounded-md px-2 py-1.5 text-xs font-medium transition-colors min-h-11",
+										"relative flex flex-1 flex-col items-center justify-center gap-0.5 rounded-field px-2 py-1.5 text-label font-medium transition-colors min-h-11",
 										months === m
 											? "text-primary"
 											: "text-base-content/60 hover:text-base-content",
@@ -205,7 +205,7 @@ export default function BillingPage() {
 									{months === m && (
 										<motion.span
 											layoutId="period-pill"
-											className="absolute inset-0 rounded-md bg-base-100"
+											className="absolute inset-0 rounded-field bg-base-100"
 											transition={{ type: "spring", stiffness: 500, damping: 35 }}
 										/>
 									)}
@@ -229,7 +229,7 @@ export default function BillingPage() {
 							return (
 								<Card key={p.id} className={current ? "ring-2 ring-primary/40" : undefined}>
 									<div className="flex items-baseline justify-between">
-										<h3 className="text-lg font-bold text-base-content">{p.name}</h3>
+										<h3 className="text-subtitle font-semibold text-base-content">{p.name}</h3>
 										{current && <Badge tone="emerald">Mevcut plan</Badge>}
 									</div>
 									<AnimatePresence mode="wait" initial={false}>
@@ -242,9 +242,9 @@ export default function BillingPage() {
 										>
 											<p className="mt-2 text-3xl font-bold text-base-content">
 												{fmt(total)} TL
-												<span className="text-sm font-normal text-base-content/50"> / {PERIOD_LABEL[months].toLowerCase()}</span>
+												<span className="text-body font-normal text-base-content/50"> / {PERIOD_LABEL[months].toLowerCase()}</span>
 											</p>
-											<p className={cn("mt-1 text-xs", months === 1 && "invisible")} aria-hidden={months === 1}>
+											<p className={cn("mt-1 text-label", months === 1 && "invisible")} aria-hidden={months === 1}>
 												{months > 1 ? (
 													<>
 														<span className="text-base-content/40 line-through">{fmt(fullTotal)} TL</span>
@@ -256,7 +256,7 @@ export default function BillingPage() {
 											</p>
 										</motion.div>
 									</AnimatePresence>
-									<ul className="mt-3 space-y-1.5 text-sm text-base-content/70">
+									<ul className="mt-3 space-y-1.5 text-body text-base-content/70">
 										{(PLAN_FEATURES[p.id] ?? [
 											p.max_seats ? `En fazla ${p.max_seats} danışman` : "Sınırsız danışman",
 											"Portföy, müşteri, sözleşme ve tahsilat yönetimi",
@@ -279,7 +279,7 @@ export default function BillingPage() {
 											{current ? "Abonesiniz" : "Abone ol"}
 										</Button>
 									) : (
-										<p className="mt-4 text-xs text-base-content/50 text-center">
+										<p className="mt-4 text-label text-base-content/50 text-center">
 											Aboneliği yalnızca ekip sahibi yönetebilir.
 										</p>
 									)}

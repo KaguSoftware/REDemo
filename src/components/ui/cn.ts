@@ -39,8 +39,11 @@ import { extendTailwindMerge } from "tailwind-merge";
 export const cn = extendTailwindMerge({
 	extend: {
 		classGroups: {
-			// --shadow-soft / --shadow-card / --shadow-pop (globals.css @theme).
-			// Not t-shirt sizes, so the default boxShadow scale rejects them.
+			// --shadow-pop (globals.css @theme) — not a t-shirt size, so the
+			// default boxShadow scale rejects it. `soft` and `card` are kept
+			// registered although their tokens are gone: if either is ever
+			// reintroduced, it must dedupe from day one rather than silently
+			// stacking, which is how the old mess started.
 			shadow: [{ shadow: ["soft", "card", "pop"] }],
 			// daisyUI's --radius-box / --radius-field / --radius-selector. The
 			// surface tiers are built on these, so this entry is load-bearing:

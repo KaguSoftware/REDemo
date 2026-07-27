@@ -38,12 +38,12 @@ export function ClientPickerCardList({ clients, selectedId, onSelect, emptyHint 
 								: "border-base-300 bg-base-100 hover:border-base-content/30 active:bg-base-200",
 						)}
 					>
-						<p className="text-sm font-bold text-base-content truncate">{c.full_name}</p>
-						<p className="text-sm text-base-content/60 truncate mt-0.5">
+						<p className="text-body font-bold text-base-content truncate">{c.full_name}</p>
+						<p className="text-body text-base-content/60 truncate mt-0.5">
 							{c.phone ?? c.email ?? "İletişim bilgisi yok"}
 						</p>
 						{c.interested_in && (
-							<p className="text-xs text-base-content/50 truncate mt-1">{c.interested_in}</p>
+							<p className="text-label text-base-content/50 truncate mt-1">{c.interested_in}</p>
 						)}
 					</button>
 				);

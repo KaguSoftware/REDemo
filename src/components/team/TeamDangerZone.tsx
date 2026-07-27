@@ -66,8 +66,8 @@ export function TeamDangerZone({ members }: { members: TeamMember[] }) {
 			{isOwner ? (
 				<div className="mt-3 space-y-5">
 					<div>
-						<p className="text-sm font-semibold text-base-content">Sahipliği devret</p>
-						<p className="text-xs text-base-content/60 mt-0.5">
+						<p className="text-body font-semibold text-base-content">Sahipliği devret</p>
+						<p className="text-label text-base-content/60 mt-0.5">
 							Ekip yönetimi ve abonelik seçilen üyeye geçer; siz danışman olursunuz.
 						</p>
 						<div className="mt-2 flex gap-2 items-center max-w-sm">
@@ -87,15 +87,15 @@ export function TeamDangerZone({ members }: { members: TeamMember[] }) {
 							</Button>
 						</div>
 						{others.length === 0 && (
-							<p className="text-xs text-base-content/50 mt-1">
+							<p className="text-label text-base-content/50 mt-1">
 								Devretmek için önce başka bir üye davet edin.
 							</p>
 						)}
 					</div>
 
 					<div className="border-t border-base-300 pt-4">
-						<p className="text-sm font-semibold text-error">Ekibi sil</p>
-						<p className="text-xs text-base-content/60 mt-0.5">
+						<p className="text-body font-semibold text-error">Ekibi sil</p>
+						<p className="text-label text-base-content/60 mt-0.5">
 							Tüm portföy, müşteri, kiracı, sözleşme ve belge verileri kalıcı olarak silinir.
 							Bu işlem geri alınamaz. Onaylamak için <span className="font-mono font-semibold">SIL</span> yazın.
 						</p>
@@ -121,8 +121,8 @@ export function TeamDangerZone({ members }: { members: TeamMember[] }) {
 				</div>
 			) : (
 				<div className="mt-3">
-					<p className="text-sm font-semibold text-base-content">Ekipten ayrıl</p>
-					<p className="text-xs text-base-content/60 mt-0.5">
+					<p className="text-body font-semibold text-base-content">Ekipten ayrıl</p>
+					<p className="text-label text-base-content/60 mt-0.5">
 						Ekip verilerine erişiminiz kalkar; hesabınız silinmez.
 					</p>
 					<Button variant="outline" size="sm" className="mt-2" onClick={() => setConfirm("leave")}>

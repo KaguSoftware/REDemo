@@ -42,7 +42,7 @@ const STATUS_OPTIONS: DropdownOption<LeadStatus>[] = LEAD_STATUS_ORDER.map((s) =
 /** Eyebrow heading separating field groups inside the form. */
 function GroupTitle({ children }: { children: React.ReactNode }) {
 	return (
-		<p className="text-sm font-semibold text-base-content/60 pt-1">{children}</p>
+		<p className="text-body font-semibold text-base-content/60 pt-1">{children}</p>
 	);
 }
 
@@ -207,7 +207,7 @@ export function LeadForm({ mode, initial, onClose, onDone }: Props) {
 				</FormField>
 
 				<div className="rounded-box bg-base-200 border border-base-300 p-4 space-y-4">
-					<p className="text-sm font-semibold text-base-content/60">Arama tercihleri (isteğe bağlı)</p>
+					<p className="text-body font-semibold text-base-content/60">Arama tercihleri (isteğe bağlı)</p>
 					{/* Budget leads the block: it's the first thing asked on a call and
 					    the strongest signal when matching against the portfolio. */}
 					<FormField label="Bütçe" error={fieldErrors.pref_max_price}>

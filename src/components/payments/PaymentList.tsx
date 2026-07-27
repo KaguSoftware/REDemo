@@ -152,7 +152,7 @@ export function PaymentList({ leaseId, currency, monthlyRent, onChanged, onRecei
 	return (
 		<div>
 			<div className="flex items-center justify-between mb-3">
-				<p className="text-sm font-semibold text-base-content/80">{rows.length} ödeme</p>
+				<p className="text-body font-semibold text-base-content/80">{rows.length} ödeme</p>
 				<div className="flex items-center gap-1">
 					{rows.length > 0 && (
 						<Button
@@ -183,7 +183,7 @@ export function PaymentList({ leaseId, currency, monthlyRent, onChanged, onRecei
 			{form && (
 				<form onSubmit={handleSubmit} className="mb-4 space-y-4 p-4 bg-base-200 rounded-box border border-base-300">
 					{form.mode === "edit" && (
-						<p className="text-xs font-semibold text-base-content/55">Ödeme düzenleniyor</p>
+						<p className="text-label font-semibold text-base-content/55">Ödeme düzenleniyor</p>
 					)}
 					<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 						<FormField label="Dönem başlangıcı">
@@ -226,15 +226,15 @@ export function PaymentList({ leaseId, currency, monthlyRent, onChanged, onRecei
 			) : (
 				<ul className="divide-y divide-base-300">
 					{rows.map((p) => (
-						<li key={p.id} className="py-3 flex items-center justify-between gap-3 text-sm">
+						<li key={p.id} className="py-3 flex items-center justify-between gap-3 text-body">
 							<div className="min-w-0">
 								<p className="font-numeric text-base-content font-semibold">{fmt(Number(p.amount_paid), currency)}</p>
-								<p className="text-xs text-base-content/50 mt-0.5">
+								<p className="text-label text-base-content/50 mt-0.5">
 									{p.period_start} → {p.period_end}{p.method ? ` · ${p.method}` : ""}
 								</p>
 							</div>
 							<div className="flex items-center gap-1 shrink-0">
-								<p className="hidden sm:block text-xs text-base-content/50 whitespace-nowrap mr-2">
+								<p className="hidden sm:block text-label text-base-content/50 whitespace-nowrap mr-2">
 									{p.paid_at ? new Date(p.paid_at).toLocaleDateString("tr-TR") : "—"}
 								</p>
 								{onReceipt && (

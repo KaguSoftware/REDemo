@@ -47,12 +47,12 @@ export function PropertyPickerCardList({ properties, selectedId, onSelect, empty
 								: "border-base-300 bg-base-100 hover:border-base-content/30 active:bg-base-200",
 						)}
 					>
-						<p className="text-sm font-bold text-base-content truncate">{p.address_line}</p>
-						<p className="text-sm text-base-content/60 truncate mt-0.5">
+						<p className="text-body font-bold text-base-content truncate">{p.address_line}</p>
+						<p className="text-body text-base-content/60 truncate mt-0.5">
 							{p.city ?? "—"}
 							{p.size_sqm ? ` · ${p.size_sqm} m²` : ""}
 						</p>
-						<div className="mt-2 flex items-center justify-between gap-2 text-sm">
+						<div className="mt-2 flex items-center justify-between gap-2 text-body">
 							<span className="text-base-content/60 truncate">Mal sahibi: {p.homeowner_name}</span>
 							<span className="font-semibold text-base-content/80 whitespace-nowrap">{fmt(p.list_price, p.currency)}</span>
 						</div>

@@ -28,7 +28,7 @@ export function Alert({
 	return (
 		<div
 			role={tone === "error" ? "alert" : undefined}
-			className={cn("flex items-start gap-2.5 p-3 rounded-box border text-sm", box, className)}
+			className={cn("flex items-start gap-2.5 p-3 rounded-box border text-body", box, className)}
 		>
 			<Icon className="w-4.5 h-4.5 shrink-0 mt-0.5" />
 			<div className="flex-1 min-w-0">{children}</div>

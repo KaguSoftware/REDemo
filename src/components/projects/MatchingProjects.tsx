@@ -64,26 +64,26 @@ export function MatchingProjects({ minPrice, maxPrice, currency }: Props) {
 				<CardLabel>Bu bütçeye uyan projeler</CardLabel>
 				<Badge tone="slate">{matches.length}</Badge>
 			</div>
-			<p className="text-sm text-base-content/60 mt-1">
+			<p className="text-body text-base-content/60 mt-1">
 				Portföyde ayrı kaydı olmayan, müteahhit firma projeleri.
 			</p>
 
 			<ul className="mt-3 flex flex-col gap-2">
 				{matches.map((p) => (
 					<li key={p.id}>
-						<div className="flex flex-wrap items-center justify-between gap-3 rounded-box border border-base-300/70 bg-base-200/40 px-3 py-2.5">
+						<div className="flex flex-wrap items-center justify-between gap-3 rounded-box border border-base-300 bg-base-200/40 px-3 py-2.5">
 							<button
 								type="button"
 								onClick={() => router.push(`/projects/${p.id}`)}
 								className="min-w-0 text-left hover:underline"
 							>
 								<span className="block font-medium truncate">{p.name}</span>
-								<span className="block text-sm text-base-content/60 truncate">
+								<span className="block text-body text-base-content/60 truncate">
 									{[p.developer_name, p.mahalle ?? p.city].filter(Boolean).join(" · ") || "—"}
 								</span>
 							</button>
 							<span className="flex items-center gap-3 shrink-0">
-								<span className="tabular-nums text-sm font-medium">
+								<span className="tabular-nums text-body font-medium">
 									{Math.round(p.price_from!).toLocaleString("tr-TR")} {p.price_currency}
 								</span>
 								{p.drive_url && (
@@ -91,7 +91,7 @@ export function MatchingProjects({ minPrice, maxPrice, currency }: Props) {
 										href={p.drive_url}
 										target="_blank"
 										rel="noopener noreferrer"
-										className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+										className="inline-flex items-center gap-1 text-body font-medium text-primary hover:underline"
 									>
 										<ExternalLink className="w-3.5 h-3.5" />
 										Drive

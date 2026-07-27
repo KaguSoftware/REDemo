@@ -74,7 +74,7 @@ export function ToastHost() {
 						className={cn(
 							"pointer-events-auto flex items-start gap-2.5 w-full sm:w-auto sm:max-w-sm",
 							"bg-base-100",
-							"px-4 py-3 rounded-box border shadow-pop text-sm font-medium",
+							"px-4 py-3 rounded-box border shadow-pop text-body font-medium",
 							leaving ? "animate-[toastOut_.18s_ease-in_forwards]" : "animate-[toastIn_.18s_ease-out]",
 							box,
 						)}

@@ -75,12 +75,12 @@ function SwitchInner() {
 						</div>
 					) : (
 						<>
-							<p className="text-sm text-base-content/70">
+							<p className="text-body text-base-content/70">
 								Şu anda{" "}
 								<span className="font-semibold text-base-content">{email ?? "mevcut hesabınız"}</span>{" "}
 								olarak giriş yaptınız. Bu davet bağlantısı farklı bir hesap içindir.
 							</p>
-							<p className="text-sm text-base-content/70">
+							<p className="text-body text-base-content/70">
 								Daveti kabul etmek için önce bu hesaptan çıkış yapmanız gerekir. Mevcut hesabınız
 								ve ekibiniz silinmez — yalnızca bu tarayıcıdaki oturumunuz kapanır.
 							</p>

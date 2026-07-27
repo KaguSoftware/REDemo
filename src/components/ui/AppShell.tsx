@@ -109,7 +109,7 @@ export function AppShell({ title, subtitle, actions, children, width = "reading"
 							<button
 								onClick={() => setDrawerOpen(true)}
 								aria-label="Hesap"
-								className="lg:hidden h-9 w-9 rounded-full bg-primary text-primary-content ring-1 ring-primary/40 ring-offset-2 ring-offset-base-100 flex items-center justify-center text-sm font-bold uppercase select-none overflow-hidden"
+								className="lg:hidden h-9 w-9 rounded-full bg-primary text-primary-content ring-1 ring-primary/40 ring-offset-2 ring-offset-base-100 flex items-center justify-center text-body font-bold uppercase select-none overflow-hidden"
 							>
 								{avatarUrl ? (
 									// eslint-disable-next-line @next/next/no-img-element

@@ -20,8 +20,8 @@ class MapErrorBoundary extends Component<{ children: ReactNode }, { failed: bool
 				<div className="h-64 sm:h-96 w-full flex items-center justify-center text-center px-6">
 					<div className="flex flex-col items-center">
 						<MapPinOff className="w-7 h-7 text-base-content/50 mb-2" />
-						<p className="text-sm font-semibold text-base-content/80">Harita kullanılamıyor</p>
-						<p className="text-xs text-base-content/60 mt-1">
+						<p className="text-body font-semibold text-base-content/80">Harita kullanılamıyor</p>
+						<p className="text-label text-base-content/60 mt-1">
 							Yeniden denemek için sayfayı yenileyin. Diğer özellikler çalışmaya devam eder.
 						</p>
 					</div>
@@ -71,8 +71,8 @@ export function PropertyMap() {
 				<div className="h-64 sm:h-96 w-full flex items-center justify-center text-center px-6">
 					<div className="flex flex-col items-center">
 						<MapPin className="w-7 h-7 text-base-content/50 mb-2" />
-						<p className="text-sm font-semibold text-base-content/80">Haritada gösterilecek taşınmaz yok</p>
-						<p className="text-xs text-base-content/60 mt-1">
+						<p className="text-body font-semibold text-base-content/80">Haritada gösterilecek taşınmaz yok</p>
+						<p className="text-label text-base-content/60 mt-1">
 							Adresler kayıt sırasında konumlandırılır. Haritada görmek için bir taşınmaz ekleyin veya düzenleyin.
 						</p>
 					</div>

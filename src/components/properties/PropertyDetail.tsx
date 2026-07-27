@@ -292,7 +292,7 @@ export function PropertyDetail({ propertyId }: Props) {
 							onDone={() => { setEditing(false); reload(); }}
 						/>
 					) : (
-						<dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-sm">
+						<dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-body">
 							<Field label="Mülk sahibi" value={data.homeowner_name} />
 							<Field label="Şehir" value={data.city ?? "—"} />
 							<Field label="Büyüklük" value={data.size_sqm != null ? `${data.size_sqm} m²` : "—"} />
@@ -328,7 +328,7 @@ export function PropertyDetail({ propertyId }: Props) {
 									<div>
 										<p className="text-base font-bold text-base-content">{sale.buyer.full_name}</p>
 										{(sale.buyer.phone || sale.buyer.email) && (
-											<p className="text-sm text-base-content/60 mt-0.5">
+											<p className="text-body text-base-content/60 mt-0.5">
 												{sale.buyer.phone ?? ""}
 												{sale.buyer.phone && sale.buyer.email ? " · " : ""}
 												{sale.buyer.email ?? ""}
@@ -345,7 +345,7 @@ export function PropertyDetail({ propertyId }: Props) {
 									)}
 								</div>
 
-								<dl className="grid grid-cols-2 gap-4 text-sm pt-1">
+								<dl className="grid grid-cols-2 gap-4 text-body pt-1">
 									<Field label="Satış tarihi" value={sale.sale_date} />
 									<Field label="Hedef kapanış" value={sale.target_close_date ?? "—"} />
 								</dl>
@@ -371,11 +371,11 @@ export function PropertyDetail({ propertyId }: Props) {
 							</div>
 						) : data.status === "sold" ? (
 							<div className="text-center py-6">
-								<p className="text-sm text-base-content/60">Bu taşınmaz satıldı.</p>
+								<p className="text-body text-base-content/60">Bu taşınmaz satıldı.</p>
 							</div>
 						) : (
 							<div className="text-center py-6">
-								<p className="text-sm text-base-content/60 mb-4">Bu taşınmaz için satış sözleşmesi yok.</p>
+								<p className="text-body text-base-content/60 mb-4">Bu taşınmaz için satış sözleşmesi yok.</p>
 								<Button onClick={() => router.push("/documents/new")}>
 									<Plus className="w-4 h-4" />
 									Yeni satış sözleşmesi
@@ -388,7 +388,7 @@ export function PropertyDetail({ propertyId }: Props) {
 								<div>
 									<p className="text-base font-bold text-base-content">{data.active_lease.tenant.full_name}</p>
 									{(data.active_lease.tenant.phone || data.active_lease.tenant.email) && (
-										<p className="text-sm text-base-content/60 mt-0.5">
+										<p className="text-body text-base-content/60 mt-0.5">
 											{data.active_lease.tenant.phone ?? ""}
 											{data.active_lease.tenant.phone && data.active_lease.tenant.email ? " · " : ""}
 											{data.active_lease.tenant.email ?? ""}
@@ -411,7 +411,7 @@ export function PropertyDetail({ propertyId }: Props) {
 								<Highlight label="Depozito" value={fmtMoney(Number(data.active_lease.deposit), data.active_lease.currency)} />
 							</div>
 
-							<dl className="grid grid-cols-2 gap-4 text-sm pt-1">
+							<dl className="grid grid-cols-2 gap-4 text-body pt-1">
 								<Field label="Başlangıç" value={data.active_lease.start_date} />
 								<Field label="Bitiş" value={data.active_lease.end_date ?? "—"} />
 							</dl>
@@ -422,7 +422,7 @@ export function PropertyDetail({ propertyId }: Props) {
 							<ContractDocLink kind="rental" recordId={data.active_lease.id} />
 
 							{/* Balance — 3 columns on sm+, stacked on phones */}
-							<div className="border-t border-base-300 pt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+							<div className="border-t border-base-300 pt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-body">
 								<BalanceCell label="Ödenen" value={fmtMoney(data.active_lease.balance.totalPaid, data.active_lease.currency)} />
 								<BalanceCell label="Vadesi gelen" value={fmtMoney(data.active_lease.balance.totalDue, data.active_lease.currency)} />
 								<BalanceCell
@@ -448,7 +448,7 @@ export function PropertyDetail({ propertyId }: Props) {
 						</div>
 					) : (
 						<div className="text-center py-6">
-							<p className="text-sm text-base-content/60 mb-4">Bu taşınmaz için etkin kira sözleşmesi yok.</p>
+							<p className="text-body text-base-content/60 mb-4">Bu taşınmaz için etkin kira sözleşmesi yok.</p>
 							<Button onClick={() => router.push("/documents/new")}>
 								<Plus className="w-4 h-4" />
 								Yeni kira sözleşmesi
@@ -467,7 +467,7 @@ export function PropertyDetail({ propertyId }: Props) {
 							href={`https://www.google.com/maps?q=${data.latitude},${data.longitude}`}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline underline-offset-2"
+							className="inline-flex items-center gap-1.5 text-body font-semibold text-primary hover:underline underline-offset-2"
 						>
 							Google Haritalar&apos;da aç
 							<ExternalLink className="w-3.5 h-3.5" />
@@ -672,7 +672,7 @@ function HistorySection<T>({
 					<History className="w-4 h-4 text-base-content/50" />
 					<CardLabel>{title}</CardLabel>
 					{items !== null && (
-						<span className="text-xs font-semibold text-base-content/50">({items.length})</span>
+						<span className="text-label font-semibold text-base-content/50">({items.length})</span>
 					)}
 				</span>
 				<ChevronDown className={`w-4 h-4 text-base-content/50 transition-transform ${open ? "rotate-180" : ""}`} />
@@ -685,7 +685,7 @@ function HistorySection<T>({
 					)}
 					{error && <Alert>{error}</Alert>}
 					{items !== null && items.length === 0 && (
-						<p className="text-sm text-base-content/60 text-center py-4">Bu taşınmaz için geçmiş kayıt yok.</p>
+						<p className="text-body text-base-content/60 text-center py-4">Bu taşınmaz için geçmiş kayıt yok.</p>
 					)}
 					{items !== null && items.length > 0 && (
 						<ul className="divide-y divide-base-300">{items.map(render)}</ul>
@@ -710,11 +710,11 @@ function HistoryRow({
 	return (
 		<li className="py-3 flex flex-wrap items-center justify-between gap-2">
 			<div className="min-w-0">
-				<p className="text-sm font-semibold text-base-content truncate">{primary}</p>
-				<p className="text-xs text-base-content/60 mt-0.5">{secondary}</p>
+				<p className="text-body font-semibold text-base-content truncate">{primary}</p>
+				<p className="text-label text-base-content/60 mt-0.5">{secondary}</p>
 			</div>
 			<div className="flex items-center gap-3">
-				<span className="text-sm font-semibold text-base-content/80">{amount}</span>
+				<span className="text-body font-semibold text-base-content/80">{amount}</span>
 				{badge}
 			</div>
 		</li>
@@ -741,7 +741,7 @@ function ContractPdfLink({ path }: { path: string }) {
 			type="button"
 			onClick={openPdf}
 			disabled={busy}
-			className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline underline-offset-2 disabled:opacity-50"
+			className="inline-flex items-center gap-1.5 text-body font-semibold text-primary hover:underline underline-offset-2 disabled:opacity-50"
 		>
 			<ExternalLink className="w-3.5 h-3.5" />
 			{busy ? "İndiriliyor…" : "Sözleşme PDF"}
@@ -764,7 +764,7 @@ function ContractDocLink({ kind, recordId }: { kind: "rental" | "sales"; recordI
 	if (!doc) return null;
 	if (doc.status === "finalized") {
 		return (
-			<span className="inline-flex items-center gap-1.5 text-sm font-semibold text-base-content/50">
+			<span className="inline-flex items-center gap-1.5 text-body font-semibold text-base-content/50">
 				<Lock className="w-3.5 h-3.5" />
 				Sözleşme sonlandırıldı
 			</span>
@@ -774,7 +774,7 @@ function ContractDocLink({ kind, recordId }: { kind: "rental" | "sales"; recordI
 		<button
 			type="button"
 			onClick={() => router.push(`/documents/${doc.id}`)}
-			className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline underline-offset-2"
+			className="inline-flex items-center gap-1.5 text-body font-semibold text-primary hover:underline underline-offset-2"
 		>
 			<PenLine className="w-3.5 h-3.5" />
 			Sözleşmeyi düzenle
@@ -785,7 +785,7 @@ function ContractDocLink({ kind, recordId }: { kind: "rental" | "sales"; recordI
 function Field({ label, value, wide, multiline }: { label: string; value: string; wide?: boolean; multiline?: boolean }) {
 	return (
 		<div className={wide ? "sm:col-span-2" : ""}>
-			<dt className="text-xs font-semibold text-base-content/55 mb-0.5">{label}</dt>
+			<dt className="text-label font-semibold text-base-content/55 mb-0.5">{label}</dt>
 			<dd className={`text-base-content ${multiline ? "whitespace-pre-wrap" : ""}`}>{value}</dd>
 		</div>
 	);
@@ -794,7 +794,7 @@ function Field({ label, value, wide, multiline }: { label: string; value: string
 function Highlight({ label, value }: { label: string; value: string }) {
 	return (
 		<div className="bg-primary/5 rounded-box px-4 py-3">
-			<p className="text-xs font-semibold text-base-content/55 mb-1">{label}</p>
+			<p className="text-label font-semibold text-base-content/55 mb-1">{label}</p>
 			<p className="text-base font-bold text-base-content">{value}</p>
 		</div>
 	);
@@ -803,7 +803,7 @@ function Highlight({ label, value }: { label: string; value: string }) {
 function BalanceCell({ label, value, danger }: { label: string; value: string; danger?: boolean }) {
 	return (
 		<div className="bg-base-200 rounded-box px-4 py-3">
-			<p className="text-xs font-semibold text-base-content/55">{label}</p>
+			<p className="text-label font-semibold text-base-content/55">{label}</p>
 			<p className={`font-semibold mt-0.5 ${danger ? "text-error" : "text-base-content"}`}>{value}</p>
 		</div>
 	);

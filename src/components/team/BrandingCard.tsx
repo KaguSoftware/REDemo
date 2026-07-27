@@ -126,7 +126,7 @@ function ColorField({
 						if (HEX_RE.test(v)) onChange(v.toLowerCase());
 					}}
 					onBlur={() => { if (!HEX_RE.test(draft)) setDraft(value); }}
-					className="h-9 w-24 rounded-field border border-base-300 bg-base-100 px-2 text-xs font-mono text-base-content outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50"
+					className="h-9 w-24 rounded-field border border-base-300 bg-base-100 px-2 text-label font-mono text-base-content outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50"
 				/>
 				{typeof window !== "undefined" && window.EyeDropper && (
 					<button
@@ -239,7 +239,7 @@ export function BrandingCard() {
 	return (
 		<Card>
 			<CardLabel>Marka görünümü</CardLabel>
-			<p className="text-xs text-base-content/60 mt-1">
+			<p className="text-label text-base-content/60 mt-1">
 				Logonuz üst çubukta ve oluşturulan belgelerde görünür; renk paleti
 				PDF&apos;lerinizin görünümünü belirler.
 			</p>
@@ -261,7 +261,7 @@ export function BrandingCard() {
 						// eslint-disable-next-line @next/next/no-img-element
 						<img src={logoUrl} alt="Ekip logosu" className="max-h-full max-w-full object-contain" />
 					) : (
-						<span className="text-xs text-base-content/50">Logo yok</span>
+						<span className="text-label text-base-content/50">Logo yok</span>
 					)}
 				</div>
 				<div className="flex flex-col gap-2">
@@ -279,7 +279,7 @@ export function BrandingCard() {
 			<p className="text-micro text-base-content/50 mt-2">PNG veya JPEG, en fazla 1 MB.</p>
 
 			<div className="mt-5">
-				<p className="text-xs font-semibold text-base-content/70 mb-1">Belge renkleri</p>
+				<p className="text-label font-semibold text-base-content/70 mb-1">Belge renkleri</p>
 				<p className="text-micro text-base-content/50 mb-3">
 					Logonuzun renklerini kullanın: ana renk başlık ve tablolarda, vurgu
 					renkleri etiket ve detaylarda görünür. Ana renk ayrıca uygulama

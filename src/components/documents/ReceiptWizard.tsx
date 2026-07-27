@@ -153,12 +153,12 @@ export function ReceiptWizard({ onExit }: Props) {
 	return (
 		<div>
 			{/* Stepper — same visual language as the contract wizard's. */}
-			<ol className="flex items-center gap-1.5 mb-6 text-xs font-semibold">
+			<ol className="flex items-center gap-1.5 mb-6 text-label font-semibold">
 				{STEPS.map((s, i) => (
 					<li key={s} className="flex items-center gap-1.5 min-w-0">
 						<span
 							className={cn(
-								"w-7 h-7 rounded-full flex items-center justify-center text-xs shrink-0",
+								"w-7 h-7 rounded-full flex items-center justify-center text-label shrink-0",
 								step === s
 									? "bg-primary text-primary-content"
 									: i < stepIndex
@@ -175,7 +175,7 @@ export function ReceiptWizard({ onExit }: Props) {
 			{/* Step 1: property with a lease */}
 			{step === "property" && (
 				<div className="space-y-4">
-					<h2 className="font-display text-lg font-semibold text-base-content">Taşınmaz seçin</h2>
+					<h2 className="font-display text-subtitle font-semibold text-base-content">Taşınmaz seçin</h2>
 					{loadingProperties ? (
 						<div className="flex justify-center py-8"><Spinner size="sm" /></div>
 					) : (
@@ -196,7 +196,7 @@ export function ReceiptWizard({ onExit }: Props) {
 			{/* Step 2: lease/tenant (auto-skipped when only one lease exists) */}
 			{step === "lease" && (
 				<div className="space-y-4">
-					<h2 className="font-display text-lg font-semibold text-base-content">Kiracı seçin</h2>
+					<h2 className="font-display text-subtitle font-semibold text-base-content">Kiracı seçin</h2>
 					{loadingLeases ? (
 						<div className="flex justify-center py-8"><Spinner size="sm" /></div>
 					) : leases.length === 0 ? (
@@ -218,15 +218,15 @@ export function ReceiptWizard({ onExit }: Props) {
 										)}
 									>
 										<div className="flex items-center justify-between gap-2">
-											<p className="text-sm font-bold text-base-content truncate">{l.tenant?.full_name ?? "—"}</p>
+											<p className="text-body font-bold text-base-content truncate">{l.tenant?.full_name ?? "—"}</p>
 											<Badge tone={l.status === "active" ? "emerald" : "slate"}>
 												{LEASE_STATUS_LABEL[l.status] ?? l.status}
 											</Badge>
 										</div>
-										<p className="text-sm text-base-content/60 mt-1">
+										<p className="text-body text-base-content/60 mt-1">
 											{fmtDate(l.start_date)} → {l.end_date ? fmtDate(l.end_date) : "süresiz"}
 										</p>
-										<p className="text-sm font-semibold text-base-content/80 mt-1 font-numeric">
+										<p className="text-body font-semibold text-base-content/80 mt-1 font-numeric">
 											{fmtMoney(Number(l.monthly_rent), l.currency)} / ay
 										</p>
 									</button>
@@ -244,7 +244,7 @@ export function ReceiptWizard({ onExit }: Props) {
 			{/* Step 3: payment */}
 			{step === "payment" && (
 				<div className="space-y-4">
-					<h2 className="font-display text-lg font-semibold text-base-content">Ödeme seçin</h2>
+					<h2 className="font-display text-subtitle font-semibold text-base-content">Ödeme seçin</h2>
 					{loadingPayments ? (
 						<div className="flex justify-center py-8"><Spinner size="sm" /></div>
 					) : payments.length === 0 ? (
@@ -271,15 +271,15 @@ export function ReceiptWizard({ onExit }: Props) {
 										)}
 									>
 										<div className="flex items-center justify-between gap-2">
-											<p className="text-sm font-bold text-base-content">
+											<p className="text-body font-bold text-base-content">
 												{fmtDate(p.period_start)} → {fmtDate(p.period_end)}
 											</p>
 											<Badge tone={paid ? "emerald" : "amber"}>{paid ? "Ödendi" : "Eksik"}</Badge>
 										</div>
-										<p className="text-sm font-semibold text-base-content/80 mt-1 font-numeric">
+										<p className="text-body font-semibold text-base-content/80 mt-1 font-numeric">
 											{fmtMoney(Number(p.amount_paid), lease?.currency ?? "TRY")}
 										</p>
-										<p className="text-xs text-base-content/50 mt-0.5">
+										<p className="text-label text-base-content/50 mt-0.5">
 											Ödeme tarihi: {fmtDate(p.paid_at)}
 										</p>
 									</button>
@@ -300,39 +300,39 @@ export function ReceiptWizard({ onExit }: Props) {
 			{/* Step 4: confirm + generate */}
 			{step === "confirm" && property && lease && payment && (
 				<div className="space-y-4">
-					<h2 className="font-display text-lg font-semibold text-base-content">Makbuzu onaylayın</h2>
+					<h2 className="font-display text-subtitle font-semibold text-base-content">Makbuzu onaylayın</h2>
 					<div className="p-5 rounded-box border border-base-300 bg-base-100 space-y-3">
-						<dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm">
+						<dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-body">
 							<div>
-								<dt className="text-base-content/50 text-xs font-semibold uppercase tracking-wide">Kiraya veren</dt>
+								<dt className="text-base-content/50 text-label font-semibold uppercase tracking-wide">Kiraya veren</dt>
 								<dd className="text-base-content font-semibold mt-0.5">{property.homeowner_name}</dd>
 							</div>
 							<div>
-								<dt className="text-base-content/50 text-xs font-semibold uppercase tracking-wide">Kiracı</dt>
+								<dt className="text-base-content/50 text-label font-semibold uppercase tracking-wide">Kiracı</dt>
 								<dd className="text-base-content font-semibold mt-0.5">{lease.tenant?.full_name ?? "—"}</dd>
 							</div>
 							<div className="sm:col-span-2">
-								<dt className="text-base-content/50 text-xs font-semibold uppercase tracking-wide">Taşınmaz</dt>
+								<dt className="text-base-content/50 text-label font-semibold uppercase tracking-wide">Taşınmaz</dt>
 								<dd className="text-base-content mt-0.5">
 									{property.address_line}{property.city ? `, ${property.city}` : ""}
 								</dd>
 							</div>
 							<div>
-								<dt className="text-base-content/50 text-xs font-semibold uppercase tracking-wide">Dönem</dt>
+								<dt className="text-base-content/50 text-label font-semibold uppercase tracking-wide">Dönem</dt>
 								<dd className="text-base-content mt-0.5">{fmtDate(payment.period_start)} → {fmtDate(payment.period_end)}</dd>
 							</div>
 							<div>
-								<dt className="text-base-content/50 text-xs font-semibold uppercase tracking-wide">Tutar</dt>
+								<dt className="text-base-content/50 text-label font-semibold uppercase tracking-wide">Tutar</dt>
 								<dd className="text-base-content font-semibold font-numeric mt-0.5">
 									{fmtMoney(Number(payment.amount_paid), lease.currency)}
 								</dd>
 							</div>
 							<div>
-								<dt className="text-base-content/50 text-xs font-semibold uppercase tracking-wide">Ödeme tarihi</dt>
+								<dt className="text-base-content/50 text-label font-semibold uppercase tracking-wide">Ödeme tarihi</dt>
 								<dd className="text-base-content mt-0.5">{fmtDate(payment.paid_at)}</dd>
 							</div>
 							<div>
-								<dt className="text-base-content/50 text-xs font-semibold uppercase tracking-wide">Yöntem</dt>
+								<dt className="text-base-content/50 text-label font-semibold uppercase tracking-wide">Yöntem</dt>
 								<dd className="text-base-content mt-0.5">{payment.method ?? "—"}</dd>
 							</div>
 						</dl>

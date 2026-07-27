@@ -145,7 +145,7 @@ export function InsuranceCard({ propertyId, initial }: Props) {
 			    are already known. There is no loading state to confuse with an
 			    empty one. */}
 			{rows.length === 0 ? (
-				<p className="text-sm text-base-content/60">
+				<p className="text-body text-base-content/60">
 					Kayıtlı poliçe yok. DASK zorunludur ve tapu devri ile abonelik
 					işlemlerinde istenir.
 				</p>
@@ -164,9 +164,9 @@ export function InsuranceCard({ propertyId, initial }: Props) {
 										<Badge tone={row.kind === "dask" ? "indigo" : "slate"}>
 											{INSURANCE_KIND_SHORT[row.kind]}
 										</Badge>
-										<span className="text-sm truncate">{row.insurer || "Sigorta şirketi belirtilmedi"}</span>
+										<span className="text-body truncate">{row.insurer || "Sigorta şirketi belirtilmedi"}</span>
 									</div>
-									<p className="text-xs text-base-content/60 mt-1 truncate">
+									<p className="text-label text-base-content/60 mt-1 truncate">
 										{row.policy_no ? `Poliçe ${row.policy_no} · ` : ""}
 										<span
 											className={

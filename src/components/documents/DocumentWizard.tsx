@@ -45,13 +45,13 @@ import {
 
 const PDFBlobProvider = dynamic(
 	() => import("@react-pdf/renderer").then((m) => m.BlobProvider),
-	{ ssr: false, loading: () => <div className="text-sm text-base-content/50 p-6">Önizleme yükleniyor…</div> },
+	{ ssr: false, loading: () => <div className="text-body text-base-content/50 p-6">Önizleme yükleniyor…</div> },
 );
 
 // Tiptap ships only with the editor step — same SSR/bundle policy as react-pdf.
 const ContractEditor = dynamic(
 	() => import("./editor/ContractEditor").then((m) => m.ContractEditor),
-	{ ssr: false, loading: () => <div className="text-sm text-base-content/50 p-6 text-center">Düzenleyici yükleniyor…</div> },
+	{ ssr: false, loading: () => <div className="text-body text-base-content/50 p-6 text-center">Düzenleyici yükleniyor…</div> },
 );
 
 // The old separate "details" step is merged into the final stage: a
@@ -934,12 +934,12 @@ export function DocumentWizard() {
 	return (
 		<div>
 			{/* Stepper */}
-			<ol className="flex items-center gap-1.5 mb-6 text-xs font-semibold">
+			<ol className="flex items-center gap-1.5 mb-6 text-label font-semibold">
 				{STEPS.map((s, i) => (
 					<li key={s} className="flex items-center gap-1.5 min-w-0">
 						<span
 							className={cn(
-								"w-7 h-7 rounded-full flex items-center justify-center text-xs shrink-0",
+								"w-7 h-7 rounded-full flex items-center justify-center text-label shrink-0",
 								step === s
 									? "bg-primary text-primary-content"
 									: i < stepIndex
@@ -973,28 +973,28 @@ export function DocumentWizard() {
 			{/* Step 1: type */}
 			{step === "type" && (
 				<div className="space-y-4">
-					<h2 className="font-display text-lg font-semibold text-base-content">Belge türünü seçin</h2>
+					<h2 className="font-display text-subtitle font-semibold text-base-content">Belge türünü seçin</h2>
 					<div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
 						<button
 							onClick={() => { setKind("rental"); setPropertyId(null); setClientId(null); setPropertiesLoaded(false); setStep("property"); }}
 							className="text-left p-5 rounded-box border-2 border-base-300 hover:border-primary/60 active:bg-primary/5 transition-colors"
 						>
 							<p className="font-display text-base font-semibold text-base-content">Kira Sözleşmesi</p>
-							<p className="text-sm text-base-content/60 mt-1">Boş bir kiralık taşınmazı yeni bir kiracıya kiralayın.</p>
+							<p className="text-body text-base-content/60 mt-1">Boş bir kiralık taşınmazı yeni bir kiracıya kiralayın.</p>
 						</button>
 						<button
 							onClick={() => { setKind("sales"); setPropertyId(null); setClientId(null); setPropertiesLoaded(false); setStep("property"); }}
 							className="text-left p-5 rounded-box border-2 border-base-300 hover:border-primary/60 active:bg-primary/5 transition-colors"
 						>
 							<p className="font-display text-base font-semibold text-base-content">Satış Sözleşmesi</p>
-							<p className="text-sm text-base-content/60 mt-1">Satılık bir taşınmazı yeni bir alıcıya satın.</p>
+							<p className="text-body text-base-content/60 mt-1">Satılık bir taşınmazı yeni bir alıcıya satın.</p>
 						</button>
 						<button
 							onClick={() => setReceiptMode(true)}
 							className="text-left p-5 rounded-box border-2 border-base-300 hover:border-primary/60 active:bg-primary/5 transition-colors"
 						>
 							<p className="font-display text-base font-semibold text-base-content">Kira Makbuzu</p>
-							<p className="text-sm text-base-content/60 mt-1">Kayıtlı bir kira ödemesi için makbuz PDF&apos;i oluşturun.</p>
+							<p className="text-body text-base-content/60 mt-1">Kayıtlı bir kira ödemesi için makbuz PDF&apos;i oluşturun.</p>
 						</button>
 					</div>
 				</div>
@@ -1003,7 +1003,7 @@ export function DocumentWizard() {
 			{/* Step 2: property */}
 			{step === "property" && (
 				<div className="space-y-4">
-					<h2 className="font-display text-lg font-semibold text-base-content">Taşınmaz seçin</h2>
+					<h2 className="font-display text-subtitle font-semibold text-base-content">Taşınmaz seçin</h2>
 					{loadingProperties ? (
 						<div className="flex justify-center py-8"><Spinner size="sm" /></div>
 					) : (
@@ -1029,8 +1029,8 @@ export function DocumentWizard() {
 			{step === "client" && (
 				<div className="space-y-4">
 					<div>
-						<h2 className="font-display text-lg font-semibold text-base-content">Müşteri seçin</h2>
-						<p className="text-sm text-base-content/60 mt-1">
+						<h2 className="font-display text-subtitle font-semibold text-base-content">Müşteri seçin</h2>
+						<p className="text-body text-base-content/60 mt-1">
 							İsteğe bağlı — bir müşteri seçmek {kind === "rental" ? "kiracı" : "alıcı"} bilgilerini önceden doldurur.
 							Bu adımı atlayıp bilgileri elle de girebilirsiniz.
 						</p>
@@ -1075,8 +1075,8 @@ export function DocumentWizard() {
 				<div className="space-y-4">
 					<div className="flex items-center justify-between gap-3 flex-wrap">
 						<div>
-							<h2 className="font-display text-lg font-semibold text-base-content">Belgeyi düzenleyin</h2>
-							<p className="text-sm text-base-content/60 mt-0.5">
+							<h2 className="font-display text-subtitle font-semibold text-base-content">Belgeyi düzenleyin</h2>
+							<p className="text-body text-base-content/60 mt-0.5">
 								Metinlere ve kartlara tıklayarak düzenleyin — taraf, tutar ve tarih bilgileri belgeden alınır.
 							</p>
 						</div>
@@ -1090,7 +1090,7 @@ export function DocumentWizard() {
 									aria-selected={viewMode === m}
 									onClick={() => switchMode(m)}
 									className={cn(
-										"px-3 h-9 rounded-field text-sm font-medium transition-colors",
+										"px-3 h-9 rounded-field text-body font-medium transition-colors",
 										viewMode === m
 											? "bg-base-100 text-base-content shadow-sm"
 											: "text-base-content/60 hover:text-base-content",
@@ -1174,7 +1174,7 @@ export function DocumentWizard() {
 										}
 										if (blobError) {
 											return (
-												<div className="h-full flex items-center justify-center text-sm text-error p-6">
+												<div className="h-full flex items-center justify-center text-body text-error p-6">
 													Önizleme oluşturulamadı: {String(blobError)}
 												</div>
 											);

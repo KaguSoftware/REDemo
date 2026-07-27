@@ -37,12 +37,12 @@ import {
 
 const PDFBlobProvider = dynamic(
 	() => import("@react-pdf/renderer").then((m) => m.BlobProvider),
-	{ ssr: false, loading: () => <div className="text-sm text-base-content/50 p-6">Önizleme yükleniyor…</div> },
+	{ ssr: false, loading: () => <div className="text-body text-base-content/50 p-6">Önizleme yükleniyor…</div> },
 );
 
 const ContractEditor = dynamic(
 	() => import("./editor/ContractEditor").then((m) => m.ContractEditor),
-	{ ssr: false, loading: () => <div className="text-sm text-base-content/50 p-6 text-center">Düzenleyici yükleniyor…</div> },
+	{ ssr: false, loading: () => <div className="text-body text-base-content/50 p-6 text-center">Düzenleyici yükleniyor…</div> },
 );
 
 function docFilename(doc: ContractDocument): string {
@@ -236,8 +236,8 @@ export function DocumentEditorPage({ documentId }: { documentId: string }) {
 						<ArrowLeft className="w-4 h-4" />
 					</Button>
 					<div className="min-w-0">
-						<h2 className="font-display text-lg font-semibold text-base-content truncate">{doc.title}</h2>
-						<p className="text-sm text-base-content/60">
+						<h2 className="font-display text-subtitle font-semibold text-base-content truncate">{doc.title}</h2>
+						<p className="text-body text-base-content/60">
 							{doc.kind === "rental" ? "Kira sözleşmesi" : "Satış sözleşmesi"}
 						</p>
 					</div>
@@ -257,7 +257,7 @@ export function DocumentEditorPage({ documentId }: { documentId: string }) {
 							aria-selected={viewMode === m}
 							onClick={() => switchMode(m)}
 							className={cn(
-								"px-3 h-9 rounded-field text-sm font-medium transition-colors",
+								"px-3 h-9 rounded-field text-body font-medium transition-colors",
 								viewMode === m
 									? "bg-base-100 text-base-content shadow-sm"
 									: "text-base-content/60 hover:text-base-content",
@@ -337,7 +337,7 @@ export function DocumentEditorPage({ documentId }: { documentId: string }) {
 								}
 								if (blobError) {
 									return (
-										<div className="h-full flex items-center justify-center text-sm text-error p-6">
+										<div className="h-full flex items-center justify-center text-body text-error p-6">
 											Önizleme oluşturulamadı: {String(blobError)}
 										</div>
 									);

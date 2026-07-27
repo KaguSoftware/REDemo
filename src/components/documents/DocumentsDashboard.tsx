@@ -124,8 +124,8 @@ export function DocumentsDashboard() {
 		<AppShell title="Belgeler" subtitle="Oluşturulan sözleşmeler ve belgeler" width="wide">
 			{!user ? (
 				<Card className="p-10 text-center">
-					<p className="text-sm text-base-content/70">Belgelerinizi görmek için giriş yapın.</p>
-					<p className="text-xs text-base-content/50 mt-1">Üst çubuktaki Giriş yap düğmesini kullanın.</p>
+					<p className="text-body text-base-content/70">Belgelerinizi görmek için giriş yapın.</p>
+					<p className="text-label text-base-content/50 mt-1">Üst çubuktaki Giriş yap düğmesini kullanın.</p>
 				</Card>
 			) : (
 				<>
@@ -215,13 +215,13 @@ export function DocumentsDashboard() {
 											)}
 											<div className="min-w-0 flex-1">
 												<p className="text-base font-bold text-base-content truncate">{d.title}</p>
-												{d.subtitle && <p className="text-sm text-base-content/60 mt-0.5 truncate">{d.subtitle}</p>}
+												{d.subtitle && <p className="text-body text-base-content/60 mt-0.5 truncate">{d.subtitle}</p>}
 											</div>
 											<KindBadge kind={d.kind} />
 										</div>
 										<div className="mt-3 flex items-center justify-between gap-2">
 											<StatusBadge status={d.status} />
-											<span className="text-xs text-base-content/50">Güncellendi: {fmtDate(d.updated_at)}</span>
+											<span className="text-label text-base-content/50">Güncellendi: {fmtDate(d.updated_at)}</span>
 										</div>
 									</Link>
 								))}
@@ -230,7 +230,7 @@ export function DocumentsDashboard() {
 							{/* Desktop: table */}
 							<Card padded={false} className="hidden sm:block overflow-hidden">
 								<div className="overflow-x-auto">
-									<table className="w-full min-w-140 text-sm">
+									<table className="w-full min-w-140 text-body">
 										<thead className="bg-base-200/60 border-b border-base-300">
 											<tr>
 												<th className="px-4 py-3 w-10">
@@ -243,12 +243,12 @@ export function DocumentsDashboard() {
 														className="checkbox checkbox-sm checkbox-primary align-middle"
 													/>
 												</th>
-												<th className="text-left px-4 py-3 text-xs font-semibold text-base-content/50">Başlık</th>
-												<th className="text-left px-4 py-3 text-xs font-semibold text-base-content/50">Tür</th>
-												<th className="text-left px-4 py-3 text-xs font-semibold text-base-content/50">Durum</th>
-												<th className="text-left px-4 py-3 text-xs font-semibold text-base-content/50">Oluşturulma</th>
-												<th className="text-left px-4 py-3 text-xs font-semibold text-base-content/50">Güncellendi</th>
-												<th className="text-left px-4 py-3 text-xs font-semibold text-base-content/50">
+												<th className="text-left px-4 py-3 text-label font-semibold text-base-content/50">Başlık</th>
+												<th className="text-left px-4 py-3 text-label font-semibold text-base-content/50">Tür</th>
+												<th className="text-left px-4 py-3 text-label font-semibold text-base-content/50">Durum</th>
+												<th className="text-left px-4 py-3 text-label font-semibold text-base-content/50">Oluşturulma</th>
+												<th className="text-left px-4 py-3 text-label font-semibold text-base-content/50">Güncellendi</th>
+												<th className="text-left px-4 py-3 text-label font-semibold text-base-content/50">
 													<span className="sr-only">İşlemler</span>
 												</th>
 											</tr>
@@ -269,14 +269,14 @@ export function DocumentsDashboard() {
 													</td>
 													<td className="px-4 py-3">
 														<Link href={`/documents/${d.id}`} className="block">
-															<span className="text-sm font-medium text-base-content hover:underline">{d.title}</span>
-															{d.subtitle && <span className="block text-xs text-base-content/50 truncate max-w-xs">{d.subtitle}</span>}
+															<span className="text-body font-medium text-base-content hover:underline">{d.title}</span>
+															{d.subtitle && <span className="block text-label text-base-content/50 truncate max-w-xs">{d.subtitle}</span>}
 														</Link>
 													</td>
 													<td className="px-4 py-3"><KindBadge kind={d.kind} /></td>
 													<td className="px-4 py-3"><StatusBadge status={d.status} /></td>
-													<td className="px-4 py-3 text-sm text-base-content/60 whitespace-nowrap">{fmtDate(d.created_at)}</td>
-													<td className="px-4 py-3 text-sm text-base-content/60 whitespace-nowrap">{fmtDate(d.updated_at)}</td>
+													<td className="px-4 py-3 text-body text-base-content/60 whitespace-nowrap">{fmtDate(d.created_at)}</td>
+													<td className="px-4 py-3 text-body text-base-content/60 whitespace-nowrap">{fmtDate(d.updated_at)}</td>
 													<td className="px-4 py-3 text-right whitespace-nowrap">
 														<span className="inline-flex items-center gap-1">
 															<Link

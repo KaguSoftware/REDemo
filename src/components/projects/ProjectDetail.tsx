@@ -180,13 +180,13 @@ export function ProjectDetail({ projectId }: Props) {
 								>
 									<span className="min-w-0">
 										<span className="block font-medium truncate">{u.address_line}</span>
-										<span className="block text-sm text-base-content/60 truncate">
+										<span className="block text-body text-base-content/60 truncate">
 											{[u.nitelik, u.city].filter(Boolean).join(" · ") || "—"}
 										</span>
 									</span>
 									<span className="flex items-center gap-2 shrink-0">
 										{u.is_new_build && <Badge tone="indigo">Sıfır</Badge>}
-										<span className="tabular-nums text-sm font-medium">
+										<span className="tabular-nums text-body font-medium">
 											{fmtPrice(u.list_price, u.currency)}
 										</span>
 									</span>

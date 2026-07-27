@@ -90,7 +90,7 @@ export function NavDrawer({ open, onClose }: { open: boolean; onClose: () => voi
 						)}
 						<div className="min-w-0">
 							<p className="font-display text-base font-semibold text-base-content leading-tight truncate">{team?.name ?? "Kagu Emlak"}</p>
-							<p className="text-xs text-base-content/50 truncate">{team ? "Çalışma alanı" : "Yönetici"}</p>
+							<p className="text-label text-base-content/50 truncate">{team ? "Çalışma alanı" : "Yönetici"}</p>
 						</div>
 					</div>
 					<button
@@ -111,7 +111,7 @@ export function NavDrawer({ open, onClose }: { open: boolean; onClose: () => voi
 								href={href}
 								onClick={onClose}
 								className={cn(
-									"flex items-center gap-3 h-12 px-3 rounded-field text-sm font-semibold transition-colors",
+									"flex items-center gap-3 h-12 px-3 rounded-field text-body font-semibold transition-colors",
 									active
 										? "bg-primary/10 text-primary"
 										: "text-base-content/80 hover:bg-base-200",
@@ -160,7 +160,7 @@ export function NavDrawer({ open, onClose }: { open: boolean; onClose: () => voi
 								{(() => {
 									const avatarUrl = getAvatarUrl(user.avatar_path ?? null);
 									return (
-										<span className="h-9 w-9 shrink-0 rounded-full bg-primary text-primary-content flex items-center justify-center text-sm font-bold uppercase select-none overflow-hidden">
+										<span className="h-9 w-9 shrink-0 rounded-full bg-primary text-primary-content flex items-center justify-center text-body font-bold uppercase select-none overflow-hidden">
 											{avatarUrl ? (
 												// eslint-disable-next-line @next/next/no-img-element
 												<img src={avatarUrl} alt="Profil fotoğrafı" className="h-full w-full object-cover" />
@@ -171,13 +171,13 @@ export function NavDrawer({ open, onClose }: { open: boolean; onClose: () => voi
 									);
 								})()}
 								<div className="min-w-0">
-									<p className="text-xs text-base-content/50">Oturum açık:</p>
-									<p className="text-sm font-medium text-base-content/80 truncate">{user.email}</p>
+									<p className="text-label text-base-content/50">Oturum açık:</p>
+									<p className="text-body font-medium text-base-content/80 truncate">{user.email}</p>
 								</div>
 							</div>
 							<button
 								onClick={handleSignOut}
-								className="flex items-center gap-3 w-full h-12 px-3 rounded-field text-sm font-semibold text-error hover:bg-error/10 transition-colors"
+								className="flex items-center gap-3 w-full h-12 px-3 rounded-field text-body font-semibold text-error hover:bg-error/10 transition-colors"
 							>
 								<LogOut className="w-5 h-5" />
 								Çıkış yap

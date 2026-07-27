@@ -70,7 +70,7 @@ export function AddMenu() {
 			</Button>
 
 			{open && !writable && (
-				<div className="absolute right-0 z-40 mt-1.5 w-64 rounded-box border border-base-300 bg-base-100 shadow-pop p-4 text-sm text-base-content/70">
+				<div className="absolute right-0 z-40 mt-1.5 w-64 rounded-box border border-base-300 bg-base-100 shadow-pop p-4 text-body text-base-content/70">
 					<p className="flex items-center gap-2 font-semibold text-base-content">
 						<Lock className="w-4 h-4" /> Çalışma alanı salt okunur
 					</p>
@@ -94,7 +94,7 @@ export function AddMenu() {
 							type="button"
 							onClick={() => go(href)}
 							className={cn(
-								"w-full flex items-center gap-3 px-3 py-2.5 rounded-field text-sm font-medium text-left text-base-content/80",
+								"w-full flex items-center gap-3 px-3 py-2.5 rounded-field text-body font-medium text-left text-base-content/80",
 								"hover:bg-base-200 transition-colors",
 							)}
 							role="menuitem"

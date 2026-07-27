@@ -45,7 +45,7 @@ export function BulkActionBar({ count, label, onClear, children, className }: Bu
 			>
 				<X className="w-4 h-4" />
 			</button>
-			<p className="text-sm font-semibold text-base-content min-w-0 truncate" aria-live="polite">
+			<p className="text-body font-semibold text-base-content min-w-0 truncate" aria-live="polite">
 				{label}
 			</p>
 			<div className="ml-auto flex items-center gap-2 shrink-0">{children}</div>

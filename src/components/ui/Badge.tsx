@@ -14,7 +14,7 @@ const TONES: Record<BadgeTone, string> = {
 	violet:  "bg-secondary/10 text-secondary border-secondary/30",
 };
 
-/** Status / type pill. text-xs floor (no more 10px), comfortable padding. */
+/** Status / type pill. text-label floor (no more 10px), comfortable padding. */
 export function Badge({
 	tone = "slate",
 	className,
@@ -27,7 +27,7 @@ export function Badge({
 	return (
 		<span
 			className={cn(
-				"inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-field border",
+				"inline-flex items-center gap-1 px-2.5 py-1 text-label font-semibold rounded-field border",
 				TONES[tone],
 				className,
 			)}

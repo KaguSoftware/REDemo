@@ -112,7 +112,7 @@ export function ThemeToggle({ className }: { className?: string }) {
 					title={label}
 					onClick={() => onPick(value)}
 					className={cn(
-						"flex flex-1 items-center justify-center gap-1.5 rounded-field px-2.5 py-1.5 text-xs font-medium transition-colors min-h-9",
+						"flex flex-1 items-center justify-center gap-1.5 rounded-field px-2.5 py-1.5 text-label font-medium transition-colors min-h-9",
 						pref === value
 							? "bg-base-100 text-primary"
 							: "text-base-content/60 hover:text-base-content",

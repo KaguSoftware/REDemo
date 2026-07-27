@@ -137,7 +137,7 @@ export function SalesDetailsForm({ state, onChange, errors = {} }: Props) {
 		<div className="space-y-8">
 			{/* A — Seller */}
 			<section className="space-y-4">
-				<h3 className="text-sm font-semibold text-base-content/60">
+				<h3 className="text-body font-semibold text-base-content/60">
 					A — Satıcı (Mal Sahibi)
 				</h3>
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -169,7 +169,7 @@ export function SalesDetailsForm({ state, onChange, errors = {} }: Props) {
 
 			{/* B — Buyer */}
 			<section className="space-y-4">
-				<h3 className="text-sm font-semibold text-base-content/60">
+				<h3 className="text-body font-semibold text-base-content/60">
 					B — Alıcı
 				</h3>
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -197,12 +197,12 @@ export function SalesDetailsForm({ state, onChange, errors = {} }: Props) {
 				<FormField label="E-posta">
 					<EmailInput value={state.buyerEmail} onChange={(v) => onChange("buyerEmail", v)} />
 				</FormField>
-				<p className="text-xs text-base-content/50">Alıcı için en az bir e-posta veya telefon girin.</p>
+				<p className="text-label text-base-content/50">Alıcı için en az bir e-posta veya telefon girin.</p>
 			</section>
 
 			{/* Sale info */}
 			<section className="space-y-4">
-				<h3 className="text-sm font-semibold text-base-content/60">
+				<h3 className="text-body font-semibold text-base-content/60">
 					Satış Bilgileri
 				</h3>
 				<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -243,7 +243,7 @@ export function SalesDetailsForm({ state, onChange, errors = {} }: Props) {
 
 			{/* Commission */}
 			<section className="space-y-4">
-				<h3 className="text-sm font-semibold text-base-content/60">
+				<h3 className="text-body font-semibold text-base-content/60">
 					Komisyon
 				</h3>
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -255,7 +255,7 @@ export function SalesDetailsForm({ state, onChange, errors = {} }: Props) {
 					</FormField>
 				</div>
 				{(commissionPreview.buyer || commissionPreview.seller) && (
-					<div className="rounded-box bg-base-200 border border-base-300 p-3.5 text-sm text-base-content/70 space-y-1.5">
+					<div className="rounded-box bg-base-200 border border-base-300 p-3.5 text-body text-base-content/70 space-y-1.5">
 						{commissionPreview.buyer && (
 							<p><span className="font-bold">Alıcı:</span> matrah {fmtMoney(commissionPreview.buyer.matrah)} {state.currency}
 								{" · "}KDV {fmtMoney(commissionPreview.buyer.kdv)}
@@ -272,7 +272,7 @@ export function SalesDetailsForm({ state, onChange, errors = {} }: Props) {
 
 			{/* Special conditions */}
 			<section className="space-y-4">
-				<h3 className="text-sm font-semibold text-base-content/60">
+				<h3 className="text-body font-semibold text-base-content/60">
 					Özel Şartlar
 				</h3>
 				<FormField label="Özel Şartlar — opsiyonel">

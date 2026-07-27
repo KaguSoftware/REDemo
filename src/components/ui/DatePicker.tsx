@@ -220,7 +220,7 @@ export function DatePicker({
 						>
 							<ChevronLeft className="w-4 h-4" />
 						</button>
-						<span className="text-sm font-semibold">
+						<span className="text-body font-semibold">
 							{MONTHS[view.m]} {view.y}
 						</span>
 						<button
@@ -258,7 +258,7 @@ export function DatePicker({
 									aria-current={isToday ? "date" : undefined}
 									aria-pressed={isSelected}
 									className={cn(
-										"h-9 rounded-field text-sm tabular-nums transition-colors",
+										"h-9 rounded-field text-body tabular-nums transition-colors",
 										"hover:bg-base-200 disabled:opacity-30 disabled:hover:bg-transparent disabled:cursor-not-allowed",
 										isSelected && "bg-primary text-primary-content font-semibold hover:bg-primary",
 										!isSelected && isToday && "font-semibold text-primary",
@@ -283,7 +283,7 @@ export function DatePicker({
 									triggerRef.current?.focus();
 								}
 							}}
-							className="text-sm font-medium text-primary hover:underline"
+							className="text-body font-medium text-primary hover:underline"
 						>
 							Bugün
 						</button>
@@ -295,7 +295,7 @@ export function DatePicker({
 									setOpen(false);
 									triggerRef.current?.focus();
 								}}
-								className="text-sm text-base-content/60 hover:text-base-content"
+								className="text-body text-base-content/60 hover:text-base-content"
 							>
 								Temizle
 							</button>

@@ -125,7 +125,7 @@ export function ActivityTimeline({ leadId, tenantId }: Props) {
 	return (
 		<div className="rounded-box bg-base-200 border border-base-300 p-4 space-y-3">
 			<div className="flex items-center justify-between gap-3">
-				<p className="text-sm font-semibold text-base-content/60">Görüşme geçmişi</p>
+				<p className="text-body font-semibold text-base-content/60">Görüşme geçmişi</p>
 				{isWritable && !composing && (
 					<Button type="button" variant="outline" size="sm" onClick={() => setComposing(true)}>
 						<Plus className="w-4 h-4" />
@@ -157,12 +157,12 @@ export function ActivityTimeline({ leadId, tenantId }: Props) {
 				</div>
 			)}
 
-			{error && <p className="text-sm text-error">{error}</p>}
+			{error && <p className="text-body text-error">{error}</p>}
 
 			{loading ? (
 				<div className="py-6 flex justify-center"><Spinner /></div>
 			) : items.length === 0 ? (
-				<p className="text-sm text-base-content/50 py-2">
+				<p className="text-body text-base-content/50 py-2">
 					Henüz kayıt yok. Aramalar ve görüşmeler burada birikir.
 				</p>
 			) : (
@@ -173,11 +173,11 @@ export function ActivityTimeline({ leadId, tenantId }: Props) {
 						return (
 							<li
 								key={it.id}
-								className="group flex items-start gap-3 rounded-box bg-base-100 border border-base-300/70 px-3 py-2.5"
+								className="group flex items-start gap-3 rounded-box bg-base-100 border border-base-300 px-3 py-2.5"
 							>
 								<Icon className={cn("w-4 h-4 mt-0.5 shrink-0", meta.tone)} />
 								<div className="min-w-0 flex-1">
-									<p className="text-sm">
+									<p className="text-body">
 										<span className="font-medium">{meta.label}</span>
 										<span className="text-base-content/50"> · {fmtWhen(it.occurred_at)}</span>
 										{it.author_name && (
@@ -185,7 +185,7 @@ export function ActivityTimeline({ leadId, tenantId }: Props) {
 										)}
 									</p>
 									{it.body && (
-										<p className="text-sm text-base-content/80 mt-0.5 whitespace-pre-wrap break-words">
+										<p className="text-body text-base-content/80 mt-0.5 whitespace-pre-wrap break-words">
 											{it.body}
 										</p>
 									)}

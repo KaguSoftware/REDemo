@@ -98,7 +98,7 @@ export function ConfirmDialog({
 						<h2 id="confirm-dialog-title" className="text-base font-bold text-base-content">
 							{title}
 						</h2>
-						{message && <div className="mt-1 text-sm text-base-content/60">{message}</div>}
+						{message && <div className="mt-1 text-body text-base-content/60">{message}</div>}
 					</div>
 				</div>
 

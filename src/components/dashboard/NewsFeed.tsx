@@ -60,10 +60,10 @@ export function NewsFeed() {
 							rel="noopener noreferrer"
 							className="group flex items-start gap-3 py-2.5 -mx-2 px-2 rounded-field hover:bg-base-200 transition-colors"
 						>
-							<span className="flex-1 min-w-0 text-sm text-base-content/85 group-hover:text-base-content line-clamp-2">
+							<span className="flex-1 min-w-0 text-body text-base-content/85 group-hover:text-base-content line-clamp-2">
 								{item.title}
 							</span>
-							<span className="flex items-center gap-1.5 shrink-0 text-xs text-base-content/45 whitespace-nowrap pt-0.5">
+							<span className="flex items-center gap-1.5 shrink-0 text-label text-base-content/45 whitespace-nowrap pt-0.5">
 								{/* Attribution on every row: this points at someone else's
 								    reporting, it does not reproduce it. */}
 								{item.source}

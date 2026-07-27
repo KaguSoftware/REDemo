@@ -68,12 +68,12 @@ export const FormField = ({ label, children, hint, error, id, onDelete, classNam
 			</div>
 			{content}
 			{error && (
-				<p id={errorId} className="mt-1 text-xs font-medium text-error">
+				<p id={errorId} className="mt-1 text-label font-medium text-error">
 					{error}
 				</p>
 			)}
 			{hint && !error && (
-				<p id={hintId} className="mt-1 text-xs text-base-content/50">
+				<p id={hintId} className="mt-1 text-label text-base-content/50">
 					{hint}
 				</p>
 			)}
@@ -95,7 +95,7 @@ export const FormField = ({ label, children, hint, error, id, onDelete, classNam
  * it was animating layout on every field in the app.
  */
 const FIELD_BASE =
-	"w-full bg-base-100 border border-base-300 rounded-field text-base sm:text-sm text-base-content " +
+	"w-full bg-base-100 border border-base-300 rounded-field text-base sm:text-body text-base-content " +
 	"placeholder:text-base-content/40 outline-none " +
 	"transition-[border-color,box-shadow] duration-150 " +
 	"focus:border-primary focus:ring-4 focus:ring-primary/15 " +

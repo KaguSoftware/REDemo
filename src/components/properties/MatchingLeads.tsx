@@ -49,18 +49,18 @@ export function MatchingLeads({ property }: { property: Property }) {
 			<div className="flex items-center gap-2 mb-4">
 				<Users className="w-4 h-4 text-base-content/50" />
 				<CardLabel>İlgilenen müşteriler</CardLabel>
-				<span className="text-xs text-base-content/50">
+				<span className="text-label text-base-content/50">
 					Böyle bir yer arayan {matched.length} müşteri
 				</span>
 			</div>
 			<ul className="divide-y divide-base-300">
 				{matched.map(({ lead: l, result }) => (
-					<li key={l.id} className="py-2.5 flex items-center gap-3 text-sm">
+					<li key={l.id} className="py-2.5 flex items-center gap-3 text-body">
 						<div className="min-w-0 flex-1">
 							<Link href="/leads" className="font-medium text-base-content hover:underline">
 								{l.full_name}
 							</Link>
-							<p className="text-xs text-base-content/50 mt-0.5 truncate">
+							<p className="text-label text-base-content/50 mt-0.5 truncate">
 								{result.reasons.join(" · ") || l.interested_in}
 							</p>
 						</div>
@@ -73,7 +73,7 @@ export function MatchingLeads({ property }: { property: Property }) {
 						<Badge tone={LEAD_STATUS_META[l.status].tone}>{LEAD_STATUS_META[l.status].label}</Badge>
 						{l.phone && (
 							<>
-								<span className="text-xs text-base-content/60 whitespace-nowrap hidden sm:inline">{l.phone}</span>
+								<span className="text-label text-base-content/60 whitespace-nowrap hidden sm:inline">{l.phone}</span>
 								<WhatsAppButton
 									phone={l.phone}
 									name={l.full_name}

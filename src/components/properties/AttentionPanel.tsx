@@ -86,10 +86,10 @@ export function AttentionPanel() {
 				className="w-full flex items-center gap-2 px-4 py-3 text-left cursor-pointer"
 			>
 				<AlertTriangle className={cn("w-4 h-4", hasUrgent ? "text-error" : "text-warning")} />
-				<span className="text-sm font-semibold text-base-content flex-1">
+				<span className="text-body font-semibold text-base-content flex-1">
 					Dikkat gerektirenler
 					<span className={cn(
-						"ml-2 inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full text-xs font-bold",
+						"ml-2 inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full text-label font-bold",
 						hasUrgent ? "bg-error text-error-content" : "bg-warning text-warning-content",
 					)}>
 						{data.total}
@@ -132,7 +132,7 @@ export function AttentionPanel() {
 									<span className="font-numeric font-semibold text-error whitespace-nowrap">
 										{fmtMoney(p.outstanding, p.currency)}
 									</span>
-									<span className="text-xs text-base-content/50 whitespace-nowrap">vade {p.periodEnd}</span>
+									<span className="text-label text-base-content/50 whitespace-nowrap">vade {p.periodEnd}</span>
 								</Row>
 							))}
 						</Section>
@@ -146,7 +146,7 @@ export function AttentionPanel() {
 									<span className="font-numeric font-semibold text-base-content/80 whitespace-nowrap">
 										{fmtMoney(p.outstanding, p.currency)}
 									</span>
-									<span className="text-xs text-base-content/50 whitespace-nowrap">vade {p.periodEnd}</span>
+									<span className="text-label text-base-content/50 whitespace-nowrap">vade {p.periodEnd}</span>
 								</Row>
 							))}
 						</Section>
@@ -245,13 +245,13 @@ function ThresholdEditor({ initial, onClose }: { initial: UserSettings; onClose:
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
 				{fields.map(({ key, label, max }) => (
 					<label key={key} className="block">
-						<span className="text-xs font-semibold text-base-content/60">{label}</span>
+						<span className="text-label font-semibold text-base-content/60">{label}</span>
 						<NumberInput
 							min={1}
 							max={max}
 							value={form[key]}
 							onChange={(n) => setForm((f) => ({ ...f, [key]: n ?? f[key] }))}
-							className="mt-1 h-9 rounded-field px-2.5 text-sm"
+							className="mt-1 h-9 rounded-field px-2.5 text-body"
 						/>
 					</label>
 				))}
@@ -281,7 +281,7 @@ function Section({
 		<div>
 			<div className="flex items-center gap-1.5 mb-1">
 				<Icon className={cn("w-3.5 h-3.5", tone === "red" ? "text-error" : "text-warning")} />
-				<p className="text-xs font-semibold text-base-content/60">{title}</p>
+				<p className="text-label font-semibold text-base-content/60">{title}</p>
 			</div>
 			<div className="divide-y divide-base-300 rounded-box bg-base-100/70 border border-base-300">
 				{children}
@@ -294,7 +294,7 @@ function Row({ href, children }: { href: string; children: React.ReactNode }) {
 	return (
 		<Link
 			href={href}
-			className="flex items-center gap-3 px-3 py-2 text-sm text-base-content/80 hover:bg-base-200 transition-colors first:rounded-t-xl last:rounded-b-xl"
+			className="flex items-center gap-3 px-3 py-2 text-body text-base-content/80 hover:bg-base-200 transition-colors first:rounded-t-xl last:rounded-b-xl"
 		>
 			{children}
 		</Link>

@@ -112,7 +112,7 @@ export function CommissionSummary() {
 					))}
 				</SkeletonGroup>
 			) : !hasAny ? (
-				<p className="text-sm text-base-content/50 mt-3">
+				<p className="text-body text-base-content/50 mt-3">
 					Bu dönemde komisyon kaydı yok. Satış sözleşmesi oluştururken komisyon
 					oranı girdiğinizde burada görünür.
 				</p>
@@ -120,15 +120,15 @@ export function CommissionSummary() {
 				<>
 					<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
 						<div>
-							<p className="text-sm font-medium text-base-content/70">Kazanılan</p>
-							<p className="text-xs text-base-content/50 mb-1.5">Tamamlanan satışlar</p>
+							<p className="text-body font-medium text-base-content/70">Kazanılan</p>
+							<p className="text-label text-base-content/50 mb-1.5">Tamamlanan satışlar</p>
 							{earnedCurrencies.length === 0 ? (
-								<p className="text-sm text-base-content/40">—</p>
+								<p className="text-body text-base-content/40">—</p>
 							) : (
 								earnedCurrencies.map((ccy) => (
 									<p key={ccy} className="font-semibold tabular-nums">
 										{fmtMoney(summary.earned[ccy].total, ccy)}
-										<span className="ml-1.5 text-xs font-normal text-base-content/50">
+										<span className="ml-1.5 text-label font-normal text-base-content/50">
 											({summary.earned[ccy].count} satış)
 										</span>
 									</p>
@@ -136,15 +136,15 @@ export function CommissionSummary() {
 							)}
 						</div>
 						<div>
-							<p className="text-sm font-medium text-base-content/70">Beklenen</p>
-							<p className="text-xs text-base-content/50 mb-1.5">Devam eden satışlar</p>
+							<p className="text-body font-medium text-base-content/70">Beklenen</p>
+							<p className="text-label text-base-content/50 mb-1.5">Devam eden satışlar</p>
 							{pipelineCurrencies.length === 0 ? (
-								<p className="text-sm text-base-content/40">—</p>
+								<p className="text-body text-base-content/40">—</p>
 							) : (
 								pipelineCurrencies.map((ccy) => (
 									<p key={ccy} className="font-semibold tabular-nums text-base-content/70">
 										{fmtMoney(summary.pipeline[ccy].total, ccy)}
-										<span className="ml-1.5 text-xs font-normal text-base-content/50">
+										<span className="ml-1.5 text-label font-normal text-base-content/50">
 											({summary.pipeline[ccy].count} satış)
 										</span>
 									</p>
@@ -154,7 +154,7 @@ export function CommissionSummary() {
 					</div>
 
 					{earnedCurrencies.length > 0 && (
-						<p className="text-xs text-base-content/50 mt-3">
+						<p className="text-label text-base-content/50 mt-3">
 							Tutarlar %{Math.round(KDV_RATE * 100)} KDV dahildir. Matrah:{" "}
 							{earnedCurrencies
 								.map((c) => fmtMoney(summary.earned[c].matrah, c))
@@ -164,7 +164,7 @@ export function CommissionSummary() {
 
 					{byAgent.size > 0 && (
 						<div className="mt-4 pt-4 border-t border-base-300">
-							<p className="text-sm font-medium text-base-content/70 mb-2">
+							<p className="text-body font-medium text-base-content/70 mb-2">
 								Danışmana göre (kazanılan)
 							</p>
 							<ul className="space-y-1.5">
@@ -172,7 +172,7 @@ export function CommissionSummary() {
 									<li
 										key={agentId}
 										className={cn(
-											"flex items-center justify-between gap-3 text-sm",
+											"flex items-center justify-between gap-3 text-body",
 											agentId === user?.id && "font-semibold",
 										)}
 									>

@@ -195,8 +195,8 @@ export function ContactDashboard() {
 		>
 			{!user ? (
 				<Card className="p-10 text-center">
-					<p className="text-sm text-base-content/70">Müşterilerinizi yönetmek için giriş yapın.</p>
-					<p className="text-xs text-base-content/50 mt-1">Üst çubuktaki Giriş yap düğmesini kullanın.</p>
+					<p className="text-body text-base-content/70">Müşterilerinizi yönetmek için giriş yapın.</p>
+					<p className="text-label text-base-content/50 mt-1">Üst çubuktaki Giriş yap düğmesini kullanın.</p>
 				</Card>
 			) : (
 				<>
@@ -243,7 +243,7 @@ export function ContactDashboard() {
 											type="button"
 											role="menuitem"
 											onClick={() => { setAddOpen(false); setEditing({ mode: "create-lead" }); }}
-											className="w-full flex items-center gap-2.5 px-3 py-2 rounded-field text-sm font-medium text-left text-base-content/80 hover:bg-base-200 transition-colors"
+											className="w-full flex items-center gap-2.5 px-3 py-2 rounded-field text-body font-medium text-left text-base-content/80 hover:bg-base-200 transition-colors"
 										>
 											<Users className="w-4 h-4 text-base-content/60" />
 											Müşteri ekle
@@ -252,7 +252,7 @@ export function ContactDashboard() {
 											type="button"
 											role="menuitem"
 											onClick={() => { setAddOpen(false); setEditing({ mode: "create-tenant" }); }}
-											className="w-full flex items-center gap-2.5 px-3 py-2 rounded-field text-sm font-medium text-left text-base-content/80 hover:bg-base-200 transition-colors"
+											className="w-full flex items-center gap-2.5 px-3 py-2 rounded-field text-body font-medium text-left text-base-content/80 hover:bg-base-200 transition-colors"
 										>
 											<UserPlus className="w-4 h-4 text-base-content/60" />
 											Kiracı ekle
@@ -277,7 +277,7 @@ export function ContactDashboard() {
 										]),
 									)
 								}
-								className="inline-flex items-center gap-1 text-xs font-medium text-base-content/50 hover:text-base-content/80 transition-colors"
+								className="inline-flex items-center gap-1 text-label font-medium text-base-content/50 hover:text-base-content/80 transition-colors"
 							>
 								<Download className="w-3.5 h-3.5" />
 								Müşteri CSV
@@ -291,7 +291,7 @@ export function ContactDashboard() {
 										tenants.map((t) => [t.full_name, t.phone, t.email, t.national_id, t.notes, t.created_at?.slice(0, 10)]),
 									)
 								}
-								className="inline-flex items-center gap-1 text-xs font-medium text-base-content/50 hover:text-base-content/80 transition-colors"
+								className="inline-flex items-center gap-1 text-label font-medium text-base-content/50 hover:text-base-content/80 transition-colors"
 							>
 								<Download className="w-3.5 h-3.5" />
 								Kiracı CSV

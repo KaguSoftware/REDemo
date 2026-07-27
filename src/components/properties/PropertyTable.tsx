@@ -286,7 +286,7 @@ export function PropertyTable({ isLoading = false }: { isLoading?: boolean }) {
 	return (
 		<>
 			<div className="px-1 mb-2 flex items-center justify-between">
-				<p className="text-xs font-medium text-base-content/50">
+				<p className="text-label font-medium text-base-content/50">
 					{properties.length} taşınmaz
 					{hasActiveFilter ? " eşleşti" : ""}
 				</p>
@@ -308,7 +308,7 @@ export function PropertyTable({ isLoading = false }: { isLoading?: boolean }) {
 							]),
 						)
 					}
-					className="inline-flex items-center gap-1 text-xs font-medium text-base-content/50 hover:text-base-content/80 transition-colors"
+					className="inline-flex items-center gap-1 text-label font-medium text-base-content/50 hover:text-base-content/80 transition-colors"
 				>
 					<Download className="w-3.5 h-3.5" />
 					CSV indir
@@ -340,9 +340,9 @@ export function PropertyTable({ isLoading = false }: { isLoading?: boolean }) {
 							<Thumb src={covers?.[p.id]} className="w-14 h-14 rounded-box shrink-0" />
 							<div className="min-w-0 flex-1">
 								<p className="text-base font-bold text-base-content line-clamp-2">{p.address_line}</p>
-								<p className="text-sm text-base-content/60 mt-0.5 truncate">{p.homeowner_name}{p.city ? ` · ${p.city}` : ""}</p>
+								<p className="text-body text-base-content/60 mt-0.5 truncate">{p.homeowner_name}{p.city ? ` · ${p.city}` : ""}</p>
 							</div>
-							<p className="font-numeric text-sm font-semibold text-base-content/80 whitespace-nowrap">{fmtPrice(p.list_price, p.currency)}</p>
+							<p className="font-numeric text-body font-semibold text-base-content/80 whitespace-nowrap">{fmtPrice(p.list_price, p.currency)}</p>
 						</div>
 						<div className="mt-3 flex items-center justify-between gap-2 flex-wrap">
 							<div className="flex items-center gap-1.5 flex-wrap">
@@ -355,7 +355,7 @@ export function PropertyTable({ isLoading = false }: { isLoading?: boolean }) {
 									horizonISO={horizonISO}
 								/>
 							</div>
-							<p className="text-xs text-base-content/50">{p.size_sqm ? `${p.size_sqm} m²` : ""}</p>
+							<p className="text-label text-base-content/50">{p.size_sqm ? `${p.size_sqm} m²` : ""}</p>
 						</div>
 					</div>
 				))}
@@ -364,7 +364,7 @@ export function PropertyTable({ isLoading = false }: { isLoading?: boolean }) {
 			{/* Desktop: table */}
 			<Card padded={false} className="hidden sm:block overflow-hidden">
 				<div className="overflow-x-auto">
-					<table className="w-full min-w-160 text-sm">
+					<table className="w-full min-w-160 text-body">
 						<Thead>
 							<tr>
 								<th className="px-4 py-2.5 w-10">
@@ -406,9 +406,9 @@ export function PropertyTable({ isLoading = false }: { isLoading?: boolean }) {
 									<td className="pl-4 pr-0 py-2">
 										<Thumb src={covers?.[p.id]} className="w-11 h-11 rounded-field" />
 									</td>
-									<td className="px-4 py-3 text-sm font-medium text-base-content min-w-0">{p.homeowner_name}</td>
-									<td className="px-4 py-3 text-sm text-base-content/70 min-w-0">{p.address_line}{p.city ? `, ${p.city}` : ""}</td>
-									<td className="px-4 py-3 text-sm text-base-content/70 whitespace-nowrap">{p.size_sqm ?? "—"}</td>
+									<td className="px-4 py-3 text-body font-medium text-base-content min-w-0">{p.homeowner_name}</td>
+									<td className="px-4 py-3 text-body text-base-content/70 min-w-0">{p.address_line}{p.city ? `, ${p.city}` : ""}</td>
+									<td className="px-4 py-3 text-body text-base-content/70 whitespace-nowrap">{p.size_sqm ?? "—"}</td>
 									<td className="px-4 py-3"><TypeBadge t={p.listing_type} /></td>
 									<td className="px-4 py-3">
 										<div className="flex items-center gap-1.5 flex-wrap">
@@ -421,8 +421,8 @@ export function PropertyTable({ isLoading = false }: { isLoading?: boolean }) {
 											/>
 										</div>
 									</td>
-									<td className="px-4 py-3 font-numeric text-sm text-base-content/80 whitespace-nowrap">{fmtPrice(p.list_price, p.currency)}</td>
-									<td className="px-4 py-3 text-sm text-base-content/50 whitespace-nowrap">
+									<td className="px-4 py-3 font-numeric text-body text-base-content/80 whitespace-nowrap">{fmtPrice(p.list_price, p.currency)}</td>
+									<td className="px-4 py-3 text-body text-base-content/50 whitespace-nowrap">
 										{new Date(p.updated_at).toLocaleDateString("tr-TR", { month: "short", day: "numeric" })}
 									</td>
 								</tr>

@@ -148,11 +148,11 @@ export function ProjectDashboard() {
 								<div className="min-w-0">
 									<p className="font-semibold truncate">{p.name}</p>
 									{p.developer_name && (
-										<p className="text-sm text-base-content/60 truncate">{p.developer_name}</p>
+										<p className="text-body text-base-content/60 truncate">{p.developer_name}</p>
 									)}
 								</div>
 
-								<div className="flex flex-wrap items-center gap-2 text-sm">
+								<div className="flex flex-wrap items-center gap-2 text-body">
 									{price && <Badge tone="slate">{price}&nbsp;başlangıç</Badge>}
 									{[p.mahalle, p.city].filter(Boolean).length > 0 && (
 										<span className="text-base-content/60 truncate">
@@ -167,7 +167,7 @@ export function ProjectDashboard() {
 										target="_blank"
 										rel="noopener noreferrer"
 										onClick={(e) => e.stopPropagation()}
-										className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline w-fit"
+										className="inline-flex items-center gap-1.5 text-body font-medium text-primary hover:underline w-fit"
 									>
 										<ExternalLink className="w-3.5 h-3.5" />
 										Drive klasörü

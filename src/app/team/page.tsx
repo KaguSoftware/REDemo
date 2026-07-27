@@ -157,15 +157,15 @@ export default function TeamPage() {
 						<ul className="mt-3 divide-y divide-base-300">
 							{members.map((m) => (
 								<li key={m.user_id} className="py-3 flex items-center gap-3">
-									<div className="h-9 w-9 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-bold uppercase">
+									<div className="h-9 w-9 rounded-full bg-primary/10 text-primary flex items-center justify-center text-body font-bold uppercase">
 										{(m.display_name || m.email).charAt(0)}
 									</div>
 									<div className="min-w-0 flex-1">
-										<p className="text-sm font-semibold text-base-content truncate">
+										<p className="text-body font-semibold text-base-content truncate">
 											{m.display_name || m.email}
 											{m.user_id === user?.id && <span className="text-base-content/50 font-normal"> (siz)</span>}
 										</p>
-										<p className="text-xs text-base-content/50 truncate">{m.email}</p>
+										<p className="text-label text-base-content/50 truncate">{m.email}</p>
 									</div>
 									<Badge tone={m.role === "owner" ? "indigo" : "slate"}>{m.role === "owner" ? "Ekip sahibi" : "Danışman"}</Badge>
 									{isOwner && m.user_id !== user?.id && (
@@ -226,8 +226,8 @@ export default function TeamPage() {
 								<ul className="mt-4 divide-y divide-base-300">
 									{invites.filter((i) => i.email).map((i) => (
 										<li key={i.id} className="py-2 flex items-center gap-3">
-											<p className="text-sm text-base-content/80 flex-1 truncate">{i.email}</p>
-											<span className="text-xs text-base-content/50">
+											<p className="text-body text-base-content/80 flex-1 truncate">{i.email}</p>
+											<span className="text-label text-base-content/50">
 												son geçerlilik: {new Date(i.expires_at).toLocaleDateString("tr-TR")}
 											</span>
 											<Button
@@ -245,11 +245,11 @@ export default function TeamPage() {
 
 						<Card>
 							<CardLabel>Paylaşılabilir ekip bağlantısı</CardLabel>
-							<p className="text-xs text-base-content/60 mt-1">
+							<p className="text-label text-base-content/60 mt-1">
 								Bu bağlantıya sahip olan herkes ekibinize katılabilir. Eski kopyaları geçersiz kılmak için bağlantıyı yenileyin.
 							</p>
 							<div className="mt-3 flex flex-col sm:flex-row gap-2">
-								<div className="flex-1 flex items-center gap-2 rounded-box border border-base-300 bg-base-200 px-3 h-11 text-sm text-base-content/70 min-w-0">
+								<div className="flex-1 flex items-center gap-2 rounded-box border border-base-300 bg-base-200 px-3 h-11 text-body text-base-content/70 min-w-0">
 									<Link2 className="w-4 h-4 shrink-0 text-base-content/50" />
 									<span className="truncate">{joinUrl ?? "Henüz etkin bağlantı yok"}</span>
 								</div>

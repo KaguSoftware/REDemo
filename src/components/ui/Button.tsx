@@ -27,8 +27,8 @@ const VARIANTS: Record<Variant, string> = {
 
 const SIZES: Record<Size, string> = {
 	// 44px min height across the board for comfortable touch.
-	md: "h-11 px-4 text-sm gap-2",
-	sm: "h-9 px-3 text-sm gap-1.5",
+	md: "h-11 px-4 text-body gap-2",
+	sm: "h-9 px-3 text-body gap-1.5",
 	lg: "h-12 px-6 text-base gap-2",
 	icon: "h-11 w-11 p-0",
 };

@@ -202,7 +202,7 @@ export function ContactTable({ rows, loading, onEditLead, onEditTenant }: Props)
 		);
 	}
 
-	const headerCls = "text-left px-4 py-3 text-xs font-semibold text-base-content/50";
+	const headerCls = "text-left px-4 py-3 text-label font-semibold text-base-content/50";
 	const onEdit = (r: ContactRow) => (r.type === "lead" ? onEditLead(r.lead) : onEditTenant(r.tenant));
 
 	return (
@@ -234,7 +234,7 @@ export function ContactTable({ rows, loading, onEditLead, onEditTenant }: Props)
 								<div className="min-w-0 flex-1">
 									<p className="text-base font-bold text-base-content truncate">{p.full_name}</p>
 									{(p.phone || p.email) && (
-										<p className="text-sm text-base-content/60 mt-0.5 truncate">
+										<p className="text-body text-base-content/60 mt-0.5 truncate">
 											{p.phone ?? ""}
 											{p.phone && <WhatsAppButton phone={p.phone} name={p.full_name} />}
 											{p.phone && p.email ? " · " : ""}
@@ -248,11 +248,11 @@ export function ContactTable({ rows, loading, onEditLead, onEditTenant }: Props)
 								</div>
 							</div>
 							{r.type === "lead" && r.lead.interested_in && (
-								<p className="text-sm text-base-content/70 mt-2 line-clamp-2">{r.lead.interested_in}</p>
+								<p className="text-body text-base-content/70 mt-2 line-clamp-2">{r.lead.interested_in}</p>
 							)}
 							{r.type === "lead" ? (
 								<div className="mt-3 flex items-center justify-between gap-2">
-									<span className="text-xs text-base-content/50">Son arama: {fmtCallDate(r.lead.last_call_at)}</span>
+									<span className="text-label text-base-content/50">Son arama: {fmtCallDate(r.lead.last_call_at)}</span>
 									{isToday(r.lead.last_call_at) ? (
 										<CalledTodayPill />
 									) : (
@@ -260,7 +260,7 @@ export function ContactTable({ rows, loading, onEditLead, onEditTenant }: Props)
 											type="button"
 											onClick={(e) => { e.stopPropagation(); markCalledToday(r.lead); }}
 											disabled={callBusyId === r.lead.id}
-											className="inline-flex items-center gap-1.5 h-8 px-2.5 rounded-field text-xs font-semibold text-success bg-success/10 active:bg-success/20 transition-colors disabled:opacity-50"
+											className="inline-flex items-center gap-1.5 h-8 px-2.5 rounded-field text-label font-semibold text-success bg-success/10 active:bg-success/20 transition-colors disabled:opacity-50"
 										>
 											<PhoneCall className="w-3.5 h-3.5" />
 											Bugün arandı
@@ -268,7 +268,7 @@ export function ContactTable({ rows, loading, onEditLead, onEditTenant }: Props)
 									)}
 								</div>
 							) : (
-								<p className="text-xs text-base-content/50 mt-2">Eklenme: {fmtDate(r.tenant.created_at)}</p>
+								<p className="text-label text-base-content/50 mt-2">Eklenme: {fmtDate(r.tenant.created_at)}</p>
 							)}
 						</div>
 					);
@@ -278,7 +278,7 @@ export function ContactTable({ rows, loading, onEditLead, onEditTenant }: Props)
 			{/* Desktop: table */}
 			<Card padded={false} className="hidden sm:block overflow-hidden">
 				<div className="overflow-x-auto">
-					<table className="w-full min-w-140 text-sm">
+					<table className="w-full min-w-140 text-body">
 						<thead className="bg-base-200/60 border-b border-base-300">
 							<tr>
 								<th className="px-4 py-3 w-10">
@@ -318,13 +318,13 @@ export function ContactTable({ rows, loading, onEditLead, onEditTenant }: Props)
 												className="checkbox checkbox-sm checkbox-primary align-middle"
 											/>
 										</td>
-										<td className="px-4 py-3 text-sm font-medium text-base-content">{p.full_name}</td>
+										<td className="px-4 py-3 text-body font-medium text-base-content">{p.full_name}</td>
 										<td className="px-4 py-3"><TypeBadge row={r} /></td>
-										<td className="px-4 py-3 text-sm text-base-content/70 whitespace-nowrap">
+										<td className="px-4 py-3 text-body text-base-content/70 whitespace-nowrap">
 											{p.phone ?? "—"}
 											{p.phone && <span className="ml-1"><WhatsAppButton phone={p.phone} name={p.full_name} /></span>}
 										</td>
-										<td className="px-4 py-3 text-sm text-base-content/70 max-w-xs truncate">
+										<td className="px-4 py-3 text-body text-base-content/70 max-w-xs truncate">
 											{r.type === "lead"
 												? (r.lead.interested_in ?? "—")
 												: [r.tenant.email, r.tenant.national_id].filter(Boolean).join(" · ") || "—"}
@@ -332,7 +332,7 @@ export function ContactTable({ rows, loading, onEditLead, onEditTenant }: Props)
 										<td className="px-4 py-3">
 											{r.type === "lead" ? <StatusBadge status={r.lead.status} /> : <span className="text-base-content/30">—</span>}
 										</td>
-										<td className="px-4 py-3 text-sm whitespace-nowrap">
+										<td className="px-4 py-3 text-body whitespace-nowrap">
 											{r.type === "lead" && (matchCounts.get(r.lead.id) ?? 0) > 0 ? (
 												<span
 													className="inline-flex items-center gap-1 text-success font-semibold"
@@ -345,7 +345,7 @@ export function ContactTable({ rows, loading, onEditLead, onEditTenant }: Props)
 												<span className="text-base-content/30">—</span>
 											)}
 										</td>
-										<td className="px-4 py-3 text-sm whitespace-nowrap">
+										<td className="px-4 py-3 text-body whitespace-nowrap">
 											{r.type === "lead" ? (
 												<span className="inline-flex items-center gap-2">
 													<span className="text-base-content/60">{fmtCallDate(r.lead.last_call_at)}</span>

@@ -198,7 +198,7 @@ function ClusterPopover({
 				style={{ left, top, width: CARD_W, maxHeight: Math.min(280, containerSize.h - 16) }}
 				onClick={(e) => e.stopPropagation()}
 			>
-				<p className="px-3.5 pt-3 pb-2 text-sm font-semibold text-base-content/60 border-b border-base-300">
+				<p className="px-3.5 pt-3 pb-2 text-body font-semibold text-base-content/60 border-b border-base-300">
 					Burada {cell.items.length} taşınmaz var
 				</p>
 				<ul className="overflow-y-auto" style={{ maxHeight: 224 }}>
@@ -210,8 +210,8 @@ function ClusterPopover({
 								className="w-full flex items-center gap-2 px-3.5 py-2.5 text-left hover:bg-base-200 active:bg-base-300 transition-colors"
 							>
 								<span className="min-w-0 flex-1">
-									<span className="block text-sm font-semibold text-base-content truncate">{p.homeowner_name}</span>
-									<span className="block text-xs text-base-content/60 truncate">
+									<span className="block text-body font-semibold text-base-content truncate">{p.homeowner_name}</span>
+									<span className="block text-label text-base-content/60 truncate">
 										{[p.listingLabel, p.price].filter(Boolean).join(" · ")}
 									</span>
 								</span>

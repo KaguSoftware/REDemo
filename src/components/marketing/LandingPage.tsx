@@ -76,16 +76,16 @@ const PLANS = [
  */
 function AttentionPreview() {
 	return (
-		<div aria-hidden className="rounded-box bg-base-100 border border-base-300/70 shadow-pop p-5">
-			<p className="text-sm font-semibold text-base-content/60">Bugün dikkat isteyen</p>
+		<div aria-hidden className="rounded-box bg-base-100 border border-base-300 shadow-pop p-5">
+			<p className="text-body font-semibold text-base-content/60">Bugün dikkat isteyen</p>
 			<ul className="mt-4 space-y-3">
 				<li className="flex items-start gap-3 rounded-box bg-base-200/60 p-3.5">
 					<span className="mt-0.5 h-8 w-8 shrink-0 rounded-field bg-error/10 text-error flex items-center justify-center">
 						<Wallet className="w-4 h-4" />
 					</span>
 					<div className="min-w-0">
-						<p className="text-sm font-semibold text-base-content">Bahçelievler 2+1 — kira gecikti</p>
-						<p className="mt-0.5 text-xs text-base-content/60">
+						<p className="text-body font-semibold text-base-content">Bahçelievler 2+1 — kira gecikti</p>
+						<p className="mt-0.5 text-label text-base-content/60">
 							A. Yılmaz · 12 gün · <span className="font-numeric">18.500 TL</span>
 						</p>
 					</div>
@@ -95,8 +95,8 @@ function AttentionPreview() {
 						<CalendarClock className="w-4 h-4" />
 					</span>
 					<div className="min-w-0">
-						<p className="text-sm font-semibold text-base-content">Kadıköy ofis — sözleşme bitiyor</p>
-						<p className="mt-0.5 text-xs text-base-content/60">28 Şubat · yenileme bekliyor</p>
+						<p className="text-body font-semibold text-base-content">Kadıköy ofis — sözleşme bitiyor</p>
+						<p className="mt-0.5 text-label text-base-content/60">28 Şubat · yenileme bekliyor</p>
 					</div>
 				</li>
 				<li className="flex items-start gap-3 rounded-box bg-base-200/60 p-3.5">
@@ -104,8 +104,8 @@ function AttentionPreview() {
 						<PhoneMissed className="w-4 h-4" />
 					</span>
 					<div className="min-w-0">
-						<p className="text-sm font-semibold text-base-content">S. Demir — sessiz müşteri</p>
-						<p className="mt-0.5 text-xs text-base-content/60">3 haftadır aranmadı · 3+1 arıyor</p>
+						<p className="text-body font-semibold text-base-content">S. Demir — sessiz müşteri</p>
+						<p className="mt-0.5 text-label text-base-content/60">3 haftadır aranmadı · 3+1 arıyor</p>
 					</div>
 				</li>
 			</ul>
@@ -123,7 +123,7 @@ export function LandingPage() {
 						<h1 className="enter font-display text-4xl sm:text-5xl font-bold text-base-content leading-[1.05]">
 							Emlak ofisinizin tamamı, tek uygulamada
 						</h1>
-						<p className="enter enter-2 mt-5 max-w-xl text-base sm:text-lg text-base-content/70 leading-relaxed">
+						<p className="enter enter-2 mt-5 max-w-xl text-base sm:text-subtitle text-base-content/70 leading-relaxed">
 							Portföy, müşteri, kiracı, tahsilat ve sözleşmeler — dağınık Excel
 							dosyaları ve WhatsApp notları yerine, ekibinizle birlikte
 							çalıştığınız tek bir yer.
@@ -131,13 +131,13 @@ export function LandingPage() {
 						<div className="enter enter-3 mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
 							<Link
 								href="/signup"
-								className="w-full sm:w-auto px-8 h-12 inline-flex items-center justify-center rounded-box text-base font-semibold bg-primary text-primary-content hover:brightness-110 active:scale-[0.98] transition-[filter,transform] shadow-soft"
+								className="w-full sm:w-auto px-8 h-12 inline-flex items-center justify-center rounded-box text-base font-semibold bg-primary text-primary-content hover:brightness-110 active:scale-[0.98] transition-[filter,transform]"
 							>
 								Ücretsiz deneyin
 							</Link>
 							<Link
 								href="#fiyatlar"
-								className="text-sm font-semibold text-base-content/70 hover:text-base-content underline underline-offset-4 decoration-base-300 hover:decoration-base-content/40 transition-colors"
+								className="text-body font-semibold text-base-content/70 hover:text-base-content underline underline-offset-4 decoration-base-300 hover:decoration-base-content/40 transition-colors"
 							>
 								Fiyatları görün
 							</Link>
@@ -147,7 +147,7 @@ export function LandingPage() {
 						<AttentionPreview />
 					</div>
 				</div>
-				<p className="mt-10 text-sm text-base-content/50">
+				<p className="mt-10 text-body text-base-content/50">
 					14 gün ücretsiz · Kredi kartı gerekmez · Dilediğinizde iptal edin
 				</p>
 			</section>
@@ -171,17 +171,17 @@ export function LandingPage() {
 					</div>
 					{/* Standard cells */}
 					{SMALL_FEATURES.slice(0, 1).map(({ icon: Icon, title, body }) => (
-						<div key={title} className="reveal lg:col-span-2 rounded-box bg-base-100 border border-base-300/70 p-7 shadow-card transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-pop motion-reduce:transform-none">
+						<div key={title} className="reveal lg:col-span-2 rounded-box bg-base-100 border border-base-300 p-7 transition-colors duration-150 hover:border-base-content/25">
 							<Icon className="w-5 h-5 text-primary" />
-							<h3 className="mt-4 text-lg font-bold text-base-content">{title}</h3>
-							<p className="mt-2 text-sm text-base-content/70 leading-relaxed">{body}</p>
+							<h3 className="mt-4 text-subtitle font-semibold text-base-content">{title}</h3>
+							<p className="mt-2 text-body text-base-content/70 leading-relaxed">{body}</p>
 						</div>
 					))}
 					{SMALL_FEATURES.slice(1).map(({ icon: Icon, title, body }) => (
-						<div key={title} className="reveal lg:col-span-2 rounded-box bg-base-100 border border-base-300/70 p-7 shadow-card transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-pop motion-reduce:transform-none">
+						<div key={title} className="reveal lg:col-span-2 rounded-box bg-base-100 border border-base-300 p-7 transition-colors duration-150 hover:border-base-content/25">
 							<Icon className="w-5 h-5 text-primary" />
-							<h3 className="mt-4 text-lg font-bold text-base-content">{title}</h3>
-							<p className="mt-2 text-sm text-base-content/70 leading-relaxed">{body}</p>
+							<h3 className="mt-4 text-subtitle font-semibold text-base-content">{title}</h3>
+							<p className="mt-2 text-body text-base-content/70 leading-relaxed">{body}</p>
 						</div>
 					))}
 					{/* Full-width closing cell: mobile — deliberate dark tile for contrast */}
@@ -191,7 +191,7 @@ export function LandingPage() {
 						</span>
 						<div>
 							<h3 className="font-display text-xl font-bold">Telefonda kusursuz</h3>
-							<p className="mt-1.5 max-w-2xl text-sm text-neutral-content/75 leading-relaxed">
+							<p className="mt-1.5 max-w-2xl text-body text-neutral-content/75 leading-relaxed">
 								Sahada, tapuda, müşteri yanında — tüm özellikler mobil için tasarlandı.
 							</p>
 						</div>
@@ -212,13 +212,13 @@ export function LandingPage() {
 						<div
 							key={p.name}
 							className={`reveal rounded-box bg-base-100 border p-6 sm:p-8 flex flex-col ${
-								p.highlight ? "border-primary/60 shadow-card" : "border-base-300 shadow-soft"
+								p.highlight ? "border-primary/60" : "border-base-300"
 							}`}
 						>
 							<div className="flex items-center justify-between">
 								<h3 className="text-base font-bold text-base-content">{p.name}</h3>
 								{p.highlight && (
-									<span className="text-xs font-semibold text-primary bg-primary/10 rounded-md px-2 py-1">
+									<span className="text-label font-semibold text-primary bg-primary/10 rounded-field px-2 py-1">
 										Önerilen
 									</span>
 								)}
@@ -227,7 +227,7 @@ export function LandingPage() {
 								<span className="font-numeric">{p.price}</span>
 								<span className="font-sans text-base font-normal text-base-content/50"> / ay</span>
 							</p>
-							<ul className="mt-5 mb-6 space-y-2.5 text-sm text-base-content/80">
+							<ul className="mt-5 mb-6 space-y-2.5 text-body text-base-content/80">
 								{p.features.map((feature) => (
 									<li key={feature} className="flex items-center gap-2">
 										<CheckCircle2 className="w-4 h-4 text-success shrink-0" /> {feature}
@@ -236,7 +236,7 @@ export function LandingPage() {
 							</ul>
 							<Link
 								href="/signup"
-								className={`mt-auto w-full h-11 inline-flex items-center justify-center rounded-box text-sm font-semibold transition-[filter,background-color,transform] active:scale-[0.98] ${
+								className={`mt-auto w-full h-11 inline-flex items-center justify-center rounded-box text-body font-semibold transition-[filter,background-color,transform] active:scale-[0.98] ${
 									p.highlight
 										? "bg-primary text-primary-content hover:brightness-110"
 										: "border border-base-300 text-base-content hover:bg-base-200"

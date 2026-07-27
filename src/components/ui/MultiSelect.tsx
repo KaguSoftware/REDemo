@@ -57,7 +57,7 @@ export function MultiSelect({ label, options, selected, onChange, className }: M
 				type="button"
 				onClick={() => setOpen((o) => !o)}
 				className={cn(
-					"w-full h-12 flex items-center justify-between gap-2 bg-base-100 border rounded-field px-3.5 text-base sm:text-sm outline-none transition-[border-color,box-shadow] duration-150",
+					"w-full h-12 flex items-center justify-between gap-2 bg-base-100 border rounded-field px-3.5 text-base sm:text-body outline-none transition-[border-color,box-shadow] duration-150",
 					"focus:border-primary focus:ring-4 focus:ring-primary/15",
 					open ? "border-primary ring-4 ring-primary/15" : "border-base-300",
 					selected.length ? "text-base-content" : "text-base-content/40",
@@ -78,7 +78,7 @@ export function MultiSelect({ label, options, selected, onChange, className }: M
 					role="listbox"
 				>
 					{options.length === 0 ? (
-						<p className="px-3 py-2 text-xs text-base-content/50">Henüz seçenek yok</p>
+						<p className="px-3 py-2 text-label text-base-content/50">Henüz seçenek yok</p>
 					) : (
 						options.map((opt) => {
 							const checked = selected.includes(opt);
@@ -88,7 +88,7 @@ export function MultiSelect({ label, options, selected, onChange, className }: M
 									type="button"
 									onClick={() => toggle(opt)}
 									className={cn(
-										"w-full flex items-center gap-2.5 px-2.5 py-2 rounded-field text-sm text-left transition-colors",
+										"w-full flex items-center gap-2.5 px-2.5 py-2 rounded-field text-body text-left transition-colors",
 										checked ? "bg-primary/5 text-base-content" : "text-base-content/80 hover:bg-base-200",
 									)}
 									role="option"

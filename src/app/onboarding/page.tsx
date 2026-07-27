@@ -180,7 +180,7 @@ export default function OnboardingPage() {
 			<button
 				type="button"
 				onClick={() => { setError(null); setStep(to); }}
-				className="inline-flex items-center gap-1 text-sm text-base-content/50 hover:text-base-content/70"
+				className="inline-flex items-center gap-1 text-body text-base-content/50 hover:text-base-content/70"
 			>
 				<ArrowLeft className="w-4 h-4" /> Geri
 			</button>
@@ -194,7 +194,7 @@ export default function OnboardingPage() {
 			<div className="w-full max-w-md space-y-5">
 				<div className="text-center">
 					<h1 className="font-display text-2xl font-semibold text-base-content">Kagu&apos;ya hoş geldiniz</h1>
-					<p className="text-sm text-base-content/60 mt-1">
+					<p className="text-body text-base-content/60 mt-1">
 						Ofisinizin ekibini kurun veya davet edildiğiniz bir ekibe katılın.
 					</p>
 				</div>
@@ -218,12 +218,12 @@ export default function OnboardingPage() {
 
 				{!user ? (
 					<Card className="text-center space-y-3">
-						<p className="text-sm text-base-content/70">Devam etmek için giriş yapın veya hesap oluşturun.</p>
+						<p className="text-body text-base-content/70">Devam etmek için giriş yapın veya hesap oluşturun.</p>
 						<Button block onClick={() => setShowAuth(true)}>Giriş yap</Button>
 					</Card>
 				) : busy === "auto" ? (
 					<Card className="text-center">
-						<p className="text-sm text-base-content/70">Davetiniz kabul ediliyor…</p>
+						<p className="text-body text-base-content/70">Davetiniz kabul ediliyor…</p>
 					</Card>
 				) : step === "choose" ? (
 					<div className="space-y-3">
@@ -236,7 +236,7 @@ export default function OnboardingPage() {
 								<div className="font-display flex items-center gap-2 text-base-content font-semibold">
 									<Building2 className="w-5 h-5 text-primary" /> Yeni ekip kur
 								</div>
-								<p className="text-xs text-base-content/60">
+								<p className="text-label text-base-content/60">
 									Ekip sahibi olursunuz ve tüm ekibiniz için 14 günlük ücretsiz deneme başlar.
 								</p>
 							</Card>
@@ -250,7 +250,7 @@ export default function OnboardingPage() {
 								<div className="font-display flex items-center gap-2 text-base-content font-semibold">
 									<UserPlus className="w-5 h-5 text-primary" /> Mevcut bir ekibe katıl
 								</div>
-								<p className="text-xs text-base-content/60">
+								<p className="text-label text-base-content/60">
 									Size bir davet bağlantısı veya kodu mu gönderildi? Danışman olarak katılırsınız.
 								</p>
 							</Card>
@@ -310,7 +310,7 @@ export default function OnboardingPage() {
 											type="button"
 											onClick={() => setSizeBracket(b.value)}
 											className={cn(
-												"h-9 text-sm font-medium rounded-field transition-colors",
+												"h-9 text-body font-medium rounded-field transition-colors",
 												sizeBracket === b.value
 													? "bg-base-100 text-base-content"
 													: "text-base-content/60 hover:text-base-content/80",
@@ -361,7 +361,7 @@ export default function OnboardingPage() {
 				)}
 
 				{/* Footer actions: available on every step for signed-in users */}
-				<div className="flex items-center justify-center gap-4 text-xs text-base-content/50">
+				<div className="flex items-center justify-center gap-4 text-label text-base-content/50">
 					{user && busy !== "auto" && (
 						<>
 							<button

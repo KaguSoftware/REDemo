@@ -19,7 +19,7 @@ export function AuthModal({ onClose }: AuthModalProps) {
 		<button
 			onClick={() => setMode(m)}
 			className={cn(
-				"flex-1 h-9 text-sm font-semibold rounded-field transition-colors",
+				"flex-1 h-9 text-body font-semibold rounded-field transition-colors",
 				mode === m ? "bg-base-100 text-base-content" : "text-base-content/60 hover:text-base-content/80",
 			)}
 		>

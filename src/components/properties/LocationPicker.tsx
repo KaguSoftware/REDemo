@@ -30,8 +30,8 @@ class PickerErrorBoundary extends Component<{ children: ReactNode }, { failed: b
 			return (
 				<div className="h-56 sm:h-64 w-full rounded-box bg-base-200 border border-base-300 flex flex-col items-center justify-center text-center px-6">
 					<MapPinOff className="w-6 h-6 text-base-content/50 mb-2" />
-					<p className="text-sm font-semibold text-base-content/80">Harita kullanılamıyor</p>
-					<p className="text-xs text-base-content/60 mt-1">Yine de kaydedebilirsiniz — bir harita bağlantısı yapıştırın veya konumu sonra ekleyin.</p>
+					<p className="text-body font-semibold text-base-content/80">Harita kullanılamıyor</p>
+					<p className="text-label text-base-content/60 mt-1">Yine de kaydedebilirsiniz — bir harita bağlantısı yapıştırın veya konumu sonra ekleyin.</p>
 				</div>
 			);
 		}
@@ -172,7 +172,7 @@ export function LocationPicker({ value, onChange, readOnly, heightClass }: Props
 				<LocationPickerInner value={value} onPick={handlePick} heightClass={heightClass} />
 			</PickerErrorBoundary>
 
-			<p className="text-xs text-base-content/50">
+			<p className="text-label text-base-content/50">
 				Tam konumu belirlemek için haritaya dokunun veya iğneyi sürükleyin — yakındaki adres alanları otomatik doldurulur.
 			</p>
 		</div>
@@ -216,7 +216,7 @@ function StatusChip({
 	}
 	if (status.kind === "failed") {
 		return (
-			<span className="shrink-0 self-start sm:self-auto inline-flex items-center gap-2 text-xs text-warning">
+			<span className="shrink-0 self-start sm:self-auto inline-flex items-center gap-2 text-label text-warning">
 				<Badge tone="amber">
 					<MapPinOff className="w-3.5 h-3.5" />
 					Bağlantı okunamadı

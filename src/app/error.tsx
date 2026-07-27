@@ -24,8 +24,8 @@ export default function RouteError({
 				<div className="mx-auto mb-4 h-12 w-12 rounded-box bg-error/10 flex items-center justify-center">
 					<AlertTriangle className="w-6 h-6 text-error" />
 				</div>
-				<h1 className="text-lg font-bold text-base-content">Bir sorun oluştu</h1>
-				<p className="mt-2 text-sm text-base-content/60">
+				<h1 className="text-subtitle font-semibold text-base-content">Bir sorun oluştu</h1>
+				<p className="mt-2 text-body text-base-content/60">
 					Sayfa beklenmedik bir hatayla karşılaştı. Verileriniz güvende — tekrar deneyin
 					veya genel bakışa dönün.
 				</p>
@@ -33,14 +33,14 @@ export default function RouteError({
 					<button
 						type="button"
 						onClick={reset}
-						className="inline-flex items-center gap-1.5 h-10 px-4 rounded-field bg-primary text-primary-content text-sm font-semibold hover:brightness-110 transition-[filter] duration-150"
+						className="inline-flex items-center gap-1.5 h-10 px-4 rounded-field bg-primary text-primary-content text-body font-semibold hover:brightness-110 transition-[filter] duration-150"
 					>
 						<RotateCcw className="w-4 h-4" />
 						Tekrar dene
 					</button>
 					<Link
 						href="/"
-						className="inline-flex items-center h-10 px-4 rounded-box border border-base-300 text-sm font-semibold text-base-content/80 hover:bg-base-200 transition-colors"
+						className="inline-flex items-center h-10 px-4 rounded-box border border-base-300 text-body font-semibold text-base-content/80 hover:bg-base-200 transition-colors"
 					>
 						Genel bakışa dön
 					</Link>

@@ -126,13 +126,13 @@ export function PropertyGallery({ propertyId, canEdit = true }: Props) {
 							<circle cx="9" cy="9" r="2" />
 							<path d="M21 15l-5-5L5 21" />
 						</svg>
-						<p className="text-xs text-base-content/60 mb-3">Henüz fotoğraf yok.</p>
+						<p className="text-label text-base-content/60 mb-3">Henüz fotoğraf yok.</p>
 						{canEdit && (
 							<button
 								type="button"
 								onClick={() => fileRef.current?.click()}
 								disabled={uploading}
-								className="inline-flex items-center h-11 px-4 text-sm font-semibold rounded-field bg-primary text-primary-content hover:brightness-110 transition-[filter] duration-150 disabled:opacity-50"
+								className="inline-flex items-center h-11 px-4 text-body font-semibold rounded-field bg-primary text-primary-content hover:brightness-110 transition-[filter] duration-150 disabled:opacity-50"
 							>
 								{uploading ? "Yükleniyor…" : "+ Fotoğraf ekle"}
 							</button>

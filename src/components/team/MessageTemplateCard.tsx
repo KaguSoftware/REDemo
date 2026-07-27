@@ -153,7 +153,7 @@ export function MessageTemplateCard({
 			>
 				<span className="min-w-0">
 					<CardLabel>{title}</CardLabel>
-					<span className="block text-sm text-base-content/60 mt-0.5">
+					<span className="block text-body text-base-content/60 mt-0.5">
 						{description}
 						{isCustom ? " Özelleştirilmiş." : " Varsayılan kullanılıyor."}
 					</span>
@@ -168,22 +168,22 @@ export function MessageTemplateCard({
 					{error && <Alert>{error}</Alert>}
 
 					{body === null ? (
-						<p className="text-sm text-base-content/50">Yükleniyor…</p>
+						<p className="text-body text-base-content/50">Yükleniyor…</p>
 					) : (
 						<>
 							<div>
-								<p className="text-sm font-medium mb-1.5">Şablon</p>
+								<p className="text-body font-medium mb-1.5">Şablon</p>
 								<Textarea
 									ref={textareaRef}
 									value={body}
 									onChange={(e) => { setBody(e.target.value); setDirty(true); }}
 									rows={8}
-									className="font-mono text-sm"
+									className="font-mono text-body"
 								/>
 							</div>
 
 							<div>
-								<p className="text-sm font-medium mb-1.5">Kullanılabilir alanlar</p>
+								<p className="text-body font-medium mb-1.5">Kullanılabilir alanlar</p>
 								<div className="flex flex-wrap gap-1.5">
 									{MESSAGE_TOKENS.map((t) => (
 										<button
@@ -191,21 +191,21 @@ export function MessageTemplateCard({
 											type="button"
 											onClick={() => insertToken(t.token)}
 											title={t.description}
-											className="px-2 py-1 rounded-field border border-base-300 bg-base-200 text-xs font-mono hover:border-primary/40 hover:bg-base-100 transition-colors"
+											className="px-2 py-1 rounded-field border border-base-300 bg-base-200 text-label font-mono hover:border-primary/40 hover:bg-base-100 transition-colors"
 										>
 											{t.token}
 										</button>
 									))}
 								</div>
-								<p className="text-xs text-base-content/50 mt-2">
+								<p className="text-label text-base-content/50 mt-2">
 									Değeri olmayan satırlar mesaja eklenmez. Müşteri adı ve tapu
 									bilgileri hiçbir şekilde paylaşılmaz.
 								</p>
 							</div>
 
 							<div>
-								<p className="text-sm font-medium mb-1.5">Önizleme</p>
-								<pre className="rounded-box bg-base-200 border border-base-300 p-3 text-sm whitespace-pre-wrap break-words font-sans">
+								<p className="text-body font-medium mb-1.5">Önizleme</p>
+								<pre className="rounded-box bg-base-200 border border-base-300 p-3 text-body whitespace-pre-wrap break-words font-sans">
 									{preview}
 								</pre>
 							</div>

@@ -194,8 +194,8 @@ export function PropertyDashboard() {
 		>
 			{!user ? (
 				<Card className="p-10 text-center">
-					<p className="text-sm text-base-content/70">Portföyünüzü yönetmek için giriş yapın.</p>
-					<p className="text-xs text-base-content/50 mt-1">Üst çubuktaki Giriş yap düğmesini kullanın.</p>
+					<p className="text-body text-base-content/70">Portföyünüzü yönetmek için giriş yapın.</p>
+					<p className="text-label text-base-content/50 mt-1">Üst çubuktaki Giriş yap düğmesini kullanın.</p>
 				</Card>
 			) : (
 				<>

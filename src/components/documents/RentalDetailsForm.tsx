@@ -198,7 +198,7 @@ export function RentalDetailsForm({ state, onChange, errors = {} }: Props) {
 		<div className="space-y-8">
 			{/* A — Landlord */}
 			<section className="space-y-4">
-				<h3 className="text-sm font-semibold text-base-content/60">
+				<h3 className="text-body font-semibold text-base-content/60">
 					A — Kiraya Veren
 				</h3>
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -230,7 +230,7 @@ export function RentalDetailsForm({ state, onChange, errors = {} }: Props) {
 
 			{/* B — Tenant */}
 			<section className="space-y-4">
-				<h3 className="text-sm font-semibold text-base-content/60">
+				<h3 className="text-body font-semibold text-base-content/60">
 					B — Kiracı
 				</h3>
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -258,16 +258,16 @@ export function RentalDetailsForm({ state, onChange, errors = {} }: Props) {
 				<FormField label="E-posta">
 					<EmailInput value={state.tenantEmail} onChange={(v) => onChange("tenantEmail", v)} />
 				</FormField>
-				<p className="text-xs text-base-content/50">Kiracı için en az bir e-posta veya telefon girin.</p>
+				<p className="text-label text-base-content/50">Kiracı için en az bir e-posta veya telefon girin.</p>
 			</section>
 
 			{/* C — Guarantor (optional) */}
 			<section className="space-y-4">
 				<div className="flex items-center justify-between">
-					<h3 className="text-sm font-semibold text-base-content/60">
+					<h3 className="text-body font-semibold text-base-content/60">
 						C — Kefil
 					</h3>
-					<label className="flex items-center gap-2 text-sm text-base-content/70">
+					<label className="flex items-center gap-2 text-body text-base-content/70">
 						<input
 							type="checkbox"
 							checked={state.guarantorEnabled}
@@ -304,7 +304,7 @@ export function RentalDetailsForm({ state, onChange, errors = {} }: Props) {
 
 			{/* E — Lease & term */}
 			<section className="space-y-4">
-				<h3 className="text-sm font-semibold text-base-content/60">
+				<h3 className="text-body font-semibold text-base-content/60">
 					Kira ve Süre
 				</h3>
 				<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -327,7 +327,7 @@ export function RentalDetailsForm({ state, onChange, errors = {} }: Props) {
 					</FormField>
 				</div>
 				{overCap && (
-					<div className="rounded-box bg-warning/10 border border-warning/30 p-3.5 text-sm text-warning">
+					<div className="rounded-box bg-warning/10 border border-warning/30 p-3.5 text-body text-warning">
 						<span className="font-bold">Uyarı:</span> Depozito üç aylık kira bedelini aşıyor.
 						TBK m.342 uyarınca güvence bedeli üç aylık kirayı geçemez. Devam edebilirsiniz, ancak değeri gözden geçirin.
 					</div>
@@ -347,7 +347,7 @@ export function RentalDetailsForm({ state, onChange, errors = {} }: Props) {
 
 			{/* F — Utilities */}
 			<section className="space-y-4">
-				<h3 className="text-sm font-semibold text-base-content/60">
+				<h3 className="text-body font-semibold text-base-content/60">
 					Abonelikler
 				</h3>
 				<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -362,13 +362,13 @@ export function RentalDetailsForm({ state, onChange, errors = {} }: Props) {
 			{/* G — Inventory */}
 			<section className="space-y-4">
 				<div className="flex items-center justify-between">
-					<h3 className="text-sm font-semibold text-base-content/60">
+					<h3 className="text-body font-semibold text-base-content/60">
 						Demirbaş Listesi
 					</h3>
 					<Button type="button" variant="ghost" onClick={addInventoryRow}>+ Satır ekle</Button>
 				</div>
 				{state.inventory.length === 0 ? (
-					<p className="text-xs text-base-content/50">Demirbaş eklemek için “Satır ekle”ye basın (mobilya, beyaz eşya, anahtar, sayaç vb.).</p>
+					<p className="text-label text-base-content/50">Demirbaş eklemek için “Satır ekle”ye basın (mobilya, beyaz eşya, anahtar, sayaç vb.).</p>
 				) : (
 					<div className="space-y-2">
 						{state.inventory.map((row, idx) => (
@@ -403,7 +403,7 @@ export function RentalDetailsForm({ state, onChange, errors = {} }: Props) {
 
 			{/* Misc clauses */}
 			<section className="space-y-4">
-				<h3 className="text-sm font-semibold text-base-content/60">
+				<h3 className="text-body font-semibold text-base-content/60">
 					Diğer Şartlar
 				</h3>
 				<FormField label="Alt Kiraya Verme">

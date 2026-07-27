@@ -181,17 +181,17 @@ export function PortfolioAnalytics() {
 			<div className="mt-5">
 				<div className="flex items-center gap-1.5 mb-2">
 					<Building2 className="w-3.5 h-3.5 text-base-content/50" />
-					<p className="text-xs font-semibold text-base-content/60">Dikkat gereken taşınmazlar</p>
+					<p className="text-label font-semibold text-base-content/60">Dikkat gereken taşınmazlar</p>
 				</div>
 				{attentionRows.length === 0 ? (
-					<p className="text-sm text-base-content/50">Portföyünüz sağlıklı görünüyor ✓</p>
+					<p className="text-body text-base-content/50">Portföyünüz sağlıklı görünüyor ✓</p>
 				) : (
 					<ul className="divide-y divide-base-300 rounded-box border border-base-300 overflow-hidden">
 						{attentionRows.map((row) => (
 							<li key={row.id}>
 								<Link
 									href={`/properties/${row.id}`}
-									className="flex flex-wrap items-center gap-x-3 gap-y-1.5 px-3 py-2.5 text-sm hover:bg-base-200 transition-colors"
+									className="flex flex-wrap items-center gap-x-3 gap-y-1.5 px-3 py-2.5 text-body hover:bg-base-200 transition-colors"
 								>
 									<span className="font-medium text-base-content truncate min-w-0 flex-1 basis-full sm:basis-0">
 										{row.address_line}
@@ -226,7 +226,7 @@ function Meter({
 	return (
 		<div>
 			<div className="flex items-baseline justify-between mb-1.5">
-				<p className="text-xs font-semibold text-base-content/55">{label}</p>
+				<p className="text-label font-semibold text-base-content/55">{label}</p>
 				<p className={`font-display text-base font-semibold ${danger ? "text-warning" : "text-base-content"}`}>{pct(ratio)}</p>
 			</div>
 			<div className="h-2 rounded-full bg-base-200 overflow-hidden" role="meter" aria-valuenow={Math.round(ratio * 100)} aria-valuemin={0} aria-valuemax={100} aria-label={label}>
@@ -235,7 +235,7 @@ function Meter({
 					style={{ width: `${Math.round(ratio * 100)}%` }}
 				/>
 			</div>
-			<p className="text-xs text-base-content/60 mt-1.5">{caption}</p>
+			<p className="text-label text-base-content/60 mt-1.5">{caption}</p>
 		</div>
 	);
 }

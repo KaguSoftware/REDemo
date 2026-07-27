@@ -46,7 +46,7 @@ export function TrialBanner({ serverNow }: { serverNow: number }) {
 
 	if (!team.is_writable) {
 		return (
-			<div className="sticky top-0 z-40 bg-error text-error-content text-sm px-4 py-2 flex items-center justify-center gap-2 text-center">
+			<div className="sticky top-0 z-40 bg-error text-error-content text-body px-4 py-2 flex items-center justify-center gap-2 text-center">
 				<Lock className="w-4 h-4 shrink-0" />
 				<span>
 					{onTrial ? "Ücretsiz denemeniz sona erdi" : "Aboneliğiniz etkin değil"} — çalışma
@@ -65,7 +65,7 @@ export function TrialBanner({ serverNow }: { serverNow: number }) {
 
 	if (onTrial && daysLeft <= 3) {
 		return (
-			<div className="sticky top-0 z-40 bg-warning text-warning-content text-sm px-4 py-2 flex items-center justify-center gap-2 text-center">
+			<div className="sticky top-0 z-40 bg-warning text-warning-content text-body px-4 py-2 flex items-center justify-center gap-2 text-center">
 				<TriangleAlert className="w-4 h-4 shrink-0" />
 				<span>
 					{daysLeft <= 0

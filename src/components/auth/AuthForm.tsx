@@ -182,7 +182,7 @@ export function AuthForm({ mode, next, standalone = true, onClose }: AuthFormPro
 	return (
 		<div className="space-y-4">
 			{inviteTeam && (
-				<div className="rounded-box bg-primary/10 border border-primary/20 px-4 py-3 text-sm text-base-content/80">
+				<div className="rounded-box bg-primary/10 border border-primary/20 px-4 py-3 text-body text-base-content/80">
 					<span className="font-semibold">{inviteTeam}</span> ekibine katılmaya davet edildiniz.
 					{mode === "signup" ? " Kabul etmek için hesabınızı oluşturun." : " Kabul etmek için giriş yapın."}
 				</div>
@@ -203,18 +203,18 @@ export function AuthForm({ mode, next, standalone = true, onClose }: AuthFormPro
 						<Button type="submit" block loading={status === "loading"}>Giriş yap</Button>
 						<div className="text-center space-x-3">
 							<button type="button" onClick={() => setSignInMode("magic")}
-								className="text-sm text-base-content/50 hover:text-base-content/70 underline underline-offset-2">
+								className="text-body text-base-content/50 hover:text-base-content/70 underline underline-offset-2">
 								Giriş bağlantısı gönder
 							</button>
 							<button type="button" onClick={() => { setSignInMode("forgot"); setStatus("idle"); setErrorMsg(""); }}
-								className="text-sm text-base-content/50 hover:text-base-content/70 underline underline-offset-2">
+								className="text-body text-base-content/50 hover:text-base-content/70 underline underline-offset-2">
 								Şifrenizi mi unuttunuz?
 							</button>
 						</div>
 					</form>
 				) : signInMode === "magic" ? (
 					<form onSubmit={handleMagicLink} className="space-y-4">
-						<p className="text-sm text-base-content/60">
+						<p className="text-body text-base-content/60">
 							E-posta adresinizi girin, size bir giriş bağlantısı gönderelim — şifre gerekmez.
 						</p>
 						<FormField label="E-posta adresi">
@@ -224,14 +224,14 @@ export function AuthForm({ mode, next, standalone = true, onClose }: AuthFormPro
 						<Button type="submit" block loading={status === "loading"}>Giriş bağlantısı gönder</Button>
 						<div className="text-center">
 							<button type="button" onClick={() => setSignInMode("password")}
-								className="text-sm text-base-content/50 hover:text-base-content/70 underline underline-offset-2">
+								className="text-body text-base-content/50 hover:text-base-content/70 underline underline-offset-2">
 								Şifreyle girişe dön
 							</button>
 						</div>
 					</form>
 				) : (
 					<form onSubmit={handleForgot} className="space-y-4">
-						<p className="text-sm text-base-content/60">
+						<p className="text-body text-base-content/60">
 							E-posta adresinizi girin, şifrenizi sıfırlamanız için size bir bağlantı gönderelim.
 						</p>
 						<FormField label="E-posta adresi">
@@ -241,7 +241,7 @@ export function AuthForm({ mode, next, standalone = true, onClose }: AuthFormPro
 						<Button type="submit" block loading={status === "loading"}>Sıfırlama bağlantısı gönder</Button>
 						<div className="text-center">
 							<button type="button" onClick={() => setSignInMode("password")}
-								className="text-sm text-base-content/50 hover:text-base-content/70 underline underline-offset-2">
+								className="text-body text-base-content/50 hover:text-base-content/70 underline underline-offset-2">
 								Şifreyle girişe dön
 							</button>
 						</div>
@@ -258,7 +258,7 @@ export function AuthForm({ mode, next, standalone = true, onClose }: AuthFormPro
 					<FormField label="Şifre tekrarı">
 						<Input type="password" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="••••••••" />
 					</FormField>
-					<label className="flex items-start gap-2.5 text-sm text-base-content/70 cursor-pointer">
+					<label className="flex items-start gap-2.5 text-body text-base-content/70 cursor-pointer">
 						<input
 							type="checkbox"
 							checked={acceptedTerms}
@@ -277,7 +277,7 @@ export function AuthForm({ mode, next, standalone = true, onClose }: AuthFormPro
 			)}
 
 			{standalone && !doneScreen && (
-				<p className="text-center text-sm text-base-content/60">
+				<p className="text-center text-body text-base-content/60">
 					{mode === "login" ? (
 						<>Kagu&apos;da yeni misiniz?{" "}
 							<Link href="/signup" className="text-primary font-medium hover:underline">Hesap oluşturun</Link>

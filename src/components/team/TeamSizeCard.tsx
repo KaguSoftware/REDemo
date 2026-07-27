@@ -53,7 +53,7 @@ export function TeamSizeCard() {
 	return (
 		<Card>
 			<CardLabel>Ekip boyutu</CardLabel>
-			<p className="text-xs text-base-content/60 mt-1">
+			<p className="text-label text-base-content/60 mt-1">
 				Kagu&apos;yu kaç kişinin kullandığı. Yalnızca bilgi amaçlıdır; abonelik veya
 				üye sınırını etkilemez.
 			</p>
@@ -66,7 +66,7 @@ export function TeamSizeCard() {
 						disabled={busy}
 						onClick={() => { if (b.value !== current) setPending(b.value); }}
 						className={cn(
-							"h-9 text-sm font-medium rounded-field transition-colors",
+							"h-9 text-body font-medium rounded-field transition-colors",
 							b.value === current
 								? "bg-base-100 text-base-content"
 								: "text-base-content/60 hover:text-base-content/80",

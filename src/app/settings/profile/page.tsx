@@ -170,7 +170,7 @@ export default function ProfileSettingsPage() {
 							<p className="font-display text-xl sm:text-2xl font-semibold text-base-content truncate leading-tight">
 								{displayName || "İsimsiz kullanıcı"}
 							</p>
-							<p className="text-sm text-base-content/60 truncate">{profile?.email}</p>
+							<p className="text-body text-base-content/60 truncate">{profile?.email}</p>
 							<div className="mt-1.5 flex items-center gap-1">
 								<input ref={avatarFileRef} type="file" accept="image/png,image/jpeg" className="hidden" onChange={onPickAvatar} />
 								<Button variant="ghost" size="sm" loading={avatarBusy} onClick={() => avatarFileRef.current?.click()}>
@@ -243,8 +243,8 @@ export default function ProfileSettingsPage() {
 						<CardLabel className="text-error/90">Tehlikeli bölge</CardLabel>
 						<div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 							<div>
-								<p className="text-sm font-semibold text-base-content">Hesabımı sil</p>
-								<p className="mt-0.5 text-sm text-base-content/60">
+								<p className="text-body font-semibold text-base-content">Hesabımı sil</p>
+								<p className="mt-0.5 text-body text-base-content/60">
 									Hesabınızı kalıcı olarak siler. Bu işlem geri alınamaz.
 									{isOwner && " Ekip sahibi olduğunuz için önce ekibi silmeniz veya sahipliği devretmeniz gerekir (Ekip sayfasından)."}
 								</p>

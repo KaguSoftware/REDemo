@@ -239,7 +239,7 @@ export function PropertyFilters() {
 				>
 					<SlidersHorizontal className="w-4 h-4" />
 					{activeCount > 0 && (
-						<span className="absolute -top-1 -right-1 h-5 min-w-5 px-1 rounded-full bg-primary text-primary-content text-xs font-bold flex items-center justify-center">
+						<span className="absolute -top-1 -right-1 h-5 min-w-5 px-1 rounded-full bg-primary text-primary-content text-label font-bold flex items-center justify-center">
 							{activeCount}
 						</span>
 					)}

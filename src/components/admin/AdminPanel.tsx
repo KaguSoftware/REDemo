@@ -68,7 +68,7 @@ export function AdminPanel() {
 		);
 	}
 
-	const headerCls = "text-left px-4 py-3 text-xs font-semibold text-base-content/50";
+	const headerCls = "text-left px-4 py-3 text-label font-semibold text-base-content/50";
 
 	return (
 		<AppShell title="Yönetim · Kullanıcılar" subtitle="Tüm kullanıcıların rollerini değiştirin">
@@ -92,8 +92,8 @@ export function AdminPanel() {
 							{users.map((user) => (
 								<li key={user.id} className="p-4 space-y-2">
 									<div className="min-w-0">
-										<p className="text-sm font-semibold text-base-content truncate">{user.email}</p>
-										<p className="text-xs text-base-content/50 mt-0.5">
+										<p className="text-body font-semibold text-base-content truncate">{user.email}</p>
+										<p className="text-label text-base-content/50 mt-0.5">
 											{user.display_name ?? "—"} · katılım {formatDate(user.created_at)}
 										</p>
 									</div>
@@ -104,7 +104,7 @@ export function AdminPanel() {
 
 						{/* Desktop: table */}
 						<div className="hidden sm:block overflow-x-auto">
-							<table className="w-full min-w-140 text-sm">
+							<table className="w-full min-w-140 text-body">
 								<thead>
 									<tr className="border-b border-base-300 bg-base-200/60">
 										<th className={headerCls}>E-posta</th>
@@ -116,10 +116,10 @@ export function AdminPanel() {
 								<tbody>
 									{users.map((user) => (
 										<tr key={user.id} className="border-b border-base-300 last:border-0 hover:bg-base-200 transition-colors">
-											<td className="px-4 py-3 text-sm text-base-content/80 max-w-50 truncate">{user.email}</td>
-											<td className="px-4 py-3 text-sm text-base-content/60">{user.display_name ?? "—"}</td>
+											<td className="px-4 py-3 text-body text-base-content/80 max-w-50 truncate">{user.email}</td>
+											<td className="px-4 py-3 text-body text-base-content/60">{user.display_name ?? "—"}</td>
 											<td className="px-4 py-3">{roleSelect(user)}</td>
-											<td className="px-4 py-3 text-sm text-base-content/50 hidden md:table-cell whitespace-nowrap">
+											<td className="px-4 py-3 text-body text-base-content/50 hidden md:table-cell whitespace-nowrap">
 												{formatDate(user.created_at)}
 											</td>
 										</tr>

@@ -169,7 +169,7 @@ export function Sidebar() {
 												else itemRefs.current.delete(href);
 											}}
 											className={cn(
-												"group flex items-center gap-3 h-11 pl-10 pr-3 text-sm transition-colors duration-150",
+												"group flex items-center gap-3 h-11 pl-10 pr-3 text-body transition-colors duration-150",
 												active
 													? "text-white font-semibold"
 													: "font-medium text-white/55 hover:text-white",
@@ -195,7 +195,7 @@ export function Sidebar() {
 			{/* Footer: identity (theme toggle lives next to the workspace name) */}
 			<div className="px-3 pb-4 pt-3 border-t border-white/10 space-y-2">
 				<div className="flex items-center gap-2.5 rounded-box bg-white/5 px-2.5 py-2">
-					<span className="h-8 w-8 shrink-0 rounded-full bg-primary text-primary-content flex items-center justify-center text-xs font-bold uppercase select-none overflow-hidden">
+					<span className="h-8 w-8 shrink-0 rounded-full bg-primary text-primary-content flex items-center justify-center text-label font-bold uppercase select-none overflow-hidden">
 						{avatarUrl ? (
 							// eslint-disable-next-line @next/next/no-img-element
 							<img src={avatarUrl} alt="Profil fotoğrafı" className="h-full w-full object-cover" />
@@ -203,7 +203,7 @@ export function Sidebar() {
 							user.email.charAt(0)
 						)}
 					</span>
-					<p className="min-w-0 flex-1 text-xs font-medium text-white/70 truncate">{user.email}</p>
+					<p className="min-w-0 flex-1 text-label font-medium text-white/70 truncate">{user.email}</p>
 					<button
 						onClick={handleSignOut}
 						title="Çıkış yap"

@@ -11,7 +11,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 		<div className="min-h-dvh bg-base-200 flex flex-col">
 			<header className="safe-top border-b border-base-300 bg-base-100/80 backdrop-blur sticky top-0 z-30">
 				<div className="mx-auto max-w-6xl safe-x flex items-center justify-between h-16">
-					<Link href="/" className="font-display flex items-center gap-2.5 text-lg font-semibold text-base-content">
+					<Link href="/" className="font-display flex items-center gap-2.5 text-subtitle font-semibold text-base-content">
 						<span className="h-8 w-8 rounded-box bg-primary text-primary-content flex items-center justify-center">
 							<Building2 className="w-4.5 h-4.5" />
 						</span>
@@ -20,13 +20,13 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 					<nav className="flex items-center gap-2">
 						<Link
 							href="/login"
-							className="px-4 h-10 inline-flex items-center rounded-box text-sm font-semibold text-base-content/80 hover:bg-base-200 transition-colors"
+							className="px-4 h-10 inline-flex items-center rounded-box text-body font-semibold text-base-content/80 hover:bg-base-200 transition-colors"
 						>
 							Giriş yap
 						</Link>
 						<Link
 							href="/signup"
-							className="px-4 h-10 inline-flex items-center rounded-box text-sm font-semibold bg-primary text-primary-content hover:brightness-110 active:scale-[0.98] transition-[filter,transform]"
+							className="px-4 h-10 inline-flex items-center rounded-box text-body font-semibold bg-primary text-primary-content hover:brightness-110 active:scale-[0.98] transition-[filter,transform]"
 						>
 							Ücretsiz deneyin
 						</Link>
@@ -37,7 +37,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 			<main className="flex-1">{children}</main>
 
 			<footer className="border-t border-base-300 bg-base-100">
-				<div className="mx-auto max-w-6xl safe-x py-8 safe-bottom flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-base-content/60">
+				<div className="mx-auto max-w-6xl safe-x py-8 safe-bottom flex flex-col sm:flex-row items-center justify-between gap-4 text-body text-base-content/60">
 					<p>© {new Date().getFullYear()} Kagu Emlak. Tüm hakları saklıdır.</p>
 					<nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
 						<Link href="/kullanim-kosullari" className="hover:text-base-content transition-colors">

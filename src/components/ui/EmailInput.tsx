@@ -55,7 +55,7 @@ export const EmailInput = React.forwardRef<HTMLInputElement, EmailInputProps>(fu
 				{...rest}
 			/>
 			{error && !rest["aria-describedby"] && (
-				<p className="mt-1 text-xs font-medium text-error">{error}</p>
+				<p className="mt-1 text-label font-medium text-error">{error}</p>
 			)}
 		</div>
 	);

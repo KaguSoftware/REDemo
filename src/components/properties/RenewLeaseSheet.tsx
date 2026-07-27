@@ -85,7 +85,7 @@ export function RenewLeaseSheet({ open, lease, onClose, onRenewed }: Props) {
 			}
 		>
 			<div className="space-y-5">
-				<p className="text-sm text-base-content/70">
+				<p className="text-body text-base-content/70">
 					<span className="font-semibold">{lease.tenant.full_name}</span> ile mevcut kira sözleşmesi
 					yeni başlangıç tarihinde sona erer ve aşağıdaki koşullarla yenisi başlar. Ödeme geçmişi korunur.
 				</p>

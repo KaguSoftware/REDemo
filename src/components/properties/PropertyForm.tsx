@@ -382,7 +382,7 @@ export function PropertyForm({ mode, initial, onDone, onCancel, defaultProjectId
 
 			{/* Address — Turkish parts */}
 			<div className="space-y-4 p-4 rounded-box bg-base-200 border border-base-300">
-				<p className="text-sm font-semibold text-base-content/60">Adres</p>
+				<p className="text-body font-semibold text-base-content/60">Adres</p>
 
 				{/* Location — paste a maps link or tap/drag the pin. Reverse-geocoded
 				    address parts autofill the empty fields below. */}
@@ -418,7 +418,7 @@ export function PropertyForm({ mode, initial, onDone, onCancel, defaultProjectId
 				</div>
 
 				{addressPreview && (
-					<p className="text-xs text-base-content/60">
+					<p className="text-label text-base-content/60">
 						<span className="font-semibold text-base-content/50 mr-2">Önizleme</span>
 						{addressPreview}{city ? `, ${city}` : ""}
 					</p>
@@ -495,8 +495,8 @@ export function PropertyForm({ mode, initial, onDone, onCancel, defaultProjectId
 			{/* Tapu Bilgileri (title deed) — used by the sales agreement PDF. */}
 			<div className="space-y-4 p-4 rounded-box bg-base-200 border border-base-300">
 				<div>
-					<p className="text-sm font-semibold text-base-content/60">Tapu Bilgileri</p>
-					<p className="text-xs text-base-content/50 mt-0.5">Tapu bilgileri — Satış Sözleşmesi PDF&apos;ine eklenir (isteğe bağlı).</p>
+					<p className="text-body font-semibold text-base-content/60">Tapu Bilgileri</p>
+					<p className="text-label text-base-content/50 mt-0.5">Tapu bilgileri — Satış Sözleşmesi PDF&apos;ine eklenir (isteğe bağlı).</p>
 				</div>
 				<div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
 					<FormField label="Niteliği">

@@ -41,8 +41,8 @@ export function Pagination({ page, pageCount, total, pageSize, onPageChange, cla
 	const to = Math.min(page * pageSize, total);
 
 	return (
-		<div className={`flex items-center justify-between gap-3 px-1 py-3 text-sm ${className ?? ""}`}>
-			<span className="text-xs text-base-content/50">
+		<div className={`flex items-center justify-between gap-3 px-1 py-3 text-body ${className ?? ""}`}>
+			<span className="text-label text-base-content/50">
 				{from}–{to} · toplam {total}
 			</span>
 			<div className="flex items-center gap-1">
@@ -55,7 +55,7 @@ export function Pagination({ page, pageCount, total, pageSize, onPageChange, cla
 				>
 					<ChevronLeft className="w-4 h-4" />
 				</button>
-				<span className="text-xs font-medium text-base-content/70 tabular-nums px-1">
+				<span className="text-label font-medium text-base-content/70 tabular-nums px-1">
 					{page} / {pageCount}
 				</span>
 				<button

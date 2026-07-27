@@ -171,14 +171,14 @@ export function ClauseTemplatesCard() {
 			</button>
 
 			{!expanded && (
-				<p className="text-xs text-base-content/60 mt-1">
+				<p className="text-label text-base-content/60 mt-1">
 					Sözleşmelerinizin standart maddelerini düzenlemek için genişletin.
 				</p>
 			)}
 
 			{expanded && (
 			<div id={bodyId}>
-			<p className="text-xs text-base-content/60 mt-1">
+			<p className="text-label text-base-content/60 mt-1">
 				Sözleşmelerinizin standart maddelerini ofisinize göre düzenleyin. Süslü parantezli
 				alanlar (ör. <code className="font-mono text-micro">{"{monthly_rent}"}</code>) belge
 				oluşturulurken gerçek değerlerle doldurulur. Değişiklikler yalnızca yeni belgeleri etkiler.
@@ -205,7 +205,7 @@ export function ClauseTemplatesCard() {
 						aria-selected={tab === k}
 						onClick={() => setTab(k)}
 						className={cn(
-							"px-3 h-9 rounded-field text-sm font-medium transition-colors",
+							"px-3 h-9 rounded-field text-body font-medium transition-colors",
 							tab === k
 								? "bg-base-100 text-base-content shadow-sm"
 								: "text-base-content/60 hover:text-base-content",
@@ -218,7 +218,7 @@ export function ClauseTemplatesCard() {
 			</div>
 
 			{clauses === null ? (
-				<p className="mt-4 text-sm text-base-content/50">Maddeler yükleniyor…</p>
+				<p className="mt-4 text-body text-base-content/50">Maddeler yükleniyor…</p>
 			) : (
 				<>
 					<ol className="mt-4 space-y-3">
@@ -226,7 +226,7 @@ export function ClauseTemplatesCard() {
 							const unknown = findUnknownTokens(tab, clause);
 							return (
 								<li key={i} className="flex gap-2">
-									<span className="w-7 pt-2.5 text-right text-xs font-bold tabular-nums text-base-content/40 shrink-0">
+									<span className="w-7 pt-2.5 text-right text-label font-bold tabular-nums text-base-content/40 shrink-0">
 										{i + 1}.
 									</span>
 									<div className="flex-1 min-w-0">
@@ -244,7 +244,7 @@ export function ClauseTemplatesCard() {
 											aria-label={`Madde ${i + 1}`}
 										/>
 										{unknown.length > 0 && (
-											<p className="mt-1 text-xs text-warning">
+											<p className="mt-1 text-label text-warning">
 												Bilinmeyen alan: {unknown.map((t) => `{${t}}`).join(", ")} — bu alanlar
 												belgede olduğu gibi görünür.
 											</p>
@@ -272,7 +272,7 @@ export function ClauseTemplatesCard() {
 
 					{/* Placeholder chip legend */}
 					<div className="mt-5">
-						<p className="text-xs font-semibold text-base-content/70 mb-2">
+						<p className="text-label font-semibold text-base-content/70 mb-2">
 							Doldurulabilir alanlar — eklemek için tıklayın
 						</p>
 						<div className="flex flex-wrap gap-1.5">

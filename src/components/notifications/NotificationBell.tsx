@@ -106,17 +106,17 @@ export function NotificationBell() {
 										<Icon className="w-4 h-4" />
 									</span>
 									<div className="min-w-0">
-										<p className="text-sm font-semibold text-base-content">{n.title}</p>
-										{n.body && <p className="text-sm text-base-content/60">{n.body}</p>}
+										<p className="text-body font-semibold text-base-content">{n.title}</p>
+										{n.body && <p className="text-body text-base-content/60">{n.body}</p>}
 										{n.href && (
 											<a
 												href={n.href}
-												className="inline-block mt-1 text-sm font-semibold text-primary underline underline-offset-2"
+												className="inline-block mt-1 text-body font-semibold text-primary underline underline-offset-2"
 											>
 												{n.type === "team_invite" ? "Daveti görüntüle" : "Görüntüle"}
 											</a>
 										)}
-										<p className="text-xs text-base-content/50 mt-0.5">{timeAgo(n.created_at)}</p>
+										<p className="text-label text-base-content/50 mt-0.5">{timeAgo(n.created_at)}</p>
 									</div>
 								</li>
 							);
