@@ -11,6 +11,7 @@ import { AppShell, Card, CardLabel, Badge, Skeleton, SkeletonGroup, type BadgeTo
 import { AttentionPanel } from "@/src/components/properties/AttentionPanel";
 import { DashboardStats } from "@/src/components/properties/DashboardStats";
 import { PortfolioAnalytics } from "./PortfolioAnalytics";
+import { NewsFeed } from "./NewsFeed";
 import { CommissionSummary } from "@/src/components/sales/CommissionSummary";
 import { LEAD_STATUS_META } from "@/src/components/leads/leadStatus";
 import { fmtMoney } from "@/src/lib/format";
@@ -100,6 +101,10 @@ export function HomeDashboard() {
 						<CommissionSummary />
 					</div>
 					<PortfolioAnalytics />
+
+					{/* Market headlines. Own cache key, own failure mode — nothing
+					    above or below it waits on the feeds. */}
+					<NewsFeed />
 
 					{/* Quick actions */}
 					<div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">

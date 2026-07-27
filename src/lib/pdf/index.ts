@@ -47,38 +47,20 @@ export async function exportToPDF(
 	filename: string,
 	branding?: PdfBranding,
 ) {
+	const { shareOrDownloadFile } = await import("../downloadFile");
 	const file = await generatePdfFile(kind, data, filename, branding);
-	await downloadPdfFile(file);
+	await shareOrDownloadFile(file);
 }
 
-/** Hand a rendered PDF to the user: native share sheet on mobile, download otherwise. */
-export async function downloadPdfFile(file: File) {
-	const safeFilename = file.name;
-	const blob = file;
-
-	// On iOS/mobile, use the Web Share API (triggers the native "Save to Files" sheet).
-	const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-	const isMobile = isIOS || /Android/i.test(navigator.userAgent);
-
-	if (isMobile && "canShare" in navigator && navigator.canShare({ files: [file] })) {
-		try {
-			await navigator.share({ files: [file], title: safeFilename });
-			return;
-		} catch (e) {
-			if ((e as DOMException).name === "AbortError") return;
-			// otherwise fall through to anchor click
-		}
-	}
-
-	const url = URL.createObjectURL(blob);
-	const link = document.createElement("a");
-	link.href = url;
-	link.download = safeFilename;
-	document.body.appendChild(link);
-	link.click();
-	document.body.removeChild(link);
-	setTimeout(() => URL.revokeObjectURL(url), 5_000);
-}
+/**
+ * Hand a rendered PDF to the user: native share sheet on mobile, download
+ * otherwise.
+ *
+ * The implementation moved to lib/downloadFile.ts — it was never PDF-specific,
+ * and the social media image needs the same behaviour. Re-exported under the
+ * old name so existing callers are unchanged.
+ */
+export { shareOrDownloadFile as downloadPdfFile } from "../downloadFile";
 
 /** Download a file that already lives at a URL (e.g. a Supabase signed URL for a
  *  stored PDF) without navigating the user. Fetching to a blob and clicking a

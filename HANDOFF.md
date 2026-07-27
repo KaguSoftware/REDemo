@@ -47,8 +47,108 @@ daisyUI 5 · Supabase (Postgres + RLS on every table, magic-link auth, Storage) 
   layout must stay free of `cookies()`/`headers()`.
 - A refined zod schema (`.refine()`) has no `.partial()`. Export an unrefined base
   and a separate patch schema — see `leadInputObject` / `leadPatchSchema`.
+- **A new property column touches 9 layers**, and `parseInput` strips unknown
+  keys — so a field missing from `propertyInputSchema` **silently never
+  persists**. Follow `is_new_build` / `citizenship_eligible` end to end.
+- **Booleans that mean "unknown" are nullable tri-states** (`furnished`,
+  `citizenship_eligible`) rendered as three-option `Dropdown`s — there is no
+  Checkbox in `src/components/ui`. Compare with `===`, never truthiness.
+- **Predicates over dates take `todayISO` as a parameter**, never call
+  `new Date()` internally — that is what keeps `filterProperties` and
+  `classifyInsurance` deterministic under test. ISO dates compare correctly
+  with `<` / `>=`, so no `Date` need be constructed at all.
 
 ## Current status
+
+### 🏗️ FIELD-NOTES BUILD (2026-07-27) — uncommitted on `main`, **migrations 0031 + 0032 NOT applied**, not driven in a browser
+Green: `typecheck`, `lint` (0 errors; the one warning is pre-existing, in `promo/`),
+`npm test` (**203 passed**, 21 files — 4 new), `npm run build` (static/dynamic split
+unchanged: the legal pages, `/signup`, `/settings/*`, `/team`, `/onboarding` are all
+still `○`).
+
+Four features decoded from a real-estate source's mixed Turkish/Farsi/English note:
+`bime zelzele` (Farsi, *earthquake insurance*) · `vatandaşlık boolean` ·
+`social media` · `news feed`.
+
+**1. Property insurance** — a `property_insurance` **child table**, not a
+`dask_policy_no`/`dask_expiry_date` column pair. Six kinds (`dask`, `konut`,
+`isyeri`, `kira_kaybi`, `hayat`, `diger`); DASK is the mandatory one and gets
+visual priority everywhere. Edited from a **Sigortalar card on the property
+detail page**, not from `PropertyForm` — cover is rarely known when a property
+is first added.
+⚠️ **There is no API to look a policy up by number.** SBM (Sigorta Bilgi ve
+Gözetim Merkezi) is Turkey's only central registry and is gated behind
+licensed-insurer membership; the e-Devlet DASK screen is citizen-self-service.
+So entry is manual but cheap: `insurer` is a `Combobox` over `TURKISH_INSURERS`
+(the `TURKEY_PROVINCES` pattern), and **`end_date` auto-fills to `start_date` +
+1 year** — but only when it is blank, so a typed value is never overwritten.
+`external_ref` + `source` ship unused; an integration later needs **no migration
+and no UI change**.
+
+Two places count waves rather than queries, per the ONE RULE: the policies ride
+into `listProperties` **and** `getProperty` as embedded selects, so the
+Sigortalar card is seeded from the detail page's own response
+(`InsuranceCard` takes `initial` and refetches only after a mutation). Letting
+that card fetch on mount would have been a second ~330ms wave **serialised**
+behind the first, because it only mounts once the page resolves.
+
+**2. Policy expiry reminders** — a *fourth* query **inside `getAttentionData`'s
+existing `Promise.all`** (~12ms, not a round-trip), a new `insuranceWarnDays`
+threshold, and a fifth block in `run_work_checks()`. One code path covers every
+policy kind, which the column-pair design could not have done.
+
+**3. Social media image** — `renderStoryImage()` draws a 1080×1350 post or
+1080×1920 story on a **plain `<canvas>`. Zero new dependencies.** Delivered
+through the same `navigator.share` path the PDF already used. Caption is a
+second `message_templates` kind (`social_caption`), team-editable in the
+existing card on `/team`.
+
+**4. Market news** — `/api/news` fetches a **hard-coded allowlist** of three
+Turkish RSS feeds in one `Promise.all`, cached 30 min. Rendered as a dashboard
+card between `PortfolioAnalytics` and the quick actions.
+⚠️ **No RSS dependency was added.** The plan called for `fast-xml-parser`;
+`parseFeed.ts` handles the three things that actually break naive parsers
+(CDATA, Atom's `href` *attribute* on a self-closing `<link/>`, HTML entities) in
+~90 tested lines, so the package was not worth it. **All three feeds were
+probed live on 2026-07-27** (emlakkulisi 50 items, AA 30, NTV 20) and the parser
+was run against their real output. AA serves UTF-8 **with a BOM and no charset
+parameter** — `Response.text()` handles both per spec.
+
+⚠️ **THE RULES THIS PASS ADDS**
+- **"No DASK" and "expired DASK" are different answers.** The first office must
+  buy cover; the second only has to renew. `filterProperties`' `dask_missing`
+  therefore checks for the *absence of a row*, never for a lapsed date. Pinned
+  by tests in `clientFilters.test.ts`.
+- **`citizenship_eligible` is a stored tri-state, not a price comparison** — see
+  the reversal below.
+- **A shared `href` silently dedupes notifications.** `run_work_checks()` keys
+  repeat-suppression on `(user, type, href)`, and every policy on a unit shares
+  `/properties/<id>`. The insurance block appends **`#sigorta-<kind>`** so a DASK
+  and a konut policy expiring in the same month produce two notifications, not
+  one. (The quiet-leads block solves the same problem with a `body LIKE`.)
+- **`CREATE OR REPLACE FUNCTION` re-grants EXECUTE to `PUBLIC`** — i.e. it
+  reopens the exact hole [0030](supabase/migrations/0030_revoke_sweep_execute.sql)
+  closed. 0031 replaces `run_work_checks()` and therefore **re-runs the
+  `REVOKE … FROM PUBLIC` + `GRANT … TO service_role` at the end**. Any future
+  migration that touches a sweep function must do the same.
+- **A cross-origin image taints a canvas** and `toBlob()` then throws
+  `SecurityError`. The story image loads photos through the existing
+  `toDataUrl()` — a `data:` URL cannot taint. This would have failed *only in
+  production*, where photos come from the Supabase CDN.
+- **`next/font` mints a hashed family name**, so `ctx.font = "700 64px Geist"`
+  silently falls back to a system face and every `measureText()` is wrong. The
+  family is read off `getComputedStyle(document.body)` instead.
+
+**↩️ One prior decision reversed.** The scope ledger used to say the $400k
+vatandaşlık threshold "needs no schema — it's a saved budget filter." That was
+wrong. Eligibility requires an SPK-licensed appraisal at or above the threshold,
+no prior sale to a foreigner for citizenship, and a 3-year no-sale şerh on the
+tapu. `list_price >= 400000` cannot answer it; only a human assessment can,
+which is exactly why the source wrote *boolean*.
+
+**⚠️ Nothing here has been applied to the database or clicked in a browser.**
+`0031` and `0032` are written and idempotent but **not pushed**. See Roadmap
+step 1.
 
 ### ✨ FLASH PASS (2026-07-27) — uncommitted on `main`, no migration, NOT yet driven in a browser
 Green: `typecheck`, `lint` (0 errors; the one warning is pre-existing, in `promo/`),
@@ -224,8 +324,10 @@ property, reusing the existing `PropertyListing` section. Wired to a
 work notifications (overdue rent, expiring lease, quiet lead, project delivery)
 swept daily; commission & earnings reporting on the dashboard.
 
-✅ **All migrations are applied** — remote history in sync at 0001–0030
-(verified 2026-07-20 via `supabase migration list --linked`).
+✅ **Migrations 0001–0030 are applied** — remote history verified in sync
+2026-07-20 via `supabase migration list --linked`.
+⚠️ **0031 and 0032 are written but NOT applied** (2026-07-27) — see Roadmap
+step 0.
 ✅ **`run_work_checks()` idempotency verified on the live database**: first run
 inserted 4, second inserted 0.
 ✅ **Both cron sweeps verified blocked for the anon key** (SQLSTATE 42501) and
@@ -271,9 +373,55 @@ compile-time confidence only.
 | [src/lib/db/teamContext.ts](src/lib/db/teamContext.ts) | `TeamContext` + `TEAM_CONTEXT_SELECT` + `mapTeamContextRow`, with no Supabase client bound — so server and client build identical objects |
 | [src/components/ui/skeletons.tsx](src/components/ui/skeletons.tsx) | `StatsSkeleton` · `TableSkeleton` · `CardListSkeleton` · `DetailSkeleton` · `PageSkeleton`. Keep their geometry in sync with the real components |
 | [src/components/ui/RouteLoading.tsx](src/components/ui/RouteLoading.tsx) | `loading.tsx` shell — renders the real AppShell so the chrome never blanks. Pass the route's own title/subtitle/width |
+| [supabase/migrations/0031_insurance_and_citizenship.sql](supabase/migrations/0031_insurance_and_citizenship.sql) | **NOT APPLIED.** `property_insurance` + RLS + team guard, `properties.citizenship_eligible`, `insurance_expiring` notifications. **Re-revokes `run_work_checks()` from PUBLIC** |
+| [supabase/migrations/0032_social_caption_template.sql](supabase/migrations/0032_social_caption_template.sql) | **NOT APPLIED.** Widens `message_templates.kind` to allow `social_caption` |
+| [src/lib/insurance.ts](src/lib/insurance.ts) | Kind labels, `TURKISH_INSURERS`, `policyState`, `isoDaysFrom`, and **`INSURANCE_WARN_DAYS` — the single source of truth** shared by the filter, the attention feed and the SQL sweep |
+| [src/lib/db/propertyInsurance.ts](src/lib/db/propertyInsurance.ts) | Policy CRUD + `oneYearLater()` (UTC, clamps 29 Feb to 28 Feb like an insurer does) |
+| [src/components/properties/InsuranceCard.tsx](src/components/properties/InsuranceCard.tsx) | The Sigortalar card + its edit sheet. Calls out the DASK state separately — an empty list otherwise says nothing about the mandatory policy |
+| [src/components/properties/PropertyFlags.tsx](src/components/properties/PropertyFlags.tsx) | Row badges. **Deliberately quiet**: a valid DASK and an unassessed citizenship status render nothing, so the missing-DASK warning still cuts through |
+| [src/lib/share/storyLines.ts](src/lib/share/storyLines.ts) | The **pure**, testable half of the social image — a canvas can't be asserted on, this can, and this is where the field whitelist lives |
+| [src/lib/share/storyImage.ts](src/lib/share/storyImage.ts) | The canvas renderer. Takes `ShareableProperty`, never `Property` |
+| [src/lib/downloadFile.ts](src/lib/downloadFile.ts) | `shareOrDownloadFile()` — moved out of `pdf/index.ts` (it was never PDF-specific); re-exported there as `downloadPdfFile` so no caller changed |
+| [src/lib/news/sources.ts](src/lib/news/sources.ts) | **The RSS allowlist. A caller-supplied URL here would be an SSRF hole** — adding a source means editing this file |
+| [src/lib/news/parseFeed.ts](src/lib/news/parseFeed.ts) | RSS + Atom parser, no dependency. Drops non-`http(s)` links so a hostile feed can't plant a `javascript:` href |
+| [src/components/dashboard/NewsFeed.tsx](src/components/dashboard/NewsFeed.tsx) | The news card. Own cache key, own failure mode — nothing else on the dashboard waits on it |
 
 ## Roadmap / next steps
-1. **← ACTIVE: verify the flash pass in a browser.** Sign in as a real user in a
+
+0. **← ACTIVE: apply 0031 + 0032, then click through the field-notes build.**
+   - `npx supabase db push --dry-run --linked` first, and confirm the printed
+     list contains **only** 0031 and 0032 (Gotchas explains why this matters).
+   - **Insurance**: on one property add a DASK ending in 10 days and a konut
+     ending in a year. Both appear in Sigortalar, DASK in amber. Filter
+     *Sigorta: yakında bitiyor* → present; *DASK yok* → absent. Now **delete**
+     the DASK and re-check *DASK yok* → present. An **expired** DASK must read
+     as "süresi doldu", never as "yok". A konut-only property must not satisfy
+     *DASK geçerli*. Type "anadolu" in the insurer box → *Anadolu Sigorta*; type
+     a firm not on the list → it still saves. Enter a start date → end fills to
+     +1 year and stays editable; enter one on a policy that already has an end
+     date → **the existing end date is not overwritten**.
+   - **Vatandaşlık**: set it explicitly to *Uygun değil* and confirm it stays
+     distinguishable from never-assessed in the filter, the form and the detail
+     `<dl>` (the tri-state, and the easiest thing to get wrong).
+   - **Cross-team guard**: insert a policy whose `team_id` doesn't own its
+     `property_id` → the trigger must reject it.
+   - **Sweep**: `select public.run_work_checks();` twice → second call inserts
+     **0**. Give one unit two policies expiring the same month → **two**
+     notifications, not one. Then call it with the **anon** key (must fail,
+     SQLSTATE 42501) and with `service_role` (must succeed) — 0031 replaced the
+     function, so this proves the PUBLIC grant was closed again.
+   - **Social image**, on a real phone: Görsel → the native share sheet offers
+     Instagram. Then a property with **no photo** (falls back, does not throw),
+     and one whose `homeowner_name` and `ada_no` are filled — **neither string
+     may appear on the image**. Check the type is Geist, not a fallback face.
+     Confirm the existing *Paylaş* PDF path is unchanged.
+   - **News**: throttle to Slow 4G and hard-reload `/` — the card shows its
+     **skeleton**, never "no news", and the rest of the dashboard does not wait
+     on it. Point one source at a dead host → the other two still render.
+   - **CLS target 0** on `/` and `/properties`: slices 1 and 4 both add
+     above-the-fold content, which is exactly what regresses it.
+
+1. **Verify the flash pass in a browser.** Sign in as a real user in a
    **fresh incognito window**, then:
    - DevTools → Network → **Slow 4G**, hard-reload `/properties`. The sidebar and
      header must be correct in the *first* frame; skeleton rows fill with data
@@ -368,10 +516,21 @@ existing data.
 | Currency list | Hard-coded TRY/USD/EUR in four components (`LeadForm`, `PropertyFilters`, `ProjectForm`, + store default) | Shared constant — worth extracting now that it appears 4× | next touch |
 | Projects on dashboard | Not surfaced in the needs-attention feed or KPIs | Delivery-date reminders, project-level stats | later |
 | Parked note items | Not built, by design (source said "just keep them in mind") | Commission link/rate per satış office, KDV + document-ready flags, pre-payment terms, short-vs-long-term rent, finance tracker | after Phases 1–3 land in real use |
+| Insurance | 6 kinds, manual entry; `external_ref`/`source` reserved but unused | (a) attach the policy PDF via the existing documents/storage path instead of re-keying it; (b) an SBM or partner-agency lookup that fills the row from a policy number — writes `external_ref` + `source='import'`, **needs no migration** | (a) next touch · (b) only if an agency partnership happens |
+| Policy renewal | Reminder only | One-tap "yeniledim" that clones the policy with both dates +1 year | after real use |
+| Vatandaşlık | One tri-state flag | SPK appraisal value + date, şerh status, prior-foreign-sale check | after real use |
+| Social image | Post 4:5 + story 9:16, cover photo only, caption copied by hand | Multi-photo carousel, per-office logo placement control, direct Instagram Graph API publish | when agents hit the limit |
+| News feed | 3 fixed sources, headlines only | Team-configurable sources, per-city filtering, save-for-later | later |
 
-Note: the $400k vatandaşlık threshold needs **no schema** — it's a saved budget
-filter once Phase 1 is live. Commission fields already exist on `sales`
-(`buyer_commission_rate`, `seller_commission_rate`).
+Note: commission fields already exist on `sales` (`buyer_commission_rate`,
+`seller_commission_rate`).
+
+~~The $400k vatandaşlık threshold needs no schema — it's a saved budget
+filter.~~ **Reversed 2026-07-27.** Eligibility is not `list_price >= 400000`: it
+needs an SPK-licensed appraisal at or above the threshold, no prior sale to a
+foreigner for citizenship, and a 3-year no-sale şerh on the tapu. A price
+comparison cannot answer it. It is now `properties.citizenship_eligible`, a
+stored tri-state assessment — see [types.ts](src/lib/db/types.ts).
 
 ## Gotchas / open issues
 - **In new migrations use `gen_random_uuid()`, not `uuid_generate_v4()`.**
@@ -384,6 +543,20 @@ filter once Phase 1 is live. Commission fields already exist on `sales`
   roles inherit through it. Always `REVOKE … FROM PUBLIC, anon, authenticated`
   then `GRANT` back to `service_role` — see
   [0030](supabase/migrations/0030_revoke_sweep_execute.sql).
+  ⚠️ **This includes `CREATE OR REPLACE`, not just `CREATE`.** Replacing a
+  function re-grants EXECUTE to PUBLIC and silently reopens the hole. 0031
+  replaces `run_work_checks()` and re-runs the revoke+grant at the end; any
+  future migration touching a sweep function must do the same.
+- **Adding a `NotificationType` means changing three places at once**: the DB
+  `notifications_type_check`, the TS union in `lib/db/notifications.ts`, and the
+  exhaustive `ICONS` record in `NotificationBell.tsx`. The TS side breaks
+  typecheck (good); the DB side fails the insert **silently inside the definer
+  function** (not good), so a missed CHECK looks like "the sweep found nothing".
+- **`run_work_checks()` dedupes on `(user_id, type, href)`** within a 30-day
+  quiet window. Any new notification whose href is shared across several
+  distinct items needs a disambiguator or it will mute all but the first — the
+  insurance block appends `#sigorta-<kind>`, the quiet-leads block uses
+  `body LIKE`.
 - **⚠️ Live data-loss bug: call history is stored in `leads.notes`.**
   `markCalledToday` ([ContactTable.tsx:92-105](src/components/contacts/ContactTable.tsx#L92-L105))
   prepends `[tarih] Arandı.` into the free-text `notes` column, but `LeadForm`
@@ -420,7 +593,7 @@ filter once Phase 1 is live. Commission fields already exist on `sales`
 npm install
 npm run dev        # http://localhost:3000
 npm run build      # production build
-npm test           # vitest (85 tests)
+npm test           # vitest (203 tests, 21 files)
 npm run typecheck  # tsc --noEmit
 npm run lint       # eslint
 ```

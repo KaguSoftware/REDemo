@@ -2,7 +2,13 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAppStore, type FurnishedFilter, type NewBuildFilter } from "@/src/store";
+import {
+	useAppStore,
+	type FurnishedFilter,
+	type NewBuildFilter,
+	type CitizenshipFilter,
+	type InsuranceFilter,
+} from "@/src/store";
 import { Input, Dropdown, Button, Sheet, FormField, MultiSelect, NumberInput, cn, type DropdownOption } from "@/src/components/ui";
 import type { ListingType, PropertyStatus } from "@/src/lib/db/types";
 import { SlidersHorizontal, Search, Plus } from "lucide-react";
@@ -30,6 +36,22 @@ const NEW_BUILD_OPTIONS: DropdownOption<NewBuildFilter>[] = [
 	{ value: "all", label: "Tümü" },
 	{ value: "yes", label: "Sıfır" },
 	{ value: "no", label: "İkinci el" },
+];
+
+const CITIZENSHIP_OPTIONS: DropdownOption<CitizenshipFilter>[] = [
+	{ value: "all", label: "Tümü" },
+	{ value: "yes", label: "Uygun" },
+	{ value: "no", label: "Uygun değil" },
+];
+
+// "DASK yok" deliberately excludes properties whose DASK has merely LAPSED —
+// those need a renewal, not a new policy, and they show up under "Yakında
+// bitiyor" instead.
+const INSURANCE_OPTIONS: DropdownOption<InsuranceFilter>[] = [
+	{ value: "all", label: "Tümü" },
+	{ value: "dask_missing", label: "DASK yok" },
+	{ value: "dask_valid", label: "DASK geçerli" },
+	{ value: "expiring", label: "Yakında bitiyor" },
 ];
 
 // Rentals are quoted in TRY, sales commonly in USD. Prices are never
@@ -83,6 +105,8 @@ export function PropertyFilters() {
 		(filters.furnished !== "all" ? 1 : 0) +
 		(filters.location.length > 0 ? 1 : 0) +
 		(filters.new_build !== "all" ? 1 : 0) +
+		(filters.citizenship !== "all" ? 1 : 0) +
+		(filters.insurance !== "all" ? 1 : 0) +
 		// A budget range counts once regardless of how many bounds are set.
 		(hasBudget ? 1 : 0);
 	const hasActiveFilter = activeCount > 0 || filters.q !== "";
@@ -136,6 +160,18 @@ export function PropertyFilters() {
 				<Dropdown options={NEW_BUILD_OPTIONS}
 					value={filters.new_build}
 					onChange={(v) => setFilter("new_build", v)}
+					className={stacked ? "" : "sm:w-auto"} />
+			</FieldWrap>
+			<FieldWrap stacked={stacked} label="Sigorta">
+				<Dropdown options={INSURANCE_OPTIONS}
+					value={filters.insurance}
+					onChange={(v) => setFilter("insurance", v)}
+					className={stacked ? "" : "sm:w-auto"} />
+			</FieldWrap>
+			<FieldWrap stacked={stacked} label="Vatandaşlık">
+				<Dropdown options={CITIZENSHIP_OPTIONS}
+					value={filters.citizenship}
+					onChange={(v) => setFilter("citizenship", v)}
 					className={stacked ? "" : "sm:w-auto"} />
 			</FieldWrap>
 			<FieldWrap stacked={stacked} label="Bütçe">

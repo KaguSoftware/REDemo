@@ -6,7 +6,7 @@
 import { requireTeamId } from "./teams";
 import { requireUser } from "./requireUser";
 
-export type MessageTemplateKind = "whatsapp_property";
+export type MessageTemplateKind = "whatsapp_property" | "social_caption";
 
 
 /** The team's saved template, or null when the built-in default applies. */

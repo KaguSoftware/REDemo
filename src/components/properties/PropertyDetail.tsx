@@ -27,8 +27,10 @@ import { PropertyForm } from "./PropertyForm";
 import { LeaseEditSheet } from "./LeaseEditSheet";
 import { RenewLeaseSheet } from "./RenewLeaseSheet";
 import { MatchingLeads } from "./MatchingLeads";
+import { InsuranceCard } from "./InsuranceCard";
 import { LocationPicker } from "./LocationPicker";
-import { Pencil, Plus, RefreshCw, Share2, ChevronDown, CheckCircle2, XCircle, History, ExternalLink, Lock, PenLine } from "lucide-react";
+import { Pencil, Plus, RefreshCw, Share2, ChevronDown, CheckCircle2, XCircle, History, ExternalLink, Lock, PenLine, Image as ImageIcon } from "lucide-react";
+import { SocialShareSheet } from "./SocialShareSheet";
 
 /** Current calendar month as ISO period bounds (first → last day). */
 function currentMonthPeriod(): { start: string; end: string } {
@@ -76,6 +78,7 @@ export function PropertyDetail({ propertyId }: Props) {
 	const [error, setError] = useState<string | null>(null);
 	const [editing, setEditing] = useState(false);
 	const [sharing, setSharing] = useState(false);
+	const [socialOpen, setSocialOpen] = useState(false);
 	const [editingLease, setEditingLease] = useState(false);
 	const [renewingLease, setRenewingLease] = useState(false);
 	// Which confirmation is open, and whether its action is running.
@@ -268,6 +271,11 @@ export function PropertyDetail({ propertyId }: Props) {
 									{!sharing && <Share2 className="w-4 h-4" />}
 									{sharing ? "Hazırlanıyor…" : "Paylaş"}
 								</Button>
+								<Button size="sm" variant="ghost" onClick={() => setSocialOpen(true)}
+									title="Instagram gönderisi veya hikayesi için kare/dikey görsel oluşturur">
+									<ImageIcon className="w-4 h-4" />
+									Görsel
+								</Button>
 								<Button size="sm" variant="ghost" onClick={() => setEditing(true)}>
 									<Pencil className="w-4 h-4" />
 									Düzenle
@@ -292,6 +300,14 @@ export function PropertyDetail({ propertyId }: Props) {
 							<Field label="İlan" value={data.listing_type === "for_rent" ? "Kiralık" : "Satılık"} />
 							<Field label="Durum" value={STATUS_LABEL[data.status]} />
 							<Field label="Liste fiyatı" value={data.list_price != null ? fmtMoney(data.list_price, data.currency) : "—"} wide />
+							{/* Only shown once someone has actually assessed it — an
+							    unassessed property must not read as "uygun değil". */}
+							{data.citizenship_eligible != null && (
+								<Field
+									label="Vatandaşlığa uygunluk"
+									value={data.citizenship_eligible ? "Uygun" : "Uygun değil"}
+								/>
+							)}
 							{data.notes && <Field label="Notlar" value={data.notes} wide multiline />}
 						</dl>
 					)}
@@ -467,6 +483,12 @@ export function PropertyDetail({ propertyId }: Props) {
 			)}
 
 			{/* Clients whose preferences match this property */}
+			{/* Insurance — DASK is mandatory, so its state is surfaced on the page
+			    rather than hidden behind an edit form. */}
+			<div className="mt-4 sm:mt-5">
+				<InsuranceCard propertyId={data.id} initial={data.insurance} />
+			</div>
+
 			<MatchingLeads property={data} />
 
 			{/* Payments — full width */}
@@ -517,6 +539,27 @@ export function PropertyDetail({ propertyId }: Props) {
 							}
 						/>
 					)}
+				/>
+			)}
+
+			{/* Social image sheet. Only the whitelisted fields are handed over —
+			    never `data` — so a public post can't carry the homeowner's name
+			    or the tapu identifiers. */}
+			{socialOpen && (
+				<SocialShareSheet
+					property={{
+						id: data.id,
+						address_line: data.address_line,
+						city: data.city,
+						nitelik: data.nitelik,
+						size_sqm: data.size_sqm,
+						bedrooms: data.bedrooms,
+						bathrooms: data.bathrooms,
+						listing_type: data.listing_type,
+						list_price: data.list_price,
+						currency: data.currency,
+					}}
+					onClose={() => setSocialOpen(false)}
 				/>
 			)}
 

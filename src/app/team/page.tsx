@@ -29,6 +29,7 @@ import { getSiteUrl } from "@/src/lib/siteUrl";
 import { BrandingCard } from "@/src/components/team/BrandingCard";
 import { ClauseTemplatesCard } from "@/src/components/team/ClauseTemplatesCard";
 import { MessageTemplateCard } from "@/src/components/team/MessageTemplateCard";
+import { DEFAULT_SOCIAL_CAPTION } from "@/src/lib/share/storyLines";
 import { TeamSizeCard } from "@/src/components/team/TeamSizeCard";
 import { TeamDangerZone } from "@/src/components/team/TeamDangerZone";
 
@@ -191,6 +192,17 @@ export default function TeamPage() {
 						<ClauseTemplatesCard />
 
 						<MessageTemplateCard />
+
+						{/* Same card, second kind: the caption an agent copies under
+						    an Instagram post. No client name in the preview — a post
+						    is addressed to nobody. */}
+						<MessageTemplateCard
+							kind="social_caption"
+							title="Sosyal medya açıklaması"
+							description="Instagram gönderisiyle birlikte kopyalanan metin."
+							defaultTemplate={DEFAULT_SOCIAL_CAPTION}
+							previewRecipient={null}
+						/>
 
 						<Card>
 							<CardLabel>E-posta ile davet et</CardLabel>

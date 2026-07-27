@@ -1,6 +1,21 @@
 import { describe, it, expect } from "vitest";
 import { filterProperties } from "./clientFilters";
-import type { Property } from "./db/types";
+import type { Property, InsuranceSummary } from "./db/types";
+
+const TODAY = "2026-07-27";
+const HORIZON = "2026-08-26"; // TODAY + 30 days
+
+function policy(over: Partial<InsuranceSummary> = {}): InsuranceSummary {
+	return {
+		id: "i1", kind: "dask", end_date: "2027-01-01", policy_no: null, insurer: null,
+		...over,
+	};
+}
+
+/** A property carrying policies — the shape listProperties() now returns. */
+function insured(policies: InsuranceSummary[], over: Partial<Property> = {}) {
+	return { ...prop(over), insurance: policies };
+}
 
 function prop(over: Partial<Property> = {}): Property {
 	return {
@@ -10,7 +25,7 @@ function prop(over: Partial<Property> = {}): Property {
 		listing_type: "for_sale", status: "vacant", list_price: 1_000_000, currency: "TRY",
 		notes: null, nitelik: "Mesken", ada_no: null, parsel_no: null,
 		mahalle: "Caddebostan", mevkii: null, latitude: null, longitude: null,
-		project_id: null, is_new_build: false,
+		project_id: null, is_new_build: false, citizenship_eligible: null,
 		created_at: "2026-01-01", updated_at: "2026-01-01",
 		...over,
 	} as Property;
@@ -149,9 +164,90 @@ describe("filterProperties", () => {
 		expect(filterProperties(rows, {})).toHaveLength(3);
 	});
 
+	it("distinguishes citizenship_eligible false from unset", () => {
+		// Same tri-state rule as furnished. "Assessed and not eligible" is a real
+		// answer an agent recorded; "never assessed" is the absence of one.
+		const rows = [
+			prop({ id: "yes", citizenship_eligible: true }),
+			prop({ id: "no", citizenship_eligible: false }),
+			prop({ id: "unassessed", citizenship_eligible: null }),
+		];
+		expect(filterProperties(rows, { citizenship_eligible: true }).map((p) => p.id)).toEqual(["yes"]);
+		expect(filterProperties(rows, { citizenship_eligible: false }).map((p) => p.id)).toEqual(["no"]);
+		expect(filterProperties(rows, {})).toHaveLength(3);
+	});
+
 	it("does not mutate the input array", () => {
 		const rows = [prop({ id: "a", status: "sold" }), prop({ id: "b" })];
 		filterProperties(rows, { status: "vacant" });
 		expect(rows).toHaveLength(2);
+	});
+});
+
+describe("filterProperties — insurance", () => {
+	it("treats a missing DASK and an expired DASK as different answers", () => {
+		// THE trap. An expired policy is not an absent one: the first office needs
+		// a renewal, the second needs to buy cover. Collapsing them sends an agent
+		// down the wrong path, and "dask_missing" is what drives the warning badge.
+		const rows = [
+			insured([], { id: "none" }),
+			insured([policy({ end_date: "2025-01-01" })], { id: "expired" }),
+			insured([policy({ end_date: "2027-01-01" })], { id: "valid" }),
+		];
+		expect(filterProperties(rows, { insurance: "dask_missing", todayISO: TODAY }).map((p) => p.id))
+			.toEqual(["none"]);
+		expect(filterProperties(rows, { insurance: "dask_valid", todayISO: TODAY }).map((p) => p.id))
+			.toEqual(["valid"]);
+	});
+
+	it("does not accept a konut policy as DASK cover", () => {
+		// DASK is the legally mandatory one; a broader konut policy is not a
+		// substitute at the tapu office.
+		const rows = [
+			insured([policy({ kind: "konut", end_date: "2027-01-01" })], { id: "konutOnly" }),
+			insured([policy({ kind: "dask", end_date: "2027-01-01" })], { id: "hasDask" }),
+		];
+		expect(filterProperties(rows, { insurance: "dask_valid", todayISO: TODAY }).map((p) => p.id))
+			.toEqual(["hasDask"]);
+		expect(filterProperties(rows, { insurance: "dask_missing", todayISO: TODAY }).map((p) => p.id))
+			.toEqual(["konutOnly"]);
+	});
+
+	it("counts an already-lapsed policy as expiring, and any kind of policy", () => {
+		const rows = [
+			insured([policy({ end_date: "2025-01-01" })], { id: "lapsed" }),
+			insured([policy({ end_date: "2026-08-10" })], { id: "soon" }),
+			insured([policy({ kind: "kira_kaybi", end_date: "2026-08-01" })], { id: "kiraKaybiSoon" }),
+			insured([policy({ end_date: "2027-01-01" })], { id: "fine" }),
+			insured([], { id: "none" }),
+		];
+		expect(
+			filterProperties(rows, {
+				insurance: "expiring", todayISO: TODAY, insuranceHorizonISO: HORIZON,
+			}).map((p) => p.id),
+		).toEqual(["lapsed", "soon", "kiraKaybiSoon"]);
+	});
+
+	it("keeps a property whose OTHER policy is expiring", () => {
+		// The predicate is "any policy needs attention", not "all of them do".
+		const rows = [
+			insured(
+				[policy({ id: "a", end_date: "2027-01-01" }), policy({ id: "b", kind: "konut", end_date: "2026-08-02" })],
+				{ id: "mixed" },
+			),
+		];
+		expect(
+			filterProperties(rows, {
+				insurance: "expiring", todayISO: TODAY, insuranceHorizonISO: HORIZON,
+			}),
+		).toHaveLength(1);
+	});
+
+	it("treats a row with no embed key as having no policies", () => {
+		// PostgREST omits the embed entirely when there are no child rows. The db
+		// layer normalises it, but the predicate must not throw if it ever doesn't.
+		const rows = [prop({ id: "bare" })];
+		expect(filterProperties(rows, { insurance: "dask_missing", todayISO: TODAY })).toHaveLength(1);
+		expect(filterProperties(rows, { insurance: "dask_valid", todayISO: TODAY })).toHaveLength(0);
 	});
 });

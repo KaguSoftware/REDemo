@@ -16,7 +16,9 @@ export type NotificationType =
 	| "rent_overdue"
 	| "lease_expiring"
 	| "lead_silent"
-	| "project_delivery";
+	| "project_delivery"
+	// Insurance (0031) — any policy kind, DASK included.
+	| "insurance_expiring";
 
 export interface AppNotification {
 	id: string;

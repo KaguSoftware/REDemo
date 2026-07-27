@@ -14,8 +14,10 @@ import { humanizeError } from "@/src/lib/errors";
 import { invalidateCache, mutateCache, useCachedResource } from "@/src/lib/useCachedResource";
 import { fmtMoney } from "@/src/lib/format";
 import { Button, NumberInput, cn, toast } from "@/src/components/ui";
+import { INSURANCE_KIND_SHORT } from "@/src/lib/insurance";
 import {
 	AlertTriangle, CalendarClock, PhoneMissed, Wallet, ChevronDown, ChevronRight, Settings2,
+	ShieldAlert,
 } from "lucide-react";
 
 /**
@@ -38,7 +40,11 @@ export function AttentionPanel() {
 	const thresholds = settings ?? DEFAULT_USER_SETTINGS;
 
 	const { data } = useCachedResource(
-		user && teamReady ? `attention:${thresholds.upcomingDays}:${thresholds.leaseWarnDays}:${thresholds.leadSilentDays}` : null,
+		// Every threshold belongs in the key: they change what the queries fetch,
+		// so a key missing one would serve the previous window's rows after an edit.
+		user && teamReady
+			? `attention:${thresholds.upcomingDays}:${thresholds.leaseWarnDays}:${thresholds.leadSilentDays}:${thresholds.insuranceWarnDays}`
+			: null,
 		() => getAttentionData(thresholds),
 		undefined,
 		{ enabled: !!user && teamReady },
@@ -56,7 +62,11 @@ export function AttentionPanel() {
 		return null;
 	}
 
-	const hasUrgent = data.overduePayments.length > 0;
+	// A lapsed DASK is as urgent as unpaid rent — it is legally mandatory and it
+	// blocks a tapu transfer, so it earns the red frame too.
+	const hasUrgent =
+		data.overduePayments.length > 0 ||
+		data.expiringInsurance.some((i) => i.mandatory && i.daysLeft < 0);
 
 	return (
 		<div
@@ -155,6 +165,35 @@ export function AttentionPanel() {
 						</Section>
 					)}
 
+					{data.expiringInsurance.length > 0 && (
+						<Section
+							icon={ShieldAlert}
+							title={`${thresholds.insuranceWarnDays} gün içinde bitecek sigorta poliçeleri`}
+							// A lapsed DASK is not a warning, it is a blocker: it stops a
+							// tapu devri and utility subscriptions on the day.
+							tone={data.expiringInsurance.some((i) => i.mandatory && i.daysLeft < 0) ? "red" : "amber"}
+						>
+							{data.expiringInsurance.map((i) => (
+								<Row key={i.insuranceId} href={`/properties/${i.propertyId}#sigorta-${i.kind}`}>
+									<span className="flex-1 min-w-0 truncate">
+										{i.propertyLabel}
+										<span className="text-base-content/50"> · {INSURANCE_KIND_SHORT[i.kind]}</span>
+									</span>
+									<span
+										className={cn(
+											"whitespace-nowrap",
+											i.daysLeft < 0 ? "text-error font-semibold" : "text-base-content/60",
+										)}
+									>
+										{i.daysLeft < 0
+											? `süresi doldu (${-i.daysLeft} gün önce)`
+											: `bitiş ${i.endDate} (${i.daysLeft} gün)`}
+									</span>
+								</Row>
+							))}
+						</Section>
+					)}
+
 					{data.staleLeads.length > 0 && (
 						<Section icon={PhoneMissed} title="Takip bekleyen müşteriler" tone="amber">
 							{data.staleLeads.map((l) => (
@@ -198,11 +237,12 @@ function ThresholdEditor({ initial, onClose }: { initial: UserSettings; onClose:
 		{ key: "upcomingDays", label: "Kira vadesi yaklaşan (gün)", max: 90 },
 		{ key: "leaseWarnDays", label: "Sözleşme bitişi yaklaşan (gün)", max: 365 },
 		{ key: "leadSilentDays", label: "Müşteri sessiz kaldığında (gün)", max: 365 },
+		{ key: "insuranceWarnDays", label: "Sigorta bitişi yaklaşan (gün)", max: 365 },
 	];
 
 	return (
 		<div className="mx-4 mb-3 rounded-xl bg-base-100/80 border border-base-300 p-3">
-			<div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
 				{fields.map(({ key, label, max }) => (
 					<label key={key} className="block">
 						<span className="text-xs font-semibold text-base-content/60">{label}</span>

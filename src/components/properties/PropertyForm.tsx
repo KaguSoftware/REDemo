@@ -47,6 +47,17 @@ const FURNISHED_OPTIONS: DropdownOption<"yes" | "no" | "">[] = [
 	{ value: "no", label: "Eşyasız" },
 ];
 
+// Turkish citizenship by investment ($400k route). Tri-state on purpose:
+// "Belirtilmedi" means nobody has checked, which is NOT the same claim as
+// "Uygun değil". Eligibility needs an SPK-licensed appraisal, no prior sale to
+// a foreigner for citizenship, and a 3-year şerh — it can't be read off the
+// price, which is why an agent records the answer here.
+const CITIZENSHIP_OPTIONS: DropdownOption<"yes" | "no" | "">[] = [
+	{ value: "", label: "Belirtilmedi" },
+	{ value: "yes", label: "Uygun" },
+	{ value: "no", label: "Uygun değil" },
+];
+
 const STATUS_OPTIONS: DropdownOption<PropertyStatus>[] = [
 	{ value: "vacant", label: "Boş" },
 	{ value: "occupied", label: "Kirada" },
@@ -167,6 +178,11 @@ export function PropertyForm({ mode, initial, onDone, onCancel, defaultProjectId
 	const [projectId, setProjectId] = useState<string>(initial?.project_id ?? defaultProjectId ?? "");
 	const [isNewBuild, setIsNewBuild] = useState<boolean>(initial?.is_new_build ?? !!defaultProjectId);
 
+	// "" = not assessed, "yes"/"no" = an assessment an agent actually made.
+	const [citizenship, setCitizenship] = useState<"yes" | "no" | "">(
+		initial?.citizenship_eligible == null ? "" : initial.citizenship_eligible ? "yes" : "no",
+	);
+
 	// The project dropdown reads from the store, which is only populated once
 	// /projects has been visited — fetch on demand so a deep link still works.
 	useEffect(() => {
@@ -271,6 +287,7 @@ export function PropertyForm({ mode, initial, onDone, onCancel, defaultProjectId
 			assigned_to: assignedTo,
 			project_id: projectId || null,
 			is_new_build: isNewBuild,
+			citizenship_eligible: citizenship === "" ? null : citizenship === "yes",
 		};
 
 		// Coordinates: prefer the pin (maps link / map tap — precise and
@@ -453,6 +470,16 @@ export function PropertyForm({ mode, initial, onDone, onCancel, defaultProjectId
 						options={NEW_BUILD_OPTIONS}
 						value={isNewBuild ? "yes" : "no"}
 						onChange={(v) => setIsNewBuild(v === "yes")}
+					/>
+				</FormField>
+				<FormField
+					label="Vatandaşlığa uygunluk"
+					hint="Yabancı yatırımcı vatandaşlığı için uygun mu? Ekspertiz raporuna göre işaretleyin."
+				>
+					<Dropdown
+						options={CITIZENSHIP_OPTIONS}
+						value={citizenship}
+						onChange={setCitizenship}
 					/>
 				</FormField>
 			</div>

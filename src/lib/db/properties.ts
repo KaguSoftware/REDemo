@@ -4,6 +4,8 @@
 import type {
 	Property,
 	PropertyWithActiveLease,
+	PropertyWithInsurance,
+	PropertyInsurance,
 	PropertyStatus,
 	ListingType,
 	DocKind,
@@ -36,7 +38,16 @@ export interface PropertyFilter {
 	is_new_build?: boolean;
 	/** Units belonging to a specific construction project. */
 	project_id?: string;
+	/** Citizenship-eligible only (true) / assessed-not-eligible only (false) / any. */
+	citizenship_eligible?: boolean;
 }
+
+/**
+ * Policy columns embedded with each property row. Narrow on purpose: the list
+ * page only needs enough to decide "DASK var mı, ne zaman bitiyor" — the full
+ * policy is read separately on the detail page.
+ */
+const INSURANCE_EMBED = "insurance:property_insurance(id,kind,end_date,policy_no,insurer)";
 
 export interface PropertyInput {
 	homeowner_name: string;
@@ -62,13 +73,22 @@ export interface PropertyInput {
 	assigned_to?: string | null;
 	project_id?: string | null;
 	is_new_build?: boolean;
+	citizenship_eligible?: boolean | null;
 }
 
 
-export async function listProperties(filter: PropertyFilter = {}): Promise<Property[]> {
+export async function listProperties(
+	filter: PropertyFilter = {},
+): Promise<PropertyWithInsurance[]> {
 	const { supabase } = await requireUser();
 
-	let q = supabase.from("properties").select("*").order("updated_at", { ascending: false });
+	// The policies ride along in the SAME round-trip. An embedded select costs
+	// ~12ms on top of a query that was already happening; fetching them per row
+	// afterwards would cost a full ~330ms round-trip each.
+	let q = supabase
+		.from("properties")
+		.select(`*,${INSURANCE_EMBED}`)
+		.order("updated_at", { ascending: false });
 	if (filter.listing_type) q = q.eq("listing_type", filter.listing_type);
 	if (filter.status)       q = q.eq("status", filter.status);
 	if (filter.q && filter.q.trim()) {
@@ -89,6 +109,14 @@ export async function listProperties(filter: PropertyFilter = {}): Promise<Prope
 	if (filter.currency) q = q.eq("currency", filter.currency);
 	if (filter.is_new_build != null) q = q.eq("is_new_build", filter.is_new_build);
 	if (filter.project_id) q = q.eq("project_id", filter.project_id);
+	if (filter.citizenship_eligible != null) {
+		q = q.eq("citizenship_eligible", filter.citizenship_eligible);
+	}
+	// Insurance is deliberately NOT filtered here: the predicate ("DASK yok",
+	// "süresi doldu") is about the ABSENCE of a child row, which an embedded
+	// filter cannot express — PostgREST would drop the policies, not the
+	// property. filterProperties() in clientFilters.ts owns that comparison,
+	// over rows that are already in the browser.
 
 	const locations = (filter.location ?? []).map((l) => l.trim()).filter(Boolean);
 	if (locations.length > 0) {
@@ -99,7 +127,12 @@ export async function listProperties(filter: PropertyFilter = {}): Promise<Prope
 
 	const { data, error } = await q;
 	if (error) throw error;
-	return (data ?? []) as Property[];
+	// PostgREST omits the embed key entirely for a row with no child rows, so
+	// normalise to [] here — every consumer can then treat it as a list.
+	return (data ?? []).map((row) => ({
+		...(row as PropertyWithInsurance),
+		insurance: (row as Partial<PropertyWithInsurance>).insurance ?? [],
+	})) as PropertyWithInsurance[];
 }
 
 export async function getProperty(id: string): Promise<PropertyWithActiveLease> {
@@ -117,23 +150,34 @@ export async function getProperty(id: string): Promise<PropertyWithActiveLease> 
 	// `tenants(*)` is ambiguous and PostgREST rejects it with PGRST201. This
 	// names the tenant relationship specifically — the guarantor is a different
 	// person and must not be embedded here.
+	//
+	// The insurance policies ride along here for the same reason. Letting the
+	// Sigortalar card fetch them itself would have cost a SECOND ~330ms wave,
+	// serialised behind this one, because the card only mounts once this
+	// resolves. In the embed they are ~12ms.
 	const { data, error } = await supabase
 		.from("properties")
 		.select(
-			"*,leases(*,tenants!leases_tenant_id_fkey(*),payments(amount_due,amount_paid))",
+			"*,leases(*,tenants!leases_tenant_id_fkey(*),payments(amount_due,amount_paid))," +
+			"property_insurance(*)",
 		)
 		.eq("id", id)
 		.single();
 	if (error) throw error;
 
-	const row = data as Property & { leases?: LeaseWithEmbeds[] };
-	const { leases, ...property } = row;
+	const row = data as unknown as Property & {
+		leases?: LeaseWithEmbeds[];
+		property_insurance?: PropertyInsurance[];
+	};
+	const { leases, property_insurance, ...property } = row;
+	// PostgREST omits the key entirely when there are no child rows.
+	const insurance = property_insurance ?? [];
 
 	// The embed returns every lease for the property; the page wants the active
 	// one. Filtering here rather than in the query keeps it a single round-trip
 	// (a nested filter would need a second call to know there was no match).
 	const lease = (leases ?? []).find((l) => l.status === "active");
-	if (!lease) return { ...(property as Property), active_lease: null };
+	if (!lease) return { ...(property as Property), insurance, active_lease: null };
 
 	const { tenants, payments, ...leaseFields } = lease;
 	// Same reduction getLeaseBalance() does, over rows we already have.
@@ -143,6 +187,7 @@ export async function getProperty(id: string): Promise<PropertyWithActiveLease> 
 
 	return {
 		...(property as Property),
+		insurance,
 		active_lease: {
 			...(leaseFields as Lease),
 			tenant: tenants as Tenant,

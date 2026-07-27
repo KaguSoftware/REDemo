@@ -5,7 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useAppStore, useTeamReady } from "@/src/store";
 import { listProperties } from "@/src/lib/db/properties";
 import { filterProperties, type PropertyClientFilter } from "@/src/lib/clientFilters";
-import type { Property } from "@/src/lib/db/types";
+import type { PropertyWithInsurance } from "@/src/lib/db/types";
+import { INSURANCE_WARN_DAYS, isoDaysFrom } from "@/src/lib/insurance";
 import { useCachedResource } from "@/src/lib/useCachedResource";
 import { AppShell, Card, Alert, Button } from "@/src/components/ui";
 import { PropertyFilters } from "./PropertyFilters";
@@ -19,7 +20,7 @@ function filtersToParams(filters: {
 	listing_type: string; status: string; q: string;
 	nitelik: string[]; furnished: string; location: string[];
 	min_price: number | null; max_price: number | null; currency: string;
-	new_build: string;
+	new_build: string; citizenship: string; insurance: string;
 }): string {
 	const p = new URLSearchParams();
 	if (filters.listing_type !== "all") p.set("type", filters.listing_type);
@@ -29,6 +30,8 @@ function filtersToParams(filters: {
 	if (filters.nitelik.length) p.set("nitelik", filters.nitelik.join(","));
 	if (filters.location.length) p.set("loc", filters.location.join(","));
 	if (filters.new_build !== "all") p.set("new", filters.new_build);
+	if (filters.citizenship !== "all") p.set("vat", filters.citizenship);
+	if (filters.insurance !== "all") p.set("sigorta", filters.insurance);
 	if (filters.min_price != null) p.set("min", String(filters.min_price));
 	if (filters.max_price != null) p.set("max", String(filters.max_price));
 	// Only meaningful alongside a bound, so don't clutter the URL otherwise.
@@ -72,7 +75,12 @@ export function PropertyDashboard() {
 		const max = searchParams.get("max");
 		const cur = searchParams.get("cur");
 		const newBuild = searchParams.get("new");
-		if (!type && !status && !furnished && !q && !nitelik && !loc && !min && !max && !newBuild) return;
+		const vat = searchParams.get("vat");
+		const sigorta = searchParams.get("sigorta");
+		if (
+			!type && !status && !furnished && !q && !nitelik && !loc && !min && !max &&
+			!newBuild && !vat && !sigorta
+		) return;
 		const min_price = parsePriceParam(min);
 		const max_price = parsePriceParam(max);
 		setFilters({
@@ -86,6 +94,10 @@ export function PropertyDashboard() {
 			...(max_price != null ? { max_price } : {}),
 			...(cur && cur.length === 3 ? { currency: cur.toUpperCase() } : {}),
 			...(newBuild === "yes" || newBuild === "no" ? { new_build: newBuild } : {}),
+			...(vat === "yes" || vat === "no" ? { citizenship: vat } : {}),
+			...(sigorta === "dask_valid" || sigorta === "dask_missing" || sigorta === "expiring"
+				? { insurance: sigorta }
+				: {}),
 		});
 	}, [searchParams, setFilters]);
 
@@ -109,6 +121,13 @@ export function PropertyDashboard() {
 	// The predicate in filterProperties() mirrors listProperties()'s WHERE clause
 	// and is unit-tested against it (clientFilters.test.ts) — if the server
 	// query changes, change both.
+	// "Today" is read ONCE per mount rather than per render: the insurance
+	// predicate compares dates against it, and a value that changed every render
+	// would rebuild clientFilter and re-filter the whole list each pass. A tab
+	// left open across midnight keeps yesterday's date until the next navigation,
+	// which is the right trade for a 30-day warning window.
+	const [todayISO] = useState(() => new Date().toISOString().slice(0, 10));
+
 	const cacheKey = user && teamReady ? "properties:all" : null;
 
 	const { data: allProperties, loading, error, refetch } = useCachedResource(
@@ -132,7 +151,12 @@ export function PropertyDashboard() {
 		currency:
 			filters.min_price != null || filters.max_price != null ? filters.currency : undefined,
 		is_new_build: filters.new_build === "all" ? undefined : filters.new_build === "yes",
-	}), [filters]);
+		citizenship_eligible:
+			filters.citizenship === "all" ? undefined : filters.citizenship === "yes",
+		insurance: filters.insurance === "all" ? undefined : filters.insurance,
+		todayISO,
+		insuranceHorizonISO: isoDaysFrom(todayISO, INSURANCE_WARN_DAYS),
+	}), [filters, todayISO]);
 
 	const visible = useMemo(
 		() => (allProperties ? filterProperties(allProperties, clientFilter) : null),
@@ -148,7 +172,7 @@ export function PropertyDashboard() {
 	// derived lets React throw the stale pass away before it reaches the screen —
 	// the same pattern useCachedResource uses, and what `react-hooks/
 	// set-state-in-effect` is pointing at when it flags the effect version.
-	const [publishedRows, setPublishedRows] = useState<Property[] | null>(null);
+	const [publishedRows, setPublishedRows] = useState<PropertyWithInsurance[] | null>(null);
 	if (visible && publishedRows !== visible) {
 		setPublishedRows(visible);
 		setProperties(visible);
@@ -156,7 +180,7 @@ export function PropertyDashboard() {
 
 	// The filter bar builds its dropdown options from the UNFILTERED list, so
 	// choosing "Mesken" doesn't erase every other nitelik from the menu.
-	const [publishedAll, setPublishedAll] = useState<Property[] | null>(null);
+	const [publishedAll, setPublishedAll] = useState<PropertyWithInsurance[] | null>(null);
 	if (allProperties && publishedAll !== allProperties) {
 		setPublishedAll(allProperties);
 		setAllProperties(allProperties);

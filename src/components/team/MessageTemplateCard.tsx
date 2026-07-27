@@ -14,6 +14,7 @@ import {
 	getMessageTemplate,
 	upsertMessageTemplate,
 	deleteMessageTemplate,
+	type MessageTemplateKind,
 } from "@/src/lib/db/messageTemplates";
 import {
 	DEFAULT_PROPERTY_TEMPLATE,
@@ -36,7 +37,28 @@ const PREVIEW_PROPERTY: ShareableProperty = {
 	currency: "TRY",
 };
 
-export function MessageTemplateCard() {
+interface Props {
+	/** Which template this card edits. Defaults to the WhatsApp message. */
+	kind?: MessageTemplateKind;
+	title?: string;
+	description?: string;
+	/** The built-in wording used when the team has saved no override. */
+	defaultTemplate?: string;
+	/**
+	 * Whether the preview greets a named client. A social caption is addressed
+	 * to nobody, so {ad} must resolve to "" there or the preview lies about
+	 * what gets posted.
+	 */
+	previewRecipient?: string | null;
+}
+
+export function MessageTemplateCard({
+	kind = "whatsapp_property",
+	title = "WhatsApp mesaj şablonu",
+	description = "Taşınmaz paylaşırken hazır gelen metin.",
+	defaultTemplate = DEFAULT_PROPERTY_TEMPLATE,
+	previewRecipient = "Ahmet Bey",
+}: Props = {}) {
 	const team = useAppStore((s) => s.team);
 	const [body, setBody] = useState<string | null>(null); // null = loading
 	const [isCustom, setIsCustom] = useState(false);
@@ -52,15 +74,15 @@ export function MessageTemplateCard() {
 	useEffect(() => {
 		if (!expanded || body !== null) return;
 		let cancelled = false;
-		getMessageTemplate()
+		getMessageTemplate(kind)
 			.then((saved) => {
 				if (cancelled) return;
 				setIsCustom(saved !== null);
-				setBody(saved ?? DEFAULT_PROPERTY_TEMPLATE);
+				setBody(saved ?? defaultTemplate);
 			})
 			.catch((e) => { if (!cancelled) setError(humanizeError(e)); });
 		return () => { cancelled = true; };
-	}, [expanded, body]);
+	}, [expanded, body, kind, defaultTemplate]);
 
 	/** Insert a token at the cursor so owners don't have to type braces. */
 	function insertToken(token: string) {
@@ -82,7 +104,7 @@ export function MessageTemplateCard() {
 		setBusy(true);
 		setError(null);
 		try {
-			await upsertMessageTemplate(body);
+			await upsertMessageTemplate(body, kind);
 			setIsCustom(true);
 			setDirty(false);
 			toast.success("Mesaj şablonu kaydedildi.");
@@ -96,8 +118,8 @@ export function MessageTemplateCard() {
 	async function reset() {
 		setBusy(true);
 		try {
-			await deleteMessageTemplate();
-			setBody(DEFAULT_PROPERTY_TEMPLATE);
+			await deleteMessageTemplate(kind);
+			setBody(defaultTemplate);
 			setIsCustom(false);
 			setDirty(false);
 			setConfirmReset(false);
@@ -115,7 +137,7 @@ export function MessageTemplateCard() {
 		body !== null
 			? renderPropertyMessage(
 					PREVIEW_PROPERTY,
-					{ recipientName: "Ahmet Bey", senderName: team.name },
+					{ recipientName: previewRecipient, senderName: team.name },
 					body,
 				)
 			: "";
@@ -130,9 +152,9 @@ export function MessageTemplateCard() {
 				className="w-full flex items-center justify-between gap-3 p-6 text-left"
 			>
 				<span className="min-w-0">
-					<CardLabel>WhatsApp mesaj şablonu</CardLabel>
+					<CardLabel>{title}</CardLabel>
 					<span className="block text-sm text-base-content/60 mt-0.5">
-						Taşınmaz paylaşırken hazır gelen metin.
+						{description}
 						{isCustom ? " Özelleştirilmiş." : " Varsayılan kullanılıyor."}
 					</span>
 				</span>

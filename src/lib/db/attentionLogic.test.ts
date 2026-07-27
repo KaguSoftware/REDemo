@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
+	classifyInsurance,
 	classifyLeads,
 	classifyLeases,
 	classifyPayments,
+	type InsuranceRow,
 	type LeadRow,
 	type LeaseEndRow,
 	type PaymentRow,
@@ -109,5 +111,56 @@ describe("classifyLeads", () => {
 		const rows = [lead("recent", "2026-07-01")];
 		expect(classifyLeads(rows, NOW, 14)).toHaveLength(0);
 		expect(classifyLeads(rows, NOW, 1)).toHaveLength(1);
+	});
+});
+
+describe("classifyInsurance", () => {
+	const ins = (id: string, kind: InsuranceRow["kind"], end: string): InsuranceRow => ({
+		id,
+		kind,
+		end_date: end,
+		property_id: `prop-${id}`,
+		property: { id: `prop-${id}`, address_line: `${id} Sk. 1`, homeowner_name: "Owner" },
+	});
+
+	it("puts lapsed policies first, then DASK, then soonest", () => {
+		// Not a plain end-date sort, unlike classifyLeases. A DASK that already
+		// lapsed blocks a tapu appointment today; a konut policy ending next month
+		// is paperwork. The order has to say which is which.
+		const out = classifyInsurance(
+			[
+				ins("konutSoon", "konut", "2026-07-10"),
+				ins("daskSoon", "dask", "2026-07-20"),
+				ins("konutLapsed", "konut", "2026-06-20"),
+				ins("daskLapsed", "dask", "2026-06-01"),
+			],
+			NOW,
+		);
+		expect(out.map((i) => i.insuranceId)).toEqual([
+			"daskLapsed", "konutLapsed", "daskSoon", "konutSoon",
+		]);
+	});
+
+	it("reports negative daysLeft once a policy has lapsed", () => {
+		const out = classifyInsurance([ins("old", "dask", "2026-06-03")], NOW);
+		expect(out[0].daysLeft).toBe(-30);
+		expect(out[0].mandatory).toBe(true);
+	});
+
+	it("marks only DASK as mandatory", () => {
+		const out = classifyInsurance(
+			[ins("a", "konut", "2026-07-10"), ins("b", "kira_kaybi", "2026-07-11")],
+			NOW,
+		);
+		expect(out.every((i) => !i.mandatory)).toBe(true);
+	});
+
+	it("survives a policy whose property row is missing", () => {
+		// property_id survives the property's deletion in other feeds; don't crash.
+		const out = classifyInsurance(
+			[{ ...ins("orphan", "dask", "2026-07-10"), property: null }],
+			NOW,
+		);
+		expect(out[0].propertyLabel).toBe("Bilinmeyen taşınmaz");
 	});
 });

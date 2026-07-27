@@ -13,6 +13,12 @@ const userSettingsSchema = z.object({
 		.catch(DEFAULT_ATTENTION_THRESHOLDS.leaseWarnDays),
 	leadSilentDays: z.number().int().min(1).max(365)
 		.catch(DEFAULT_ATTENTION_THRESHOLDS.leadSilentDays),
+	// Absent on every profile row written before migration 0031, so it must have
+	// a default rather than only a .catch() — a missing key fails `safeParse`
+	// outright and would reset the user's other three thresholds with it.
+	insuranceWarnDays: z.number().int().min(1).max(365)
+		.catch(DEFAULT_ATTENTION_THRESHOLDS.insuranceWarnDays)
+		.default(DEFAULT_ATTENTION_THRESHOLDS.insuranceWarnDays),
 });
 
 export type UserSettings = z.infer<typeof userSettingsSchema>;

@@ -56,8 +56,67 @@ export interface Property {
 	/** New-build vs. second-hand. Independent of project_id — a new build may
 	 *  be recorded without a project row. */
 	is_new_build: boolean;
+	/**
+	 * Turkish citizenship-by-investment eligibility ($400k route).
+	 * NULL = not assessed; true = assessed eligible; false = assessed not eligible.
+	 *
+	 * Deliberately NOT derived from list_price. Eligibility needs an
+	 * SPK-licensed appraisal at or above the threshold, no prior sale to a
+	 * foreigner for citizenship, and a 3-year no-sale şerh on the tapu — a price
+	 * comparison cannot answer it, only a human assessment can.
+	 */
+	citizenship_eligible: boolean | null;
 	created_at: string;
 	updated_at: string;
+}
+
+/** Property-insurance kinds that exist in the Turkish market. */
+export type InsuranceKind =
+	| "dask"        // Zorunlu Deprem Sigortası — legally mandatory
+	| "konut"       // Konut sigortası (fire, water, theft)
+	| "isyeri"      // İşyeri sigortası
+	| "kira_kaybi"  // Kira kaybı / kiracı güvence
+	| "hayat"       // Kredi hayat sigortası
+	| "diger";
+
+/**
+ * One insurance policy on a property. A unit can carry several at once (a DASK
+ * and a konut policy), and each renews annually, which is why this is a table
+ * and not a pair of columns on `properties`.
+ *
+ * DASK matters most: it is mandatory, and a missing or lapsed policy blocks a
+ * tapu transfer and blocks electricity/water subscriptions.
+ */
+export interface PropertyInsurance {
+	id: string;
+	team_id: string;
+	property_id: string;
+	created_by: string | null;
+	kind: InsuranceKind;
+	insurer: string | null;
+	policy_no: string | null;
+	start_date: string | null;
+	/** NOT NULL in the DB — the reminder sweep has nothing to work with otherwise. */
+	end_date: string;
+	premium: number | null;
+	currency: string;
+	notes: string | null;
+	/** Reserved for a future SBM / partner-agency lookup; unused today. */
+	external_ref: string | null;
+	source: "manual" | "import";
+	created_at: string;
+	updated_at: string;
+}
+
+/** The subset of policy columns embedded in the property list query. */
+export type InsuranceSummary = Pick<
+	PropertyInsurance,
+	"id" | "kind" | "end_date" | "policy_no" | "insurer"
+>;
+
+/** A property row carrying its embedded policies (see listProperties). */
+export interface PropertyWithInsurance extends Property {
+	insurance: InsuranceSummary[];
 }
 
 /**
@@ -219,6 +278,9 @@ export interface LeaseBalance {
 }
 
 export interface PropertyWithActiveLease extends Property {
+	/** Every policy on the unit, embedded by getProperty so the Sigortalar card
+	 *  paints without a second round-trip. */
+	insurance: PropertyInsurance[];
 	active_lease:
 		| (Lease & {
 				tenant: Tenant;

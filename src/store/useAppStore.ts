@@ -1,5 +1,7 @@
 import { create } from "zustand";
-import type { Property, PropertyStatus, ListingType, Lead, LeadStatus, Project } from "@/src/lib/db/types";
+import type {
+	Property, PropertyWithInsurance, PropertyStatus, ListingType, Lead, LeadStatus, Project,
+} from "@/src/lib/db/types";
 import type { TeamContext } from "@/src/lib/db/teams";
 import { invalidateCache } from "@/src/lib/useCachedResource";
 
@@ -26,9 +28,16 @@ interface Filters {
 	currency: string;
 	/** "all" | "yes" (new build) | "no" (second-hand). */
 	new_build: NewBuildFilter;
+	/** "all" | "yes" (eligible) | "no" (assessed not eligible). Never assessed
+	 *  properties match neither "yes" nor "no". */
+	citizenship: CitizenshipFilter;
+	/** Insurance state; see InsuranceClientFilter for what each value means. */
+	insurance: InsuranceFilter;
 }
 
 export type NewBuildFilter = "all" | "yes" | "no";
+export type CitizenshipFilter = "all" | "yes" | "no";
+export type InsuranceFilter = "all" | "dask_valid" | "dask_missing" | "expiring";
 
 const EMPTY_FILTERS: Filters = {
 	listing_type: "all",
@@ -41,6 +50,8 @@ const EMPTY_FILTERS: Filters = {
 	max_price: null,
 	currency: "TRY",
 	new_build: "all",
+	citizenship: "all",
+	insurance: "all",
 };
 
 interface LeadFilters {
@@ -61,14 +72,14 @@ interface AppState {
 
 	/** The rows currently VISIBLE — i.e. after the active filters are applied.
 	 *  This is what the table and map render. */
-	properties: Property[];
-	setProperties: (p: Property[]) => void;
+	properties: PropertyWithInsurance[];
+	setProperties: (p: PropertyWithInsurance[]) => void;
 	/** Every property the team has, unfiltered. The filter bar builds its
 	 *  dropdown options from this: deriving them from `properties` would make the
 	 *  options collapse as you narrow, so picking one value would delete the
 	 *  others from the list and you could never widen the selection again. */
-	allProperties: Property[];
-	setAllProperties: (p: Property[]) => void;
+	allProperties: PropertyWithInsurance[];
+	setAllProperties: (p: PropertyWithInsurance[]) => void;
 	upsertProperty: (p: Property) => void;
 	removeProperty: (id: string) => void;
 
@@ -115,10 +126,13 @@ export const useAppStore = create<AppState>((set) => ({
 			// Both lists are updated optimistically: `properties` so the visible
 			// table reacts immediately, `allProperties` so the filter bar's options
 			// include a brand-new property's city/nitelik right away.
-			const upsert = (list: Property[]) =>
+			// createProperty/updateProperty return a bare row with no embed, so
+			// carry the existing policies across rather than blanking them — an
+			// edit to the address doesn't cancel the unit's DASK.
+			const upsert = (list: PropertyWithInsurance[]) =>
 				list.some((x) => x.id === p.id)
-					? list.map((x) => (x.id === p.id ? p : x))
-					: [p, ...list];
+					? list.map((x) => (x.id === p.id ? { ...p, insurance: x.insurance } : x))
+					: [{ ...p, insurance: [] }, ...list];
 			return { properties: upsert(s.properties), allProperties: upsert(s.allProperties) };
 		}),
 	removeProperty: (id) =>

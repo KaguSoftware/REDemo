@@ -13,7 +13,17 @@
 // ANDs separate .or() groups, we AND here too. clientFilters.test.ts pins
 // the shared semantics — if you change one side, change both.
 
-import type { Property } from "./db/types";
+import type { Property, InsuranceSummary } from "./db/types";
+
+/**
+ * Insurance is filtered here and nowhere else. "DASK yok" is a statement about
+ * a MISSING child row, which PostgREST cannot express in an embedded filter —
+ * it would drop the policies from the response, not the property.
+ */
+export type InsuranceClientFilter =
+	| "dask_valid"    // has a DASK policy that has not run out
+	| "dask_missing"  // has no DASK policy at all (an EXPIRED one does not count)
+	| "expiring";     // any policy already expired or within the horizon
 
 export interface PropertyClientFilter {
 	listing_type?: string;
@@ -27,7 +37,16 @@ export interface PropertyClientFilter {
 	currency?: string;
 	is_new_build?: boolean;
 	project_id?: string;
+	citizenship_eligible?: boolean;
+	insurance?: InsuranceClientFilter;
+	/** `yyyy-mm-dd`. Supplied by the caller so this stays pure and testable. */
+	todayISO?: string;
+	/** `yyyy-mm-dd`, today + the warn window. Required by `insurance: "expiring"`. */
+	insuranceHorizonISO?: string;
 }
+
+/** Rows carry their embedded policies; older callers may not have them. */
+type WithInsurance = Property & { insurance?: InsuranceSummary[] };
 
 /**
  * Case-insensitive "contains", matching Postgres ILIKE closely enough for the
@@ -53,10 +72,10 @@ function containsAny(value: string | null | undefined, needles: string[]): boole
  * Returns a new array; the input is not mutated. Order is preserved, so the
  * server's `order("updated_at", desc)` still governs.
  */
-export function filterProperties(
-	rows: Property[],
+export function filterProperties<T extends WithInsurance>(
+	rows: T[],
 	filter: PropertyClientFilter,
-): Property[] {
+): T[] {
 	const niteliks = (filter.nitelik ?? []).map((n) => n.trim()).filter(Boolean);
 	const locations = (filter.location ?? []).map((l) => l.trim()).filter(Boolean);
 	const q = filter.q?.trim();
@@ -77,6 +96,28 @@ export function filterProperties(
 
 		if (filter.furnished != null && p.furnished !== filter.furnished) return false;
 		if (filter.is_new_build != null && p.is_new_build !== filter.is_new_build) return false;
+
+		// Tri-state, like `furnished`: an explicit "not eligible" is a different
+		// answer from "never assessed", so === against the boolean is correct and
+		// a truthiness test would be wrong.
+		if (filter.citizenship_eligible != null && p.citizenship_eligible !== filter.citizenship_eligible) {
+			return false;
+		}
+
+		if (filter.insurance) {
+			const policies = p.insurance ?? [];
+			const dask = policies.find((i) => i.kind === "dask");
+			const today = filter.todayISO ?? "";
+			if (filter.insurance === "dask_missing" && dask != null) return false;
+			// An EXPIRED DASK is not a missing one — it fails "geçerli" but it also
+			// fails "yok", because the office has a policy to renew rather than one
+			// to buy. Conflating the two sends an agent down the wrong path.
+			if (filter.insurance === "dask_valid" && !(dask && dask.end_date >= today)) return false;
+			if (filter.insurance === "expiring") {
+				const horizon = filter.insuranceHorizonISO ?? "";
+				if (!policies.some((i) => i.end_date <= horizon)) return false;
+			}
+		}
 
 		// A price bound is only meaningful within one currency (no FX conversion),
 		// which is why the server scopes it explicitly and so do we.

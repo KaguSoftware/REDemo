@@ -13,6 +13,8 @@ import { useCachedResource } from "@/src/lib/useCachedResource";
 import { exportToPDF, getPdfBrandingFromStore } from "@/src/lib/pdf";
 import { toDataUrl } from "@/src/lib/pdf/imageData";
 import { humanizeError } from "@/src/lib/errors";
+import { INSURANCE_WARN_DAYS, isoDaysFrom } from "@/src/lib/insurance";
+import { PropertyFlags } from "./PropertyFlags";
 import { Home, Download, Trash2, Share2 } from "lucide-react";
 
 /** Ceiling on a single brochure. Each page inlines a base64 cover photo, so an
@@ -75,6 +77,11 @@ export function PropertyTable({ isLoading = false }: { isLoading?: boolean }) {
 	const isWritable = useIsWritable();
 
 	const { selected, toggle: toggleRow, toggleAll, clear, isSelected, allSelected, count } = useMultiSelect();
+	// Once per mount, so every row's badge is judged against the same day and a
+	// re-render can't shuffle the tones.
+	const [todayISO] = useState(() => new Date().toISOString().slice(0, 10));
+	const horizonISO = isoDaysFrom(todayISO, INSURANCE_WARN_DAYS);
+
 	const [confirmDelete, setConfirmDelete] = useState(false);
 	const [bulkBusy, setBulkBusy] = useState(false);
 	const [brochureBusy, setBrochureBusy] = useState(false);
@@ -287,13 +294,16 @@ export function PropertyTable({ isLoading = false }: { isLoading?: boolean }) {
 					onClick={() =>
 						downloadCsv(
 							"portfoy",
-							["Mülk sahibi", "Adres", "Şehir", "Mahalle", "Nitelik", "İlan", "Durum", "Büyüklük (m²)", "Yatak odası", "Banyo", "Eşyalı", "Fiyat", "Para birimi", "Notlar"],
+							["Mülk sahibi", "Adres", "Şehir", "Mahalle", "Nitelik", "İlan", "Durum", "Büyüklük (m²)", "Yatak odası", "Banyo", "Eşyalı", "Fiyat", "Para birimi", "DASK bitiş", "Vatandaşlık", "Notlar"],
 							sorted.map((p) => [
 								p.homeowner_name, p.address_line, p.city, p.mahalle, p.nitelik,
 								p.listing_type === "for_rent" ? "Kiralık" : "Satılık", STATUS_LABEL[p.status],
 								p.size_sqm, p.bedrooms, p.bathrooms,
 								p.furnished == null ? "" : p.furnished ? "evet" : "hayır",
-								p.list_price, p.currency, p.notes,
+								p.list_price, p.currency,
+								p.insurance?.find((i) => i.kind === "dask")?.end_date ?? "",
+								p.citizenship_eligible == null ? "" : p.citizenship_eligible ? "uygun" : "uygun değil",
+								p.notes,
 							]),
 						)
 					}
@@ -334,9 +344,15 @@ export function PropertyTable({ isLoading = false }: { isLoading?: boolean }) {
 							<p className="font-numeric text-sm font-semibold text-base-content/80 whitespace-nowrap">{fmtPrice(p.list_price, p.currency)}</p>
 						</div>
 						<div className="mt-3 flex items-center justify-between gap-2 flex-wrap">
-							<div className="flex items-center gap-1.5">
+							<div className="flex items-center gap-1.5 flex-wrap">
 								<TypeBadge t={p.listing_type} />
 								<StatusBadge status={p.status} />
+								<PropertyFlags
+									insurance={p.insurance}
+									citizenshipEligible={p.citizenship_eligible}
+									todayISO={todayISO}
+									horizonISO={horizonISO}
+								/>
 							</div>
 							<p className="text-xs text-base-content/50">{p.size_sqm ? `${p.size_sqm} m²` : ""}</p>
 						</div>
@@ -393,7 +409,17 @@ export function PropertyTable({ isLoading = false }: { isLoading?: boolean }) {
 									<td className="px-4 py-3 text-sm text-base-content/70 min-w-0">{p.address_line}{p.city ? `, ${p.city}` : ""}</td>
 									<td className="px-4 py-3 text-sm text-base-content/70 whitespace-nowrap">{p.size_sqm ?? "—"}</td>
 									<td className="px-4 py-3"><TypeBadge t={p.listing_type} /></td>
-									<td className="px-4 py-3"><StatusBadge status={p.status} /></td>
+									<td className="px-4 py-3">
+										<div className="flex items-center gap-1.5 flex-wrap">
+											<StatusBadge status={p.status} />
+											<PropertyFlags
+												insurance={p.insurance}
+												citizenshipEligible={p.citizenship_eligible}
+												todayISO={todayISO}
+												horizonISO={horizonISO}
+											/>
+										</div>
+									</td>
 									<td className="px-4 py-3 font-numeric text-sm text-base-content/80 whitespace-nowrap">{fmtPrice(p.list_price, p.currency)}</td>
 									<td className="px-4 py-3 text-sm text-base-content/50 whitespace-nowrap">
 										{new Date(p.updated_at).toLocaleDateString("tr-TR", { month: "short", day: "numeric" })}

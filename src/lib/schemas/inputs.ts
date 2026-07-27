@@ -46,7 +46,48 @@ export const propertyInputSchema = z.object({
 	assigned_to: z.string().uuid().nullish(),
 	project_id: z.string().uuid().nullish(),
 	is_new_build: z.boolean().optional(),
+	// Tri-state: null = not assessed. See Property.citizenship_eligible for why
+	// this is stored rather than derived from list_price.
+	citizenship_eligible: z.boolean().nullish(),
 });
+
+export const insuranceKindSchema = z.enum([
+	"dask", "konut", "isyeri", "kira_kaybi", "hayat", "diger",
+]);
+
+// end_date is required: it is the only field the expiry sweep can act on.
+// start_date stays optional — agents often know only when a policy runs out.
+const insuranceInputObject = z.object({
+	property_id: z.string().uuid(),
+	kind: insuranceKindSchema,
+	insurer: z.string().nullish(),
+	policy_no: z.string().nullish(),
+	start_date: z.union([isoDate, z.literal(""), z.null()]).optional(),
+	end_date: isoDate,
+	premium: money.nullish(),
+	currency: z.string().length(3).optional(),
+	notes: z.string().nullish(),
+});
+
+// Mirrors property_insurance_range_check in 0031. A blank start_date arrives as
+// "" from DatePicker and means "not stated", not "the epoch".
+const insuranceRangeRule = (i: { start_date?: string | null; end_date?: string }) =>
+	!i.start_date || !i.end_date || Date.parse(i.end_date) >= Date.parse(i.start_date);
+
+const insuranceRangeError = {
+	message: "policy end must not be before its start",
+	path: ["end_date"],
+};
+
+export const insuranceInputSchema = insuranceInputObject.refine(
+	insuranceRangeRule,
+	insuranceRangeError,
+);
+
+/** Patch schema for updateInsurance() — same range rule, all fields optional. */
+export const insurancePatchSchema = insuranceInputObject
+	.partial()
+	.refine(insuranceRangeRule, insuranceRangeError);
 
 // Budget bounds are cross-field validated, so the schema is a refined object.
 // `.partial()` is not available on a refined schema, so updateLead() builds its

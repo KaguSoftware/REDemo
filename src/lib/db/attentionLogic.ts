@@ -2,7 +2,8 @@
 // attention.ts so it can be unit-tested and driven by user-configurable
 // thresholds (profiles.settings) without touching the Supabase queries.
 
-import type { LeadStatus } from "./types";
+import type { InsuranceKind, LeadStatus } from "./types";
+import { INSURANCE_WARN_DAYS } from "../insurance";
 
 export interface AttentionThresholds {
 	/** Rent due within this many days counts as "upcoming". */
@@ -11,12 +12,17 @@ export interface AttentionThresholds {
 	leaseWarnDays: number;
 	/** Leads not contacted for this many days count as "gone quiet". */
 	leadSilentDays: number;
+	/** Insurance policies ending within this many days are surfaced. */
+	insuranceWarnDays: number;
 }
 
 export const DEFAULT_ATTENTION_THRESHOLDS: AttentionThresholds = {
 	upcomingDays: 7,
 	leaseWarnDays: 30,
 	leadSilentDays: 14,
+	// Shared with the portfolio filter and run_work_checks()'s ins_days, so the
+	// three surfaces never disagree about which policies are urgent.
+	insuranceWarnDays: INSURANCE_WARN_DAYS,
 };
 
 export interface AttentionPayment {
@@ -62,6 +68,26 @@ export interface PaymentRow {
 
 export interface LeaseEndRow {
 	id: string;
+	end_date: string;
+	property_id: string;
+	property: { id: string; address_line: string; homeowner_name: string } | null;
+}
+
+export interface AttentionInsurance {
+	insuranceId: string;
+	propertyId: string;
+	propertyLabel: string;
+	kind: InsuranceKind;
+	endDate: string;
+	/** Negative once the policy has lapsed. */
+	daysLeft: number;
+	/** DASK is legally mandatory; the others are not. Drives ordering + tone. */
+	mandatory: boolean;
+}
+
+export interface InsuranceRow {
+	id: string;
+	kind: InsuranceKind;
 	end_date: string;
 	property_id: string;
 	property: { id: string; address_line: string; homeowner_name: string } | null;
@@ -123,6 +149,33 @@ export function classifyLeases(rows: LeaseEndRow[], now: Date): AttentionLeaseEn
 			daysLeft: -daysBetween(l.end_date, now),
 		}))
 		.sort((a, b) => a.endDate.localeCompare(b.endDate));
+}
+
+/**
+ * Order policies by urgency, not just by date.
+ *
+ * A LAPSED DASK outranks everything: it is legally mandatory, and it blocks a
+ * tapu transfer and utility subscriptions on the day of the appointment. So the
+ * sort is (already expired first) → (mandatory first) → (soonest first), rather
+ * than the plain end-date sort the leases feed uses.
+ */
+export function classifyInsurance(rows: InsuranceRow[], now: Date): AttentionInsurance[] {
+	return rows
+		.map((i) => ({
+			insuranceId: i.id,
+			propertyId: i.property_id,
+			propertyLabel: propertyLabel(i.property),
+			kind: i.kind,
+			endDate: i.end_date,
+			daysLeft: -daysBetween(i.end_date, now),
+			mandatory: i.kind === "dask",
+		}))
+		.sort((a, b) => {
+			const aLapsed = a.daysLeft < 0, bLapsed = b.daysLeft < 0;
+			if (aLapsed !== bLapsed) return aLapsed ? -1 : 1;
+			if (a.mandatory !== b.mandatory) return a.mandatory ? -1 : 1;
+			return a.endDate.localeCompare(b.endDate);
+		});
 }
 
 export function classifyLeads(
