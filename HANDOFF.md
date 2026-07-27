@@ -2,7 +2,7 @@
 
 > Read this first when starting a fresh chat. Companions: [PRODUCT.md](PRODUCT.md) ·
 > [README.md](README.md) · [AGENTS.md](AGENTS.md) · [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) ·
-> plan file: `C:\Users\MnS\.claude\plans\so-ive-got-some-zesty-shannon.md`
+> plan file: `C:SERSP.MANSOURI.CLAUDEPLANSI-KNOW-MASSIVE-SCOPE-FANCY-TOUCAN.MD` (UI RECOMPOSITION)
 
 ## Working style
 - **Collaborate**: propose with a recommendation before locking user-facing or
@@ -59,6 +59,70 @@ daisyUI 5 · Supabase (Postgres + RLS on every table, magic-link auth, Storage) 
   with `<` / `>=`, so no `Date` need be constructed at all.
 
 ## Current status
+
+### 🎨 UI RECOMPOSITION (2026-07-27) — branch `ui/recomposition`, 10 commits, **NOT merged, NOT seen in a browser**
+Green at every commit: `typecheck`, `lint` (0 errors; the one warning is
+pre-existing, in `promo/`), `npm test` (**214 passed**, 22 files — 1 new),
+`npm run build` with the static/dynamic split byte-identical. Impeccable's
+design detector returns `[]`.
+
+The brief was "the pages seem tacky and cheap." The brand was not the problem —
+the oklch ramps, the Schibsted/Plex pairing and the graphite sidebar rail are
+authored, specific work, and the detector was already clean. **All of the
+cheapness was in the content area's composition grammar**, and it had one root
+cause:
+
+⚠️ **`ui/cn.ts` was a naive space-joiner with no `tailwind-merge`.** Its comment
+claimed "later classes simply win via source order" — false for conflicting
+Tailwind utilities, where the winner is decided by *stylesheet emission* order.
+Measured in a production build: `.p-5` at byte 130703, `.p-6` at 130741, so
+`<Card className="p-5">` silently rendered at 24px. Because overriding a
+primitive did not reliably work, callers copy-pasted surface strings instead —
+which is where **13 card class-strings, 10 radius values and 19 heading
+strings** came from. Everything else in this branch depends on that fix.
+
+| | before | after |
+|---|---|---|
+| Card/panel class-strings | 13 | 1 `Surface`, 3 tiers |
+| Border radius values | 10 | `rounded-box` / `rounded-field` (theme tokens) |
+| Shadow tiers | 3 tokens + 4 escapes, applied at random | **1** — `shadow-pop`, only on things that float |
+| Sized text at 12/14px | **89%** | on a 6-step named scale |
+| Heading class-strings | 19, no primitive | 1 `Heading` |
+| Nav rail items | 9 (incl. an action + 4 account pages) | 5, all work |
+
+⚠️ **THE RULES THIS PASS ADDS**
+- **Elevation means "floating above the page."** `shadow-card`/`shadow-soft`
+  are deleted from the token set. A resting shadow on a panel is what made
+  every region read as a floating widget. `shadow-pop` is for Sheet,
+  ConfirmDialog, popovers, Toast, BulkActionBar, the FAB — nothing else.
+- **The page is the surface, not the card.** Tier 0 (a heading and space) is
+  the default; reach for a bordered panel only when a border earns its keep.
+  `main` is now `base-100` — the inversion is what makes tier 0 possible, since
+  on a grey ground every region had to be a card just to look finished.
+- **Density where data lives, space where decisions happen.** `--spacing-row`
+  (44px) / `--spacing-row-media` (60px) hold tables at their old density while
+  the page rhythm opens up. These are the contract between a row and its
+  skeleton — change one, change both.
+- **A custom scale value is invisible to `tailwind-merge`.** It classifies
+  against an internal value list, never your CSS. Every custom shadow, radius,
+  animation and type step is registered in `extendTailwindMerge`; without the
+  radius entry the whole consolidation would have shipped with radius merging
+  silently disabled. Pinned by `src/components/ui/cn.test.ts`.
+- **A `loading.tsx` cannot guess a dynamic title.** Four routes drifted and
+  re-laid-out on mount. `RouteLoading` now *reserves* unknown values with a
+  skeleton of the right geometry; `subtitle={false}` means "genuinely none".
+
+**⚠️ Nothing in this branch has been opened in a browser.** No browser tooling
+was available in that session, and the test suite cannot see any of this: all
+22 test files are under `src/lib/`, no component has a test, there are no
+snapshots, and ESLint carries no Tailwind plugin. `typecheck` + `build` + the
+`cn` tests are the only automated gates. **See Roadmap step 0.**
+
+Deliberately out of scope: `src/components/documents/editor/` — `editor.css`
+and the `--doc-*` namespace are a second, independent design system whose
+source of truth is the generated PDF (`src/lib/pdf/editorDoc.tsx`), not this
+app. Touching it would desynchronise the WYSIWYG editor from the document it
+previews, and `editorDoc.test.tsx` would not catch it.
 
 ### 🏗️ FIELD-NOTES BUILD (2026-07-27) — uncommitted on `main`, **migrations 0031 + 0032 NOT applied**, not driven in a browser
 Green: `typecheck`, `lint` (0 errors; the one warning is pre-existing, in `promo/`),
@@ -388,7 +452,31 @@ compile-time confidence only.
 
 ## Roadmap / next steps
 
-0. **← ACTIVE: apply 0031 + 0032, then click through the field-notes build.**
+0. **← ACTIVE: drive the `ui/recomposition` branch in a browser before merging.**
+   Nothing in it has been seen rendered, and the test suite structurally cannot
+   catch a visual regression. Sign in as a real user, then:
+   - **The register check.** Open `/` as an owner and time how long it takes to
+     find this month's overdue total. The brief was "calm & spacious"; if the
+     new rhythm made that *slower* than the old seven-band stack, the register
+     landed on the wrong layer and the data regions need their density back.
+   - **CLS target 0** on `/`, `/properties`, `/leads`, `/projects`,
+     `/documents`, a property detail, `/projects/[id]`, `/settings/billing`,
+     `/settings/profile`. Throttle to Slow 4G and step the Performance
+     filmstrip — the page header is now a 32px display block, so any skeleton
+     mismatch moves every pixel below it. The four routes that used to drift
+     are the ones to watch.
+   - **A 40-row portfolio** at 1280px and on a phone: row height unchanged,
+     money aligned on tabular numerals, sort announced by `aria-sort`.
+   - **Both themes on every surface**, plus one dark team brand accent — check
+     contrast on primary-tinted grounds, which is the one thing `BrandTheme`
+     does not guarantee.
+   - **A generated contract PDF and the contract editor byte-compared to
+     `main`**, proving the `--doc-*` namespace stayed out of scope.
+   - OS "reduce motion" on; 44px targets; the iOS-zoom guard on inputs.
+   - Then merge, and update DESIGN.md (it does not exist yet — this branch is
+     the first thing that would justify writing one).
+
+1. **Apply 0031 + 0032, then click through the field-notes build.**
    - `npx supabase db push --dry-run --linked` first, and confirm the printed
      list contains **only** 0031 and 0032 (Gotchas explains why this matters).
    - **Insurance**: on one property add a DASK ending in 10 days and a konut
@@ -421,7 +509,7 @@ compile-time confidence only.
    - **CLS target 0** on `/` and `/properties`: slices 1 and 4 both add
      above-the-fold content, which is exactly what regresses it.
 
-1. **Verify the flash pass in a browser.** Sign in as a real user in a
+2. **Verify the flash pass in a browser.** Sign in as a real user in a
    **fresh incognito window**, then:
    - DevTools → Network → **Slow 4G**, hard-reload `/properties`. The sidebar and
      header must be correct in the *first* frame; skeleton rows fill with data
@@ -445,9 +533,9 @@ compile-time confidence only.
      a matching improvement in time-to-data, drop the team query from
      `getServerAppContext` and keep only the (free) identity seeding — §4's
      `teamLoaded` gate already makes a late team arrival invisible.
-2. ~~Apply migrations 0026 + 0027.~~ **Done 2026-07-20** — remote history synced
+3. ~~Apply migrations 0026 + 0027.~~ **Done 2026-07-20** — remote history synced
    at 0001–0027. `db push` is safe here now; still `--dry-run` first (Gotchas).
-3. **Feature browser pass**, in this order:
+4. **Feature browser pass**, in this order:
    - Create a project with an https Drive link → `/projects` groups it by firma,
      the Drive button opens in a new tab.
    - Add a property from the project page (`?project=` prefills the link) →
@@ -593,7 +681,7 @@ stored tri-state assessment — see [types.ts](src/lib/db/types.ts).
 npm install
 npm run dev        # http://localhost:3000
 npm run build      # production build
-npm test           # vitest (203 tests, 21 files)
+npm test           # vitest (214 tests, 22 files)
 npm run typecheck  # tsc --noEmit
 npm run lint       # eslint
 ```
