@@ -12,6 +12,8 @@ interface FormFieldProps {
 	/** Explicit control id; auto-generated when omitted. */
 	id?: string;
 	onDelete?: () => void;
+	/** Root class — needed where the field is a flex item rather than a form row. */
+	className?: string;
 }
 
 const errorInputClass = "border-error/40 focus:border-error/60 focus:ring-error/15";
@@ -20,7 +22,7 @@ const errorInputClass = "border-error/40 focus:border-error/60 focus:ring-error/
  * Labeled field wrapper. Wires label↔input (htmlFor/id), and when `error` is
  * set adds aria-invalid/aria-describedby + red border to a single-element child.
  */
-export const FormField = ({ label, children, hint, error, id, onDelete }: FormFieldProps) => {
+export const FormField = ({ label, children, hint, error, id, onDelete, className }: FormFieldProps) => {
 	const autoId = useId();
 	const fieldId = id ?? autoId;
 	const errorId = `${fieldId}-error`;
@@ -47,9 +49,9 @@ export const FormField = ({ label, children, hint, error, id, onDelete }: FormFi
 	}
 
 	return (
-		<div className="w-full">
+		<div className={cn("w-full", className)}>
 			<div className="flex items-center justify-between mb-1.5">
-				<label htmlFor={fieldId} className="block text-xs font-semibold text-base-content/70">
+				<label htmlFor={fieldId} className="block text-label font-semibold text-base-content/70">
 					{label}
 				</label>
 				{onDelete && (

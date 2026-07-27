@@ -10,7 +10,7 @@ import { useAppStore } from "@/src/store";
 import { cn } from "./cn";
 import { useFocusTrap } from "./useFocusTrap";
 import { ThemeToggle } from "./ThemeToggle";
-import { NAV_ITEMS, activeNavHref } from "@/src/lib/nav";
+import { NAV_ITEMS, ACCOUNT_ITEMS, activeNavHref } from "@/src/lib/nav";
 import { LogOut, X } from "lucide-react";
 
 /** Spinner shown while this link's navigation is in flight (useLinkStatus). */
@@ -51,7 +51,8 @@ export function NavDrawer({ open, onClose }: { open: boolean; onClose: () => voi
 
 	const isAdmin = user?.app_role === "admin";
 	const items = NAV_ITEMS.filter((i) => !i.adminOnly || isAdmin);
-	const activeHref = activeNavHref(pathname, items);
+	const accountItems = ACCOUNT_ITEMS.filter((i) => !i.adminOnly || isAdmin);
+	const activeHref = activeNavHref(pathname, [...items, ...accountItems]);
 
 	return (
 		<>
@@ -122,11 +123,35 @@ export function NavDrawer({ open, onClose }: { open: boolean; onClose: () => voi
 							</Link>
 						);
 					})}
+					{/* Account destinations. On desktop these live in AccountMenu; the
+					    drawer IS the mobile account menu, so they belong here rather
+					    than in the work list above — where four of them used to sit
+					    competing with the five daily destinations. */}
+					<div className="mt-4 pt-4 border-t border-base-300">
+						<p className="px-3 mb-1 text-label font-semibold text-base-content/40">Hesap</p>
+						{accountItems.map(({ href, label, icon: Icon }) => (
+							<Link
+								key={href}
+								href={href}
+								onClick={onClose}
+								aria-current={activeHref === href ? "page" : undefined}
+								className={cn(
+									"flex items-center gap-3 h-12 px-3 rounded-field text-body font-medium transition-colors",
+									activeHref === href
+										? "bg-primary/10 text-primary font-semibold"
+										: "text-base-content/70 hover:bg-base-200",
+								)}
+							>
+								<Icon className="w-5 h-5 shrink-0" />
+								{label}
+							</Link>
+						))}
+					</div>
 				</nav>
 
 				<div className="border-t border-base-300 p-3 space-y-1">
 					<div className="px-3 py-2">
-						<p className="text-xs text-base-content/50 mb-1.5">Görünüm</p>
+						<p className="text-label text-base-content/50 mb-1.5">Görünüm</p>
 						<ThemeToggle />
 					</div>
 					{user && (

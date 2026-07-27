@@ -9,7 +9,7 @@ import {
 	type CitizenshipFilter,
 	type InsuranceFilter,
 } from "@/src/store";
-import { Input, Dropdown, Button, Sheet, FormField, MultiSelect, NumberInput, cn, type DropdownOption } from "@/src/components/ui";
+import { Input, Dropdown, Button, Sheet, FormField, MultiSelect, NumberInput, Surface, cn, type DropdownOption } from "@/src/components/ui";
 import type { ListingType, PropertyStatus } from "@/src/lib/db/types";
 import { SlidersHorizontal, Search, Plus } from "lucide-react";
 
@@ -246,17 +246,24 @@ export function PropertyFilters() {
 				</Button>
 			</div>
 
-			{/* Desktop: inline filter row */}
-			<div className="hidden sm:flex flex-wrap gap-2 items-center mt-3">
-				{controls(false)}
-				{hasActiveFilter && (
-					<Button variant="ghost" size="sm" onClick={clearAll}>Temizle</Button>
-				)}
-				<Button size="sm" onClick={() => router.push("/properties/new")} className="ml-auto shrink-0">
-					<Plus className="w-4 h-4" />
-					Taşınmaz ekle
-				</Button>
-			</div>
+			{/* Desktop: inline filter row.
+			    Given a container at last — this was the densest region in the app
+			    and the only major one sitting bare on the page, which is part of
+			    why nine controls in a wrapping flex read as clutter rather than as
+			    a panel of controls. `items-end` so the controls line up along their
+			    baselines now that each carries a label above it. */}
+			<Surface padding="md" className="hidden sm:block mt-4">
+				<div className="flex flex-wrap gap-x-3 gap-y-3 items-end">
+					{controls(false)}
+					{hasActiveFilter && (
+						<Button variant="ghost" size="sm" onClick={clearAll}>Temizle</Button>
+					)}
+					<Button size="sm" onClick={() => router.push("/properties/new")} className="ml-auto shrink-0">
+						<Plus className="w-4 h-4" />
+						Taşınmaz ekle
+					</Button>
+				</div>
+			</Surface>
 
 			{/* Mobile: filters sheet */}
 			<Sheet
@@ -287,7 +294,18 @@ function uniqueSorted(values: (string | null | undefined)[]): string[] {
 }
 
 /** On mobile (stacked) wrap each control in a labeled FormField; inline on desktop render bare. */
+/**
+ * Every filter carries its label on BOTH layouts.
+ *
+ * The mobile sheet always had proper FormField labels; the desktop row rendered
+ * the same nine controls bare — the densest region in the app, and the only one
+ * where you had to open each dropdown to find out what it filtered. `w-auto`
+ * because here the field is a flex item in a wrapping row, not a form row.
+ */
 function FieldWrap({ stacked, label, children }: { stacked: boolean; label: string; children: React.ReactNode }) {
-	if (stacked) return <FormField label={label}>{children}</FormField>;
-	return <>{children}</>;
+	return (
+		<FormField label={label} className={stacked ? undefined : "w-auto"}>
+			{children}
+		</FormField>
+	);
 }
