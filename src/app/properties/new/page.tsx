@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient, getUserId } from "@/src/lib/supabase/server";
 import { PropertyForm } from "@/src/components/properties/PropertyForm";
 import { AppShell, Card } from "@/src/components/ui";
+import { ServerSeed } from "@/src/components/auth/ServerSeed";
 
 export default async function NewPropertyPage({
 	searchParams,
@@ -16,10 +17,12 @@ export default async function NewPropertyPage({
 	const { project } = await searchParams;
 
 	return (
-		<AppShell title="Taşınmaz ekle" subtitle="Yeni ilan oluşturun" width="3xl">
-			<Card>
-				<PropertyForm mode="create" defaultProjectId={project ?? null} />
-			</Card>
-		</AppShell>
+		<ServerSeed>
+			<AppShell title="Taşınmaz ekle" subtitle="Yeni ilan oluşturun" width="3xl">
+				<Card>
+					<PropertyForm mode="create" defaultProjectId={project ?? null} />
+				</Card>
+			</AppShell>
+		</ServerSeed>
 	);
 }

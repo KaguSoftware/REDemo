@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { humanizeError } from "./errors";
 
 /**
@@ -90,7 +90,14 @@ function dropPersisted(matches?: (key: string) => boolean) {
 
 /**
  * Read a cache entry, lazily hydrating it from sessionStorage on first access
- * after a hard reload. Idempotent, so it is safe to call during render.
+ * after a hard reload.
+ *
+ * Idempotent, and it returns a STABLE reference for an unchanged entry (the
+ * Map holds the object), which is what lets it serve as a `useSyncExternalStore`
+ * snapshot. It must never be called during a server render or a hydration pass:
+ * it reads sessionStorage, so the server would see nothing and the client would
+ * see rows, and React would throw away the subtree. `getServerSnapshot` returns
+ * undefined for exactly that reason.
  */
 function getEntry(key: string): Entry<unknown> | undefined {
 	const hit = cache.get(key);
@@ -165,7 +172,17 @@ export function mutateCache<T>(key: string, data: T) {
 export interface CachedResource<T> {
 	/** Cached data if present (shown immediately), else null until first fetch resolves. */
 	data: T | null;
-	/** True only while there is no cached data and a fetch is in flight (initial load). */
+	/**
+	 * True from the FIRST render onwards whenever this key is active, has no
+	 * cached value, and has not yet settled — i.e. "there is nothing to show yet".
+	 *
+	 * It is deliberately derived from facts known during render rather than from a
+	 * state flag, because a flag can only be raised after the first commit. It used
+	 * to be `!cached && fetching`, and `fetching` was set in a queueMicrotask inside
+	 * the effect — so it was false for the first paint and every
+	 * `loading ? <Skeleton/> : <EmptyState/>` in the app rendered the EMPTY state
+	 * first. That one frame was the app-wide "flash of random things".
+	 */
 	loading: boolean;
 	/** True while a background revalidation is running over already-cached data. */
 	validating: boolean;
@@ -204,11 +221,26 @@ export function useCachedResource<T>(
 	const { enabled = true, dedupeMs = 0 } = options;
 	const active = enabled && key != null;
 
-	// Displayed value is derived from the live cache during render, so a key change
-	// instantly shows that key's cached value with no setState-in-effect. State only
-	// tracks async results so a successful background fetch triggers a re-render.
-	const cached = key != null ? (getEntry(key) as Entry<T> | undefined) : undefined;
-	const [, forceRender] = useState(0);
+	// Displayed value is derived from the live cache, so a key change instantly
+	// shows that key's cached value with no setState-in-effect.
+	//
+	// It goes through useSyncExternalStore rather than a plain read so the cache
+	// (which hydrates itself from sessionStorage) is never consulted during the
+	// server render or the hydration pass — the server snapshot is always
+	// undefined, and React re-renders with the real snapshot right after mount.
+	// Reading it directly during render was a genuine hydration mismatch: the
+	// server emitted an empty list and the client emitted rows.
+	const subscribe = useCallback((onChange: () => void) => {
+		subscribers.add(onChange);
+		return () => { subscribers.delete(onChange); };
+	}, []);
+	const getSnapshot = useCallback(
+		() => (key != null ? (getEntry(key) as Entry<T> | undefined) : undefined),
+		[key],
+	);
+	const getServerSnapshot = useCallback((): Entry<T> | undefined => undefined, []);
+	const cached = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+
 	const [error, setError] = useState<string | null>(null);
 	// True only while a fetch is in flight (whether initial or revalidation).
 	const [fetching, setFetching] = useState(false);
@@ -225,8 +257,18 @@ export function useCachedResource<T>(
 	// Bumped by refetch() to force the effect to run again.
 	const [nonce, setNonce] = useState(0);
 
-	// React to external cache invalidation: if our entry was dropped, refetch;
-	// if it was rewritten (mutateCache), just re-render to show the new value.
+	// Identifies one fetch attempt. `loading` is "this attempt has not settled
+	// yet", so a refetch after a failure correctly shows the loading state again
+	// instead of staying settled forever on the key alone.
+	//
+	// State, not a ref: `loading` is derived from it during render, and a ref read
+	// during render is exactly the stale-value trap react-hooks/refs points at.
+	// Starting at null is what makes `loading` true on the very first pass.
+	const attempt = `${key}#${nonce}`;
+	const [settledAttempt, setSettledAttempt] = useState<string | null>(null);
+
+	// React to external cache invalidation: if our entry was dropped, refetch.
+	// (Re-rendering on a rewrite is useSyncExternalStore's job, not ours.)
 	const keyRef = useRef(key);
 	const activeRef = useRef(active);
 	useEffect(() => {
@@ -238,7 +280,6 @@ export function useCachedResource<T>(
 			const k = keyRef.current;
 			if (k == null) return;
 			if (getEntry(k) == null && activeRef.current) setNonce((n) => n + 1);
-			else forceRender((n) => n + 1);
 		};
 		subscribers.add(onCacheChange);
 		return () => { subscribers.delete(onCacheChange); };
@@ -277,27 +318,38 @@ export function useCachedResource<T>(
 				hydrationAttempted.add(key);
 				persistEntry(key, entry);
 				onDataRef.current?.(result);
-				if (!cancelled) forceRender((n) => n + 1);
+				// Publishes the new entry to every mounted hook reading this key
+				// through useSyncExternalStore — including this one.
+				notifySubscribers();
 			})
 			.catch((e: unknown) => {
 				if (!cancelled) setError(humanizeError(e));
 			})
 			.finally(() => {
 				if (inflight.get(key) === promise) inflight.delete(key);
-				if (!cancelled) setFetching(false);
+				if (!cancelled) {
+					// A cancelled attempt needs no flag: the key or nonce changed, which
+					// mints a new token, and `loading` is true again for that new attempt.
+					setSettledAttempt(attempt);
+					setFetching(false);
+				}
 			});
 
 		return () => {
 			cancelled = true;
 		};
 		// `key` already encodes the query params; fetcher/onData are read via refs.
-	}, [key, active, dedupeMs, nonce]);
+		// `attempt` is derived from key + nonce, so it adds no new trigger.
+	}, [key, active, dedupeMs, nonce, attempt]);
 
 	const data = cached ? cached.data : null;
 	return {
 		data,
-		// "loading" = the blocking initial load (no cached data yet to show).
-		loading: active && !cached && fetching,
+		// "loading" = nothing to show yet. True on the very FIRST render, before
+		// any effect has run — see the CachedResource docstring for why that
+		// matters. An inactive key is not loading; it is waiting, and callers
+		// distinguish that by `data === null`.
+		loading: active && !cached && settledAttempt !== attempt,
 		// "validating" = refreshing in the background over already-cached data.
 		validating: !!cached && fetching,
 		error,

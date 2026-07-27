@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient, getUserId } from "@/src/lib/supabase/server";
 import { ProjectDetail } from "@/src/components/projects/ProjectDetail";
+import { ServerSeed } from "@/src/components/auth/ServerSeed";
 
 export default async function ProjectDetailPage({
 	params,
@@ -14,5 +15,5 @@ export default async function ProjectDetailPage({
 	const { id } = await params;
 
 	// ProjectDetail renders its own AppShell (top bar + drawer).
-	return <ProjectDetail projectId={id} />;
+	return <ServerSeed><ProjectDetail projectId={id} /></ServerSeed>;
 }

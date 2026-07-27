@@ -51,7 +51,6 @@ export function ContactDashboard() {
 	const setLeadFilter = useAppStore((s) => s.setLeadFilter);
 	const leads = useAppStore((s) => s.leads);
 	const setLeads = useAppStore((s) => s.setLeads);
-	const setIsLoadingLeads = useAppStore((s) => s.setIsLoadingLeads);
 
 	const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
 	const [addOpen, setAddOpen] = useState(false);
@@ -109,10 +108,6 @@ export function ContactDashboard() {
 		setPublishedLeads(visibleLeads);
 		setLeads(visibleLeads);
 	}
-
-	useEffect(() => {
-		setIsLoadingLeads(loadingLeads);
-	}, [loadingLeads, setIsLoadingLeads]);
 
 	// Tenants: same one-fetch-then-filter-locally pattern, held locally (no store
 	// slice needed).
@@ -187,7 +182,10 @@ export function ContactDashboard() {
 		return merged;
 	}, [leads, tenants, typeFilter, leadFilters.status]);
 
-	const loading = loadingLeads || loadingTenants;
+	// `allLeads`/`tenantData` are also null before either fetch is enabled, and
+	// `tenants` collapses that to `[]` — which the table would read as "no
+	// contacts". Treat not-yet-arrived as loading, not as an answer.
+	const loading = loadingLeads || loadingTenants || allLeads == null || tenantData == null;
 	const error = leadError ?? tenantError;
 
 	return (

@@ -16,6 +16,7 @@ import Link, { useLinkStatus } from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/src/lib/supabase/client";
 import { getTeamLogoUrl } from "@/src/lib/db/teams";
+import { readNavMarkerY, writeNavMarkerY } from "./navMarkerState";
 import { getAvatarUrl } from "@/src/lib/db/profiles";
 import { useAppStore } from "@/src/store";
 import { NAV_GROUPS, activeNavHref } from "@/src/lib/nav";
@@ -38,13 +39,8 @@ function PendingHint() {
 /** x-center of the flight line inside the <nav>, in px (matches left-[27px] + w-px). */
 const LINE_X = 27;
 
-/**
- * The marker's Y is stashed in sessionStorage so it survives this component's
- * remount on every navigation — AppShell renders the Sidebar per page. On mount
- * we seed the marker at the stored position and then glide it to the new route's
- * item, so the bill travels from the previously-active item instead of teleporting.
- */
-const MARKER_Y_KEY = "kagu:nav-marker-y";
+// The marker's position across this component's per-navigation remount, and why
+// it is not sessionStorage: see ./navMarkerState.
 
 export function Sidebar() {
 	const user = useAppStore((s) => s.user);
@@ -74,8 +70,7 @@ export function Sidebar() {
 		const el = activeHref ? itemRefs.current.get(activeHref) : null;
 		if (el) {
 			const y = el.offsetTop + el.offsetHeight / 2 - 3.5;
-			const stored = sessionStorage.getItem(MARKER_Y_KEY);
-			const prevY = stored !== null ? Number(stored) : null;
+			const prevY = readNavMarkerY();
 			if (firstPaint.current && prevY !== null && prevY !== y) {
 				// Seed at the previously-active position (persisted across the
 				// remount), then glide to this route's item on the next frame.
@@ -86,7 +81,8 @@ export function Sidebar() {
 				marker.style.transition = "";
 				marker.style.transform = `translateY(${y}px)`;
 			} else if (firstPaint.current) {
-				// First ever paint (no prior position): appear in place, no slide.
+				// Fresh document load: appear in place, no slide. There is no previous
+				// position within this document, so any animation would be fiction.
 				marker.style.transition = "none";
 				marker.style.transform = `translateY(${y}px)`;
 				marker.style.opacity = "1";
@@ -96,7 +92,7 @@ export function Sidebar() {
 				marker.style.transform = `translateY(${y}px)`;
 				marker.style.opacity = "1";
 			}
-			sessionStorage.setItem(MARKER_Y_KEY, String(y));
+			writeNavMarkerY(y);
 		} else {
 			marker.style.opacity = "0";
 		}

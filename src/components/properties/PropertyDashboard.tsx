@@ -54,7 +54,6 @@ export function PropertyDashboard() {
 	const setFilters = useAppStore((s) => s.setFilters);
 	const setProperties = useAppStore((s) => s.setProperties);
 	const setAllProperties = useAppStore((s) => s.setAllProperties);
-	const setIsLoadingProperties = useAppStore((s) => s.setIsLoadingProperties);
 
 	// One-time hydration: an arriving URL with filter params wins over the store,
 	// so shared/bookmarked links reproduce the same view. Afterwards the store is
@@ -163,12 +162,6 @@ export function PropertyDashboard() {
 		setAllProperties(allProperties);
 	}
 
-	// Mirror the initial-load flag into the store so PropertyTable can show its
-	// spinner. Background revalidation (loading === false) never shows a spinner.
-	useEffect(() => {
-		setIsLoadingProperties(loading);
-	}, [loading, setIsLoadingProperties]);
-
 	return (
 		<AppShell
 			title="Portföy"
@@ -202,7 +195,7 @@ export function PropertyDashboard() {
 						</Alert>
 					)}
 
-					<PropertyTable />
+					<PropertyTable isLoading={loading} />
 
 					{/* Mobile FAB — thumb-reachable primary action. */}
 					<button

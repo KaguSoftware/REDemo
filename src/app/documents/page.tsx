@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient, getUserId } from "@/src/lib/supabase/server";
 import { DocumentsDashboard } from "@/src/components/documents/DocumentsDashboard";
+import { ServerSeed } from "@/src/components/auth/ServerSeed";
 
 export default async function DocumentsPage() {
 	// Server-side guard: unauthenticated visitors land on the home page instead
@@ -9,5 +10,5 @@ export default async function DocumentsPage() {
 	const userId = await getUserId(supabase);
 	if (!userId) redirect("/");
 
-	return <DocumentsDashboard />;
+	return <ServerSeed><DocumentsDashboard /></ServerSeed>;
 }

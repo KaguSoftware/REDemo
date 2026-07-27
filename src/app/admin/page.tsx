@@ -12,6 +12,7 @@
 import { redirect } from "next/navigation";
 import { createClient, getUserId } from "@/src/lib/supabase/server";
 import { AdminPanel } from "@/src/components/admin/AdminPanel";
+import { ServerSeed } from "@/src/components/auth/ServerSeed";
 
 export default async function AdminPage() {
   const supabase = await createClient();
@@ -36,5 +37,5 @@ export default async function AdminPage() {
     redirect("/");
   }
 
-  return <AdminPanel />;
+  return <ServerSeed><AdminPanel /></ServerSeed>;
 }

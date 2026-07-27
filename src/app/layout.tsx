@@ -6,7 +6,6 @@ import { AuthProvider } from "@/src/components/auth/AuthProvider";
 import { ToastHost } from "@/src/components/ui/Toast";
 import { OfflineBanner } from "@/src/components/ui/OfflineBanner";
 import { BrandTheme } from "@/src/components/ui/BrandTheme";
-import { TrialBanner } from "@/src/components/billing/TrialBanner";
 import { getSiteUrl } from "@/src/lib/siteUrl";
 
 // One grotesque family, weight-driven hierarchy: body and display share
@@ -51,6 +50,13 @@ export const viewport: Viewport = {
 // applied in the same pass so a hard refresh never flashes the stock palette.
 const themeBootScript = `try{var d=localStorage.getItem("kagu-theme")==="dark";if(d)document.documentElement.setAttribute("data-theme","estate-dark");var b=localStorage.getItem("kagu-brand-vars");if(b){var v=JSON.parse(b)[d?"dark":"light"];if(v&&v.p){var s=document.documentElement.style;s.setProperty("--color-primary",v.p);s.setProperty("--color-primary-content",v.pc);}}}catch(e){}`;
 
+// NOTE: this layout must stay free of cookies()/headers() and any other dynamic
+// API. Reading the session here would seed the store one level higher, but it
+// also opts EVERY route into on-demand rendering — measured: it turned
+// /gizlilik-politikasi, /kullanim-kosullari, /kvkk-aydinlatma and /signup from
+// static into dynamic. The signed-in seeding lives in <ServerSeed>, which each
+// authenticated page renders; those pages already read cookies, so it is free
+// there. See src/components/auth/ServerSeed.tsx.
 export default function RootLayout({
 	children,
 }: Readonly<{
@@ -67,7 +73,6 @@ export default function RootLayout({
 			>
 				<AuthProvider>
 					<BrandTheme />
-					<TrialBanner />
 					{children}
 				</AuthProvider>
 				<OfflineBanner />

@@ -7,7 +7,7 @@ import { useAppStore } from "@/src/store";
 import { listProperties } from "@/src/lib/db/properties";
 import { listLeads } from "@/src/lib/db/leads";
 import { useCachedResource } from "@/src/lib/useCachedResource";
-import { AppShell, Card, CardLabel, Badge, type BadgeTone } from "@/src/components/ui";
+import { AppShell, Card, CardLabel, Badge, Skeleton, SkeletonGroup, type BadgeTone } from "@/src/components/ui";
 import { AttentionPanel } from "@/src/components/properties/AttentionPanel";
 import { DashboardStats } from "@/src/components/properties/DashboardStats";
 import { PortfolioAnalytics } from "./PortfolioAnalytics";
@@ -33,6 +33,23 @@ const PROPERTY_STATUS_LABEL: Record<string, string> = {
 
 function statusTone(status: string): BadgeTone {
 	return status === "vacant" ? "slate" : status === "occupied" ? "emerald" : "blue";
+}
+
+/** Five rows matching the recents lists: py-2.5 + text-sm, with a trailing badge. */
+function RecentSkeleton() {
+	return (
+		<SkeletonGroup label="Yükleniyor" className="divide-y divide-base-300">
+			{[0, 1, 2, 3, 4].map((i) => (
+				<div key={i} className="flex items-center gap-3 py-2.5">
+					<div className="min-w-0 flex-1">
+						<Skeleton className="h-3.5 w-2/3" />
+						<Skeleton className="h-3 w-1/3 mt-1.5" />
+					</div>
+					<Skeleton className="h-5 w-14 rounded-full shrink-0" />
+				</div>
+			))}
+		</SkeletonGroup>
+	);
 }
 
 /** Landing page: cross-section of the whole CRM rather than one entity list. */
@@ -102,7 +119,13 @@ export function HomeDashboard() {
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 						<Card>
 							<SectionHeader label="Son eklenen taşınmazlar" href="/properties" />
-							{!recentProperties?.length ? (
+							{/* `null` (not loaded) and `[]` (loaded, genuinely empty) are
+							    different answers. Collapsing them with `?.length` told an
+							    agent with a full portfolio "Henüz taşınmaz yok" for the
+							    half-second before their rows arrived. */}
+							{recentProperties == null ? (
+								<RecentSkeleton />
+							) : recentProperties.length === 0 ? (
 								<p className="text-sm text-base-content/50 py-4">Henüz taşınmaz yok.</p>
 							) : (
 								<ul className="divide-y divide-base-300">
@@ -135,7 +158,9 @@ export function HomeDashboard() {
 
 						<Card>
 							<SectionHeader label="Son eklenen müşteriler" href="/leads" />
-							{!recentLeads?.length ? (
+							{recentLeads == null ? (
+								<RecentSkeleton />
+							) : recentLeads.length === 0 ? (
 								<p className="text-sm text-base-content/50 py-4">Henüz müşteri yok.</p>
 							) : (
 								<ul className="divide-y divide-base-300">

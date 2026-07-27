@@ -31,8 +31,17 @@ function readStoredPref(): ThemePref {
 	return localStorage.getItem(STORAGE_KEY) === "dark" ? "dark" : "light";
 }
 
-/** Shared light/dark state hook: stored pref layered with a session override. */
-function useThemePref(): [ThemePref, (next: ThemePref) => void] {
+/**
+ * Shared light/dark state hook: stored pref layered with a session override.
+ *
+ * The third element says whether the current value came from a user pick in
+ * this session. The icon's spin-in animation is keyed off it: a dark-mode user's
+ * server snapshot is necessarily "light" (only the pre-paint boot script can
+ * read localStorage), so the icon corrects itself at hydration — and animating
+ * THAT turned a silent one-frame correction into a visible spinning flicker on
+ * every single page load.
+ */
+function useThemePref(): [ThemePref, (next: ThemePref) => void, boolean] {
 	// Server snapshot renders "light" (the default); the client snapshot
 	// supplies the stored choice right after hydration (the visual theme is
 	// already correct pre-hydration via the boot script). Picks made in this
@@ -48,7 +57,7 @@ function useThemePref(): [ThemePref, (next: ThemePref) => void] {
 		applyTheme(next);
 	}
 
-	return [pref, onPick];
+	return [pref, onPick, override !== null];
 }
 
 /**
@@ -57,7 +66,7 @@ function useThemePref(): [ThemePref, (next: ThemePref) => void] {
  * icon of the theme you'd switch *to*, like most app theme switches.
  */
 export function ThemeToggleButton({ className }: { className?: string }) {
-	const [pref, onPick] = useThemePref();
+	const [pref, onPick, userPicked] = useThemePref();
 	const next: ThemePref = pref === "dark" ? "light" : "dark";
 	const Icon = next === "dark" ? Moon : Sun;
 
@@ -74,7 +83,12 @@ export function ThemeToggleButton({ className }: { className?: string }) {
 		>
 			<Icon
 				key={pref}
-				className="w-4 h-4 animate-theme-swap transition-transform duration-200 group-hover:scale-110 motion-reduce:animate-none"
+				className={cn(
+					"w-4 h-4 transition-transform duration-200 group-hover:scale-110 motion-reduce:animate-none",
+					// Only the user's own toggle earns the spin; the hydration
+					// correction must be silent.
+					userPicked && "animate-theme-swap",
+				)}
 			/>
 		</button>
 	);

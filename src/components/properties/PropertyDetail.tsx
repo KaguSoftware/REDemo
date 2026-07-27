@@ -20,7 +20,7 @@ import type { Lease, Payment, PropertyWithActiveLease, Sale, Tenant } from "@/sr
 import { PaymentList } from "@/src/components/payments/PaymentList";
 import {
 	AppShell, Button, Card, CardLabel, Badge, type BadgeTone,
-	ConfirmDialog, Alert, Spinner, toast,
+	ConfirmDialog, Alert, Spinner, DetailSkeleton, toast,
 } from "@/src/components/ui";
 import { PropertyGallery } from "./PropertyGallery";
 import { PropertyForm } from "./PropertyForm";
@@ -207,9 +207,7 @@ export function PropertyDetail({ propertyId }: Props) {
 	if (loading && !data) {
 		return (
 			<AppShell title="Taşınmaz">
-				<div className="py-16 flex justify-center">
-					<Spinner />
-				</div>
+				<DetailSkeleton />
 			</AppShell>
 		);
 	}

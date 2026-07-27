@@ -1,18 +1,33 @@
+import { AppShell } from "./AppShell";
+import { PageSkeleton } from "./skeletons";
+
 /**
- * Shared fallback for route-segment loading.tsx files. Every top-level route
- * has a loading.tsx wrapping this so tab switches show immediate feedback
- * (and Next can partially prefetch dynamic routes) instead of freezing on
- * the previous page.
+ * Route-level loading shell, for `loading.tsx` files and Suspense fallbacks.
+ *
+ * It renders the real AppShell so the sidebar, header and page title stay put
+ * while the route resolves. The two things it replaces both flashed harder than
+ * the wait they covered: `<Suspense fallback={null}>` blanked the entire page,
+ * and the previous version of this component rendered a bare centred spinner
+ * with no chrome at all, so the sidebar vanished and rebuilt on every entry.
+ *
+ * Pass the same title/subtitle/width the route's own AppShell uses, or the
+ * header text will visibly change once the page mounts.
  */
-export function RouteLoading({ label = "Yükleniyor" }: { label?: string }) {
+export function RouteLoading({
+	title,
+	subtitle,
+	width,
+	children,
+}: {
+	title: string;
+	subtitle?: string;
+	width?: "5xl" | "7xl" | "3xl";
+	/** Surface-specific skeleton; defaults to the generic list shape. */
+	children?: React.ReactNode;
+}) {
 	return (
-		<main
-			className="min-h-[60vh] flex flex-col items-center justify-center gap-3"
-			aria-busy="true"
-			aria-label={label}
-		>
-			<span className="h-8 w-8 rounded-full border-[3px] border-base-300 border-t-primary animate-spin" />
-			<p className="text-xs font-medium text-base-content/50">{label}…</p>
-		</main>
+		<AppShell title={title} subtitle={subtitle} width={width}>
+			{children ?? <PageSkeleton />}
+		</AppShell>
 	);
 }

@@ -227,6 +227,36 @@
 	}
 }
 
+/* ─── Skeletons ──────────────────────────────────────────────────────────── */
+/* One breathing animation per SURFACE, applied to the group wrapper rather than
+   to each bar. A per-element pulse on a 10-row table means ~50 animations that
+   drift out of phase and read as noise; one opacity animation on the wrapper is
+   compositor-only, perfectly in sync, and reads as a single object waiting.
+   Skeletons must match the final content's geometry exactly — the point is that
+   nothing MOVES when data lands, and a shimmer cannot rescue a layout jump. */
+@layer utilities {
+	@keyframes lx-skeleton-breathe {
+		0%, 100% { opacity: 1; }
+		50%      { opacity: 0.45; }
+	}
+	.skeleton-group {
+		animation: lx-skeleton-breathe 1.6s var(--ease-fluid) infinite;
+	}
+	/* The global reduce rule below already halts animations; this pins the
+	   resting state to fully opaque so the tint stays legible rather than
+	   freezing at whatever frame it stopped on. */
+	@media (prefers-reduced-motion: reduce) {
+		.skeleton-group { animation: none; opacity: 1; }
+	}
+	/* Content settling into the space its skeleton just held. Short on purpose:
+	   past ~150ms a fade reads as "still loading" rather than "arrived". */
+	@keyframes lx-settle-in {
+		from { opacity: 0; }
+		to   { opacity: 1; }
+	}
+	.settle-in { animation: lx-settle-in 0.12s ease-out both; }
+}
+
 /* Tailwind v4 only generates variants (hover:, group-hover:, …) for
    utilities registered via @utility — a plain .class{} rule inside
    @layer utilities is not enough, so the looping bell jiggle needs its

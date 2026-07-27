@@ -15,7 +15,7 @@ import { listTeamMembers } from "@/src/lib/db/teams";
 import { useCachedResource } from "@/src/lib/useCachedResource";
 import { saleCommission, summariseCommissions, KDV_RATE } from "@/src/lib/commission";
 import { fmtMoney } from "@/src/lib/format";
-import { Card, CardLabel, Badge, Dropdown, cn, type DropdownOption } from "@/src/components/ui";
+import { Card, CardLabel, Badge, Dropdown, cn, Skeleton, SkeletonGroup, type DropdownOption } from "@/src/components/ui";
 import { Wallet } from "lucide-react";
 
 type Range = "this_year" | "this_month" | "all";
@@ -98,7 +98,20 @@ export function CommissionSummary() {
 				/>
 			</div>
 
-			{!hasAny ? (
+			{/* `sales ?? []` above makes an unloaded fetch summarise to zero, which is
+			    indistinguishable from a genuinely empty period — so this card used to
+			    claim "no commission recorded" before the rows had even arrived. The
+			    null check has to come first. */}
+			{sales == null ? (
+				<SkeletonGroup label="Komisyon yükleniyor" className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+					{[0, 1].map((i) => (
+						<div key={i}>
+							<Skeleton className="h-3 w-24" />
+							<Skeleton className="h-6 w-32 mt-2" />
+						</div>
+					))}
+				</SkeletonGroup>
+			) : !hasAny ? (
 				<p className="text-sm text-base-content/50 mt-3">
 					Bu dönemde komisyon kaydı yok. Satış sözleşmesi oluştururken komisyon
 					oranı girdiğinizde burada görünür.

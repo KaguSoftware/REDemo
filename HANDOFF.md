@@ -41,11 +41,92 @@ daisyUI 5 · Supabase (Postgres + RLS on every table, magic-link auth, Storage) 
 - **No FX conversion anywhere.** Rentals are usually TRY, sales often USD. Money is
   only ever compared within one currency — see the budget guard in `score.ts`.
 - Client caching: `src/lib/useCachedResource.ts` (stale-while-revalidate); call
-  `invalidateCache(prefix)` after mutations.
+  `invalidateCache(prefix)` after mutations. **Branch on `data === null` before
+  `data.length === 0`** — see the flash pass.
+- **Every authenticated page wraps its content in `<ServerSeed>`**; the root
+  layout must stay free of `cookies()`/`headers()`.
 - A refined zod schema (`.refine()`) has no `.partial()`. Export an unrefined base
   and a separate patch schema — see `leadInputObject` / `leadPatchSchema`.
 
 ## Current status
+
+### ✨ FLASH PASS (2026-07-27) — uncommitted on `main`, no migration, NOT yet driven in a browser
+Green: `typecheck`, `lint` (0 errors; the one warning is pre-existing, in `promo/`),
+`npm test` (**164 passed**, 18 files — 1 new), `npm run build`.
+
+The symptom was "a split second of random things on every page." It was **five
+visual states** rendering in sequence before real data:
+
+| # | What you saw | Cause |
+|---|---|---|
+| 0 | No sidebar, content 256px off, a **"Giriş yap" button**, "…giriş yapın" cards. Brand accent stripped to stock terracotta. | `user`/`team` were `null` until AuthProvider's effect resolved. `BrandTheme` ran while the team was merely *unknown* and **deleted** the accent the boot script had painted, plus its localStorage snapshot. |
+| 1 | Sidebar pops in, content jumps 256px, nav marker glides in from the last route's position. | `getClaims()` resolves. The marker's Y was in **sessionStorage**, which survives reloads. |
+| 2 | Workspace name changes, logo/bell appear, trial banner shoves the page down, every primary button changes colour. **Only now do fetches start.** | `team` lands a round-trip later; `useTeamReady()` gates nearly every `enabled` flag in the app. |
+| 3 | **"Henüz taşınmaz yok" + "İlk taşınmazınızı ekleyin"**, "Henüz müşteri yok", "Henüz belge yok". | ⚠️ **The root cause** — see the rule below. |
+| 4 | Real data. | |
+
+⚠️ **THE RULE THIS PASS ADDS: a loading flag must be derivable during the FIRST
+render.** `useCachedResource.loading` was `!cached && fetching`, and `fetching`
+was set in a `queueMicrotask` *inside the effect* — so it was `false` for the
+first paint and **every `loading ? <Skeleton/> : <EmptyState/>` in the app
+rendered the empty state first**. One line, ~13 screens. It is now derived from
+`settledAttempt !== attempt` (state, not a ref — a ref read during render is
+what `react-hooks/refs` is pointing at). Pinned by
+[useCachedResource.test.tsx](src/lib/useCachedResource.test.tsx).
+
+⚠️ **`data === null` ≠ `data === []`.** "Not loaded" and "loaded and genuinely
+empty" are different answers, and `data ?? []` erases the difference — that is
+how an agent with a full portfolio got told they had no properties. **Always
+branch on `null` first.** Fixed in `HomeDashboard`, `CommissionSummary`,
+`DocumentsDashboard`, `ContactDashboard`.
+
+⚠️ **DO NOT read cookies/headers in `src/app/layout.tsx`.** Seeding the session
+there is the obvious move and it is wrong: it opts *every* route into on-demand
+rendering. **Measured** — it turned `/gizlilik-politikasi`,
+`/kullanim-kosullari`, `/kvkk-aydinlatma` and `/signup` from `○` static to `ƒ`
+dynamic. Seeding lives in **`<ServerSeed>`**
+([ServerSeed.tsx](src/components/auth/ServerSeed.tsx)), which each authenticated
+*page* renders; those pages already read the session for their redirect guard,
+and `getServerAppContext` is `cache()`d, so it is free there. Verified against a
+baseline build that the static set is byte-identical, and that
+`staleTimes {dynamic:30, static:180}` survives in `.next/required-server-files.json`.
+
+Also fixed:
+- **Hydration mismatch.** `useCachedResource` called `getEntry()` (which reads
+  sessionStorage) *during render*: server emitted an empty list, client emitted
+  rows, React threw the subtree away. Now `useSyncExternalStore` with an
+  `undefined` server snapshot. A `renderToString` test pins it.
+- **Nav marker** uses [navMarkerState.ts](src/components/ui/navMarkerState.ts)
+  (module scope, resets with the document) instead of sessionStorage, so it
+  glides only on a real client-side navigation.
+- **Three write-only store slices deleted** — `isLoadingProperties/Leads/Projects`
+  were mirrored in via `useEffect` (one extra stale frame each) and two of them
+  were never read at all. `PropertyTable` takes `isLoading` as a prop.
+- **ThemeToggle** no longer animates the hydration correction (a dark-mode user's
+  server snapshot must be "light", so the icon self-corrects on every load — and
+  `animate-theme-swap` turned that into a visible flicker).
+- **TrialBanner** takes `serverNow`, so it is in the SSR HTML instead of being
+  inserted after hydration and shoving the page down.
+
+**Skeletons.** [Skeleton.tsx](src/components/ui/Skeleton.tsx) primitives +
+[skeletons.tsx](src/components/ui/skeletons.tsx) per-surface shapes, and
+`loading.tsx` on 10 routes (there were **zero** before; all four `Suspense`
+fallbacks were `null`, and the one skeleton in the codebase was unreachable dead
+code because of the `loading` bug). **The rule: a skeleton occupies the exact
+geometry of what replaces it** — if you change a table's row padding, change its
+skeleton. One breathing animation per *surface* (on `.skeleton-group`), not per
+bar. Two panels deliberately have **no** skeleton — `AttentionPanel` and
+`MatchingLeads` usually resolve to "render nothing", so reserving space would
+guarantee a collapse instead of preventing a jump.
+
+**Not done, by design:** `/team`, `/settings/*`, `/onboarding` and `/auth/switch`
+are `"use client"` pages with no server component to wrap, so they still resolve
+auth client-side. Seeding degrades gracefully (`teamLoaded === false` → the old
+client bootstrap runs), so they work exactly as before. Giving them an async
+segment layout would block on a blank screen, which is worse than what it fixes.
+
+**⚠️ Not driven in a browser.** No browser tooling was available in that session.
+The honest remaining test is the filmstrip check in *Roadmap* step 1.
 
 ### ⚡ PERF PASS (2026-07-20) — SHIPPED on `main`, no migration, not yet driven in a browser
 Four commits: `bfe9cdf` (auth) · `2e354ad` (client-side filtering) · `29ce06e`
@@ -182,11 +263,43 @@ compile-time confidence only.
 | [src/lib/pdf/document.tsx](src/lib/pdf/document.tsx) | `PDFDocument`: cover + N content pages. Brochure = one page per property |
 | [src/lib/pdf/imageData.ts](src/lib/pdf/imageData.ts) | `toDataUrl` — shared by the single-listing and brochure exports |
 | [src/lib/pdf/brochure.test.tsx](src/lib/pdf/brochure.test.tsx) | Real `renderToBuffer` page-count assertions; guards the multi-page restructure |
+| [src/lib/useCachedResource.ts](src/lib/useCachedResource.ts) | SWR cache. **`loading` must be true on the first render** — see the flash pass |
+| [src/lib/useCachedResource.test.tsx](src/lib/useCachedResource.test.tsx) | Pins that rule + the `null` vs `[]` distinction + the SSR snapshot. First jsdom suite (opt in per-file with `// @vitest-environment jsdom`) |
+| [src/lib/auth/serverContext.ts](src/lib/auth/serverContext.ts) | `getServerAppContext()` — user + team + `serverNow`, one wave, `cache()`d, never throws |
+| [src/components/auth/ServerSeed.tsx](src/components/auth/ServerSeed.tsx) | **Wrap every new authenticated page in this.** Seeds the store server-side; also renders TrialBanner |
+| [src/components/auth/StoreHydrator.tsx](src/components/auth/StoreHydrator.tsx) | Writes the seed into zustand *during* first render (a `useState` initializer), not in an effect |
+| [src/lib/db/teamContext.ts](src/lib/db/teamContext.ts) | `TeamContext` + `TEAM_CONTEXT_SELECT` + `mapTeamContextRow`, with no Supabase client bound — so server and client build identical objects |
+| [src/components/ui/skeletons.tsx](src/components/ui/skeletons.tsx) | `StatsSkeleton` · `TableSkeleton` · `CardListSkeleton` · `DetailSkeleton` · `PageSkeleton`. Keep their geometry in sync with the real components |
+| [src/components/ui/RouteLoading.tsx](src/components/ui/RouteLoading.tsx) | `loading.tsx` shell — renders the real AppShell so the chrome never blanks. Pass the route's own title/subtitle/width |
 
 ## Roadmap / next steps
-1. ~~Apply migrations 0026 + 0027.~~ **Done 2026-07-20** — remote history synced
+1. **← ACTIVE: verify the flash pass in a browser.** Sign in as a real user in a
+   **fresh incognito window**, then:
+   - DevTools → Network → **Slow 4G**, hard-reload `/properties`. The sidebar and
+     header must be correct in the *first* frame; skeleton rows fill with data
+     **without anything moving**. Nothing should ever say "Giriş yap",
+     "Henüz taşınmaz yok" or "İlk taşınmazınızı ekleyin".
+   - Record with **Performance → screenshots** and step the filmstrip frame by
+     frame. That is the only reliable way to catch a one-frame flash.
+   - Watch a primary-coloured button through the whole load: it must never
+     change colour.
+   - Repeat on `/`, `/leads`, `/projects`, `/documents`, a property detail.
+   - **CLS target 0** on load for every route.
+   - Hard-reload while on `/leads`: the marker appears *on* Müşteriler, no slide.
+     Then click through the nav — it must still glide.
+   - OS "reduce motion" on → skeletons are a static tint, no breathing.
+   - Confirm a genuinely empty list still shows its real empty state + CTA.
+   - **Auth regression** (what this pass most endangers): sign in, sign out,
+     hard-reload while signed in, let a token refresh happen, and a team-less
+     account bouncing to `/onboarding`.
+   - **Perf**, measured per the ONE RULE method (warm, median of 8): TTFB and
+     time-to-first-data on `/properties`. If `ServerSeed` made TTFB worse without
+     a matching improvement in time-to-data, drop the team query from
+     `getServerAppContext` and keep only the (free) identity seeding — §4's
+     `teamLoaded` gate already makes a late team arrival invisible.
+2. ~~Apply migrations 0026 + 0027.~~ **Done 2026-07-20** — remote history synced
    at 0001–0027. `db push` is safe here now; still `--dry-run` first (Gotchas).
-2. **← ACTIVE: browser pass**, in this order:
+3. **Feature browser pass**, in this order:
    - Create a project with an https Drive link → `/projects` groups it by firma,
      the Drive button opens in a new tab.
    - Add a property from the project page (`?project=` prefills the link) →

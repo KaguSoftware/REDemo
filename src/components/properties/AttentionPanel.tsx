@@ -44,6 +44,11 @@ export function AttentionPanel() {
 		{ enabled: !!user && teamReady },
 	);
 
+	// Deliberately NO skeleton here, unlike the other dashboard panels. This is an
+	// exception banner: for a healthy portfolio the resolved answer is "render
+	// nothing", so reserving space would promise a block that usually never
+	// arrives — trading a late insertion for a guaranteed collapse. It stays
+	// absent until there is something real to say.
 	if (!data) return null;
 	if (data.total === 0 && !editing) {
 		// Still allow reaching the settings from an all-clear state? No panel

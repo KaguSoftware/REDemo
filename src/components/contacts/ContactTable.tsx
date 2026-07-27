@@ -12,7 +12,7 @@ import { invalidateCache, useCachedResource } from "@/src/lib/useCachedResource"
 import { toast } from "@/src/components/ui";
 import type { Lead, Tenant } from "@/src/lib/db/types";
 import { LEAD_STATUS_META } from "@/src/components/leads/leadStatus";
-import { Badge, Button, Card, SpinnerBlock, EmptyState, Pagination, usePagination, BulkActionBar, ConfirmDialog } from "@/src/components/ui";
+import { Badge, Button, Card, TableSkeleton, EmptyState, Pagination, usePagination, BulkActionBar, ConfirmDialog } from "@/src/components/ui";
 import { WhatsAppButton } from "@/src/components/ui/WhatsAppButton";
 import { useMultiSelect } from "@/src/hooks/useMultiSelect";
 import { downloadCsv } from "@/src/lib/csv";
@@ -184,7 +184,11 @@ export function ContactTable({ rows, loading, onEditLead, onEditTenant }: Props)
 		clear();
 	}
 
-	if (loading) return <SpinnerBlock />;
+	// Before the empty state, always: `rows` is empty while loading too, and
+	// "Henüz kayıt yok" is a claim, not a placeholder.
+	if (loading) {
+		return <TableSkeleton rows={7} columns={["w-32", "w-28", "w-40", "w-20", "w-16"]} label="Kişiler yükleniyor" />;
+	}
 
 	if (rows.length === 0) {
 		return (

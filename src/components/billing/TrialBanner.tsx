@@ -13,18 +13,28 @@ import { usePathname } from "next/navigation";
 import { TriangleAlert, Lock } from "lucide-react";
 import { useAppStore } from "@/src/store";
 
-export function TrialBanner() {
+/**
+ * @param serverNow The render time from the root layout, rounded to the minute.
+ *   The server snapshot used to be a hardcoded `0`, which suppressed the banner
+ *   in the SSR HTML — so it was INSERTED after hydration, and since it is
+ *   sticky and in normal flow it shoved the entire page down a row. Passing the
+ *   real server clock lets the HTML contain the banner from the start. Both
+ *   sides round to the same minute, so they normally agree; if they don't
+ *   (clock skew, a minute boundary) useSyncExternalStore just re-renders — this
+ *   is the one hook where differing server/client snapshots are legal, not a
+ *   hydration mismatch.
+ */
+export function TrialBanner({ serverNow }: { serverNow: number }) {
 	const team = useAppStore((s) => s.team);
 	const pathname = usePathname();
-	// Minute-granular clock via useSyncExternalStore: render stays pure and the
-	// server snapshot (0) suppresses the banner until hydration.
+	// Minute-granular clock via useSyncExternalStore, so render stays pure.
 	const now = useSyncExternalStore(
 		(onTick) => {
 			const t = setInterval(onTick, 60_000);
 			return () => clearInterval(t);
 		},
 		() => Math.floor(Date.now() / 60_000) * 60_000,
-		() => 0,
+		() => serverNow,
 	);
 
 	if (!team || now === 0 || pathname.startsWith("/settings/billing") || pathname.startsWith("/onboarding")) {

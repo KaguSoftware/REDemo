@@ -71,8 +71,6 @@ interface AppState {
 	setAllProperties: (p: Property[]) => void;
 	upsertProperty: (p: Property) => void;
 	removeProperty: (id: string) => void;
-	isLoadingProperties: boolean;
-	setIsLoadingProperties: (v: boolean) => void;
 
 	filters: Filters;
 	setFilter: <K extends keyof Filters>(k: K, v: Filters[K]) => void;
@@ -84,8 +82,6 @@ interface AppState {
 	setLeads: (l: Lead[]) => void;
 	upsertLead: (l: Lead) => void;
 	removeLead: (id: string) => void;
-	isLoadingLeads: boolean;
-	setIsLoadingLeads: (v: boolean) => void;
 
 	leadFilters: LeadFilters;
 	setLeadFilter: <K extends keyof LeadFilters>(k: K, v: LeadFilters[K]) => void;
@@ -95,8 +91,6 @@ interface AppState {
 	setProjects: (p: Project[]) => void;
 	upsertProject: (p: Project) => void;
 	removeProject: (id: string) => void;
-	isLoadingProjects: boolean;
-	setIsLoadingProjects: (v: boolean) => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -137,9 +131,6 @@ export const useAppStore = create<AppState>((set) => ({
 				allProperties: s.allProperties.filter((p) => p.id !== id),
 			};
 		}),
-	isLoadingProperties: false,
-	setIsLoadingProperties: (v) => set({ isLoadingProperties: v }),
-
 	filters: { ...EMPTY_FILTERS },
 	setFilter: (k, v) => set((s) => ({ filters: { ...s.filters, [k]: v } })),
 	setFilters: (patch) => set((s) => ({ filters: { ...s.filters, ...patch } })),
@@ -167,9 +158,6 @@ export const useAppStore = create<AppState>((set) => ({
 			invalidateCache("attention");
 			return { leads: s.leads.filter((l) => l.id !== id) };
 		}),
-	isLoadingLeads: false,
-	setIsLoadingLeads: (v) => set({ isLoadingLeads: v }),
-
 	leadFilters: { ...EMPTY_LEAD_FILTERS },
 	setLeadFilter: (k, v) => set((s) => ({ leadFilters: { ...s.leadFilters, [k]: v } })),
 	resetLeadFilters: () => set({ leadFilters: { ...EMPTY_LEAD_FILTERS } }),
@@ -195,8 +183,6 @@ export const useAppStore = create<AppState>((set) => ({
 			invalidateCache("properties");
 			return { projects: s.projects.filter((p) => p.id !== id) };
 		}),
-	isLoadingProjects: false,
-	setIsLoadingProjects: (v) => set({ isLoadingProjects: v }),
 }));
 
 /** True once the signed-in user's team context has loaded AND a team exists.

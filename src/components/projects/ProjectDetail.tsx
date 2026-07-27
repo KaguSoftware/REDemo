@@ -8,7 +8,7 @@ import { getProject } from "@/src/lib/db/projects";
 import { listProperties } from "@/src/lib/db/properties";
 import type { Project, Property } from "@/src/lib/db/types";
 import {
-	AppShell, Card, CardLabel, Button, Alert, Spinner, Badge, EmptyState,
+	AppShell, Card, CardLabel, Button, Alert, DetailSkeleton, Badge, EmptyState,
 } from "@/src/components/ui";
 import { ProjectForm } from "./ProjectForm";
 import { Building2, ExternalLink, Home, Pencil, Plus } from "lucide-react";
@@ -61,7 +61,7 @@ export function ProjectDetail({ projectId }: Props) {
 	if (loading && !project) {
 		return (
 			<AppShell title="Proje">
-				<div className="py-16 flex justify-center"><Spinner /></div>
+				<DetailSkeleton />
 			</AppShell>
 		);
 	}

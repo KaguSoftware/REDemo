@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient, getUserId } from "@/src/lib/supabase/server";
 import { PropertyDetail } from "@/src/components/properties/PropertyDetail";
+import { ServerSeed } from "@/src/components/auth/ServerSeed";
 
 export default async function PropertyDetailPage({
 	params,
@@ -14,5 +15,5 @@ export default async function PropertyDetailPage({
 	const { id } = await params;
 
 	// PropertyDetail renders its own AppShell (top bar + drawer).
-	return <PropertyDetail propertyId={id} />;
+	return <ServerSeed><PropertyDetail propertyId={id} /></ServerSeed>;
 }

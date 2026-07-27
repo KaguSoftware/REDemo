@@ -4,7 +4,7 @@ import { useState, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useAppStore, useIsWritable } from "@/src/store";
 import type { Property } from "@/src/lib/db/types";
-import { Badge, Button, Card, SpinnerBlock, EmptyState, Pagination, usePagination, BulkActionBar, ConfirmDialog, toast, type BadgeTone } from "@/src/components/ui";
+import { Badge, Button, Card, TableSkeleton, EmptyState, Pagination, usePagination, BulkActionBar, ConfirmDialog, toast, type BadgeTone } from "@/src/components/ui";
 import { useMultiSelect } from "@/src/hooks/useMultiSelect";
 import { downloadCsv } from "@/src/lib/csv";
 import { deleteProperties, warmProperty } from "@/src/lib/db/properties";
@@ -61,10 +61,14 @@ function TypeBadge({ t }: { t: Property["listing_type"] }) {
 	);
 }
 
-export function PropertyTable() {
+/**
+ * @param isLoading Passed down, not read from the store. Mirroring it into
+ *   zustand via an effect cost a whole extra frame of staleness: the store still
+ *   said "not loading" during the first commit, so the empty state rendered first.
+ */
+export function PropertyTable({ isLoading = false }: { isLoading?: boolean }) {
 	const router = useRouter();
 	const properties = useAppStore((s) => s.properties);
-	const isLoading  = useAppStore((s) => s.isLoadingProperties);
 	const filters    = useAppStore((s) => s.filters);
 	const resetFilters = useAppStore((s) => s.resetFilters);
 	const removeProperty = useAppStore((s) => s.removeProperty);
@@ -231,8 +235,12 @@ export function PropertyTable() {
 		clear();
 	}
 
+	// Must stay ABOVE the empty-state branch: an empty `properties` array means
+	// "nothing loaded yet" just as often as "no rows", and showing the
+	// "İlk taşınmazınızı ekleyin" CTA to someone with a full portfolio — for the
+	// half-second before their rows arrive — was the worst instance of the flash.
 	if (isLoading) {
-		return <SpinnerBlock />;
+		return <TableSkeleton rows={pageSize > 8 ? 8 : pageSize} thumb columns={["w-28", "w-56", "w-10", "w-16", "w-16", "w-20", "w-16"]} label="Taşınmazlar yükleniyor" />;
 	}
 
 	if (properties.length === 0) {

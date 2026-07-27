@@ -26,8 +26,15 @@ function currentTheme(): "light" | "dark" {
  */
 export function BrandTheme() {
 	const main = useAppStore((s) => s.team?.brand_color_main);
+	// "No brand color" and "we don't know yet" are different answers, and only the
+	// first one may clear the accent. Conflating them meant this effect ran while
+	// the team was merely unresolved and DELETED the accent the boot script had
+	// just painted — plus the localStorage snapshot the boot script reads — so
+	// every primary button flashed stock terracotta on load.
+	const teamLoaded = useAppStore((s) => s.teamLoaded);
 
 	useEffect(() => {
+		if (!teamLoaded) return;
 		const root = document.documentElement;
 
 		const apply = () => {
@@ -56,12 +63,11 @@ export function BrandTheme() {
 		const observer = new MutationObserver(apply);
 		observer.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
 
-		return () => {
-			observer.disconnect();
-			root.style.removeProperty("--color-primary");
-			root.style.removeProperty("--color-primary-content");
-		};
-	}, [main]);
+		// Only the observer is torn down. Clearing the vars here would strip the
+		// accent on any unmount — including React StrictMode's double-mount in dev
+		// — and the next mount re-applies them anyway.
+		return () => observer.disconnect();
+	}, [main, teamLoaded]);
 
 	return null;
 }

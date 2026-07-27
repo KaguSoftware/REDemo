@@ -14,7 +14,7 @@ import { downloadUrl } from "@/src/lib/pdf";
 import { useCachedResource } from "@/src/lib/useCachedResource";
 import {
 	AppShell, Card, Alert, Button, Input, Dropdown, Badge,
-	SpinnerBlock, EmptyState, Pagination, usePagination, toast,
+	TableSkeleton, EmptyState, Pagination, usePagination, toast,
 	BulkActionBar,
 	type DropdownOption,
 } from "@/src/components/ui";
@@ -173,8 +173,11 @@ export function DocumentsDashboard() {
 						</Alert>
 					)}
 
-					{loading ? (
-						<SpinnerBlock />
+					{/* `data == null` as well as `loading`: the key is disabled until the
+					    team is known, and `docs = data ?? []` would otherwise read as
+					    "no documents" in that window. */}
+					{loading || data == null ? (
+						<TableSkeleton rows={6} columns={["w-44", "w-28", "w-24", "w-20", "w-16"]} label="Belgeler yükleniyor" />
 					) : docs.length === 0 ? (
 						<Card>
 							<EmptyState

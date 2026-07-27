@@ -1,6 +1,7 @@
 import { createClient, getUserId } from "@/src/lib/supabase/server";
 import { HomeDashboard } from "@/src/components/dashboard/HomeDashboard";
 import { LandingPage } from "@/src/components/marketing/LandingPage";
+import { ServerSeed } from "@/src/components/auth/ServerSeed";
 
 /**
  * "/" is two products: the public marketing page for visitors, the dashboard
@@ -10,6 +11,8 @@ import { LandingPage } from "@/src/components/marketing/LandingPage";
 export default async function HomePage() {
 	const supabase = await createClient();
 	const userId = await getUserId(supabase);
+	// Visitors get the untouched marketing page — no session seeding, nothing to
+	// seed. Only the dashboard branch pays for (and needs) ServerSeed.
 	if (!userId) return <LandingPage />;
-	return <HomeDashboard />;
+	return <ServerSeed><HomeDashboard /></ServerSeed>;
 }

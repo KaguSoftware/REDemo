@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useAppStore, useTeamReady } from "@/src/store";
 import { getDashboardStats } from "@/src/lib/db/stats";
 import { useCachedResource } from "@/src/lib/useCachedResource";
-import { cn } from "@/src/components/ui";
+import { cn, StatsSkeleton } from "@/src/components/ui";
 import { Home, KeyRound, Wallet, Users } from "lucide-react";
 
 function fmtAmount(n: number): string {
@@ -24,23 +24,18 @@ export function DashboardStats() {
 	const teamReady = useTeamReady();
 	const setFilters = useAppStore((s) => s.setFilters);
 	const resetFilters = useAppStore((s) => s.resetFilters);
-	const { data, loading } = useCachedResource(
+	const { data } = useCachedResource(
 		user && teamReady ? "stats" : null,
 		getDashboardStats,
 		undefined,
 		{ enabled: !!user && teamReady },
 	);
 
-	if (loading && !data) {
-		return (
-			<div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
-				{[0, 1, 2, 3].map((i) => (
-					<div key={i} className="h-[88px] rounded-2xl bg-base-200 animate-pulse" />
-				))}
-			</div>
-		);
-	}
-	if (!data) return null;
+	// `data === null` covers both "loading" and "not started yet" (the key is
+	// disabled until the team is known). Returning null in either case removed the
+	// whole KPI strip from the layout and let it drop in later, shoving the page
+	// down — so both render the skeleton, which holds the exact same 4-tile grid.
+	if (!data) return <StatsSkeleton />;
 
 	const { properties, monthlyRentByCurrency, outstandingByCurrency, leadsByStatus, totalLeads } = data;
 	const rent = joinByCurrency(monthlyRentByCurrency);

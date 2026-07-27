@@ -38,6 +38,10 @@ export function MatchingLeads({ property }: { property: Property }) {
 	if (property.status === "sold") return null;
 
 	const matched = rankLeadsForProperty(data ?? [], property);
+	// No skeleton, deliberately: like AttentionPanel this is a card that often
+	// resolves to "render nothing", so reserving space would guarantee a collapse
+	// rather than prevent a jump. "leads:all" is usually already warm from /leads
+	// or the dashboard, so in practice it is present on first paint.
 	if (matched.length === 0) return null;
 
 	return (

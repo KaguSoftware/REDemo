@@ -6,7 +6,7 @@ import { useAppStore, useTeamReady, useIsWritable } from "@/src/store";
 import { listProjects } from "@/src/lib/db/projects";
 import { useCachedResource } from "@/src/lib/useCachedResource";
 import {
-	AppShell, Card, Alert, Button, Input, Dropdown, EmptyState, SpinnerBlock,
+	AppShell, Card, Alert, Button, Input, Dropdown, EmptyState, CardListSkeleton,
 	Badge, type DropdownOption,
 } from "@/src/components/ui";
 import { ProjectForm } from "./ProjectForm";
@@ -36,7 +36,6 @@ export function ProjectDashboard() {
 	const isWritable = useIsWritable();
 	const projects = useAppStore((s) => s.projects);
 	const setProjects = useAppStore((s) => s.setProjects);
-	const setIsLoadingProjects = useAppStore((s) => s.setIsLoadingProjects);
 
 	const [q, setQ] = useState("");
 	const [debouncedQ, setDebouncedQ] = useState("");
@@ -66,10 +65,6 @@ export function ProjectDashboard() {
 		setProjects,
 		{ enabled: !!user && teamReady },
 	);
-
-	useEffect(() => {
-		setIsLoadingProjects(loading);
-	}, [loading, setIsLoadingProjects]);
 
 	// Developer options come from the loaded rows, so the list self-populates.
 	const developerOptions = useMemo<DropdownOption<string>[]>(() => {
@@ -121,7 +116,7 @@ export function ProjectDashboard() {
 			{error && <Alert>{error}</Alert>}
 
 			{loading && projects.length === 0 ? (
-				<SpinnerBlock />
+				<CardListSkeleton cards={6} label="Projeler yükleniyor" />
 			) : visible.length === 0 ? (
 				<EmptyState
 					icon={Building2}

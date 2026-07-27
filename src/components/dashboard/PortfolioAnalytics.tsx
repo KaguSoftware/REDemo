@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useAppStore, useTeamReady } from "@/src/store";
 import { getDashboardStats, type PropertyHealthRow } from "@/src/lib/db/stats";
 import { useCachedResource } from "@/src/lib/useCachedResource";
-import { Card, CardLabel, Badge, cn } from "@/src/components/ui";
+import { Card, CardLabel, Badge, cn, Skeleton, SkeletonGroup } from "@/src/components/ui";
 import { fmtMoney } from "@/src/lib/format";
 import {
 	TrendingUp, FileText, CalendarClock, Wallet, PhoneMissed, Building2,
@@ -35,6 +35,41 @@ function endsSoon(row: PropertyHealthRow): boolean {
 	return end >= now - 24 * 60 * 60 * 1000 && end <= now + EXPIRY_WINDOW_DAYS * 24 * 60 * 60 * 1000;
 }
 
+/** Mirrors the card below: header row, two meters, a 4-tile grid, a list block. */
+function AnalyticsSkeleton() {
+	return (
+		<Card className="mb-4">
+			<SkeletonGroup label="Portföy sağlığı yükleniyor">
+				<div className="flex items-center gap-2 mb-4">
+					<Skeleton className="w-4 h-4 rounded-sm" />
+					<Skeleton className="h-4 w-28" />
+				</div>
+				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+					{[0, 1].map((i) => (
+						<div key={i}>
+							<Skeleton className="h-3 w-20" />
+							<Skeleton className="h-2 w-full mt-2 rounded-full" />
+							<Skeleton className="h-3 w-2/3 mt-2" />
+						</div>
+					))}
+				</div>
+				<div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 mt-5">
+					{[0, 1, 2, 3].map((i) => (
+						<div key={i} className="rounded-xl border border-base-300 px-3 py-2.5">
+							<Skeleton className="h-3 w-20" />
+							<Skeleton className="h-5 w-10 mt-2" />
+						</div>
+					))}
+				</div>
+				<div className="mt-5">
+					<Skeleton className="h-3 w-40 mb-2" />
+					<Skeleton className="h-4 w-52" />
+				</div>
+			</SkeletonGroup>
+		</Card>
+	);
+}
+
 /**
  * Portfolio health panel: occupancy + this month's collection meters, compact
  * stat tiles (active leases, expiring soon, overdue, silent leads) and the
@@ -51,7 +86,12 @@ export function PortfolioAnalytics() {
 		undefined,
 		{ enabled: !!user && teamReady },
 	);
-	if (!data) return null;
+	// Reserve the card while the shared "stats" fetch is in flight. For any team
+	// with data this is the geometry that lands, so nothing below it moves. A
+	// brand-new empty team does see it collapse — that is a one-time state, and
+	// the alternative (this whole card dropping in late on every load, for
+	// everyone) is the worse trade.
+	if (!data) return <AnalyticsSkeleton />;
 
 	const {
 		occupancyRate, collectionThisMonth,
