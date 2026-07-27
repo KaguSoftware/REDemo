@@ -16,7 +16,7 @@ import { buildReceiptPDFData, receiptFilename } from "@/src/lib/pdf/receiptData"
 import { fmtMoney } from "@/src/lib/format";
 import type { Lease, Payment, Property, Tenant } from "@/src/lib/db/types";
 import { PropertyPickerCardList } from "./PropertyPickerCardList";
-import { Badge, Button, cn, Spinner, toast } from "@/src/components/ui";
+import { Badge, Button, cn, EmptyState, Spinner, toast } from "@/src/components/ui";
 
 type Step = "property" | "lease" | "payment" | "confirm";
 
@@ -200,9 +200,7 @@ export function ReceiptWizard({ onExit }: Props) {
 					{loadingLeases ? (
 						<div className="flex justify-center py-8"><Spinner size="sm" /></div>
 					) : leases.length === 0 ? (
-						<div className="text-center py-12 bg-base-200 rounded-box border border-dashed border-base-300">
-							<p className="text-sm text-base-content/60">Bu taşınmaz için kayıtlı kira sözleşmesi bulunamadı.</p>
-						</div>
+						<EmptyState inset title="Bu taşınmaz için kayıtlı kira sözleşmesi bulunamadı." />
 					) : (
 						<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 							{leases.map((l) => {
@@ -250,12 +248,11 @@ export function ReceiptWizard({ onExit }: Props) {
 					{loadingPayments ? (
 						<div className="flex justify-center py-8"><Spinner size="sm" /></div>
 					) : payments.length === 0 ? (
-						<div className="text-center py-12 bg-base-200 rounded-box border border-dashed border-base-300">
-							<p className="text-sm text-base-content/60 mb-1">Bu kira sözleşmesi için kayıtlı ödeme yok.</p>
-							<p className="text-xs text-base-content/50 px-6">
-								Önce taşınmaz sayfasındaki Ödemeler listesinden bir ödeme kaydedin.
-							</p>
-						</div>
+						<EmptyState
+							inset
+							title="Bu kira sözleşmesi için kayıtlı ödeme yok."
+							hint="Önce taşınmaz sayfasındaki Ödemeler listesinden bir ödeme kaydedin."
+						/>
 					) : (
 						<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 							{payments.map((p) => {

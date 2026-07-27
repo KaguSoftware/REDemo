@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { Property } from "@/src/lib/db/types";
-import { cn } from "@/src/components/ui";
+import { cn, Button, EmptyState } from "@/src/components/ui";
 
 interface Props {
 	properties: Property[];
@@ -18,16 +18,16 @@ function fmt(p: number | null, ccy: string) {
 export function PropertyPickerCardList({ properties, selectedId, onSelect, emptyHint }: Props) {
 	if (properties.length === 0) {
 		return (
-			<div className="text-center py-12 bg-base-200 rounded-box border border-dashed border-base-300">
-				<p className="text-sm text-base-content/60 mb-2">Uygun taşınmaz yok.</p>
-				{emptyHint && <p className="text-xs text-base-content/50 mb-4 px-6">{emptyHint}</p>}
-				<Link
-					href="/properties/new"
-					className="inline-flex items-center h-11 px-4 text-sm font-semibold rounded-field bg-primary text-primary-content hover:brightness-110 transition-[filter] duration-150"
-				>
-					+ Taşınmaz ekle
-				</Link>
-			</div>
+			<EmptyState
+				inset
+				title="Uygun taşınmaz yok."
+				hint={emptyHint}
+				action={
+					<Link href="/properties/new">
+						<Button>Taşınmaz ekle</Button>
+					</Link>
+				}
+			/>
 		);
 	}
 

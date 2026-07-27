@@ -1,7 +1,7 @@
 "use client";
 
 import type { Lead } from "@/src/lib/db/types";
-import { cn } from "@/src/components/ui";
+import { cn, EmptyState } from "@/src/components/ui";
 
 interface Props {
 	clients: Lead[];
@@ -18,10 +18,7 @@ interface Props {
 export function ClientPickerCardList({ clients, selectedId, onSelect, emptyHint }: Props) {
 	if (clients.length === 0) {
 		return (
-			<div className="text-center py-12 bg-base-200 rounded-box border border-dashed border-base-300">
-				<p className="text-sm text-base-content/60 mb-2">Henüz müşteri yok.</p>
-				{emptyHint && <p className="text-xs text-base-content/50 px-6">{emptyHint}</p>}
-			</div>
+			<EmptyState inset title="Henüz müşteri yok." hint={emptyHint} />
 		);
 	}
 
