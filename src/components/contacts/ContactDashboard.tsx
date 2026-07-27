@@ -7,14 +7,13 @@ import { listLeads, type LeadFilter } from "@/src/lib/db/leads";
 import { listTenants } from "@/src/lib/db/tenants";
 import { useCachedResource } from "@/src/lib/useCachedResource";
 import { filterLeads, filterTenants } from "@/src/lib/clientFilters";
-import { AppShell, Card, Alert, Button, Input, Dropdown, type DropdownOption } from "@/src/components/ui";
+import { AppShell, Card, Alert, Button, Input, Dropdown, Tabs, type DropdownOption } from "@/src/components/ui";
 import { LEAD_STATUS_META, LEAD_STATUS_ORDER } from "@/src/components/leads/leadStatus";
 import { LeadForm } from "@/src/components/leads/LeadForm";
 import { TenantForm } from "@/src/components/tenants/TenantForm";
 import { ContactTable, type ContactRow } from "./ContactTable";
 import type { Lead, LeadStatus, Tenant } from "@/src/lib/db/types";
 import { downloadCsv } from "@/src/lib/csv";
-import { cn } from "@/src/components/ui/cn";
 import { Plus, Search, Download, Users, UserPlus } from "lucide-react";
 
 type TypeFilter = "all" | "lead" | "tenant";
@@ -203,29 +202,13 @@ export function ContactDashboard() {
 				<>
 					{/* Filter bar: type tabs + search + lead status + add */}
 					<div className="mb-4 flex flex-col gap-2">
-						<div
-							className="inline-flex self-start rounded-box bg-base-200 p-1"
-							role="tablist"
-							aria-label="Kayıt türü"
-						>
-							{TYPE_TABS.map((t) => (
-								<button
-									key={t.value}
-									type="button"
-									role="tab"
-									aria-selected={typeFilter === t.value}
-									onClick={() => setTypeFilter(t.value)}
-									className={cn(
-										"px-3.5 h-8 rounded-field text-sm font-semibold transition-colors",
-										typeFilter === t.value
-											? "bg-base-100 text-base-content"
-											: "text-base-content/60 hover:text-base-content",
-									)}
-								>
-									{t.label}
-								</button>
-							))}
-						</div>
+						<Tabs
+							options={TYPE_TABS}
+							value={typeFilter}
+							onChange={setTypeFilter}
+							label="Kayıt türü"
+							className="self-start"
+						/>
 
 						<div className="flex flex-col sm:flex-row gap-2 sm:items-center">
 							<div className="relative flex-1 min-w-0">

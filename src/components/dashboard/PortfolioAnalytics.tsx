@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useAppStore, useTeamReady } from "@/src/store";
 import { getDashboardStats, type PropertyHealthRow } from "@/src/lib/db/stats";
 import { useCachedResource } from "@/src/lib/useCachedResource";
-import { Card, CardLabel, Badge, cn, Skeleton, SkeletonGroup, Surface } from "@/src/components/ui";
+import { Card, CardLabel, Badge, cn, Skeleton, SkeletonGroup, Surface, Stat, StatRow } from "@/src/components/ui";
 import { fmtMoney } from "@/src/lib/format";
 import {
 	TrendingUp, FileText, CalendarClock, Wallet, PhoneMissed, Building2,
@@ -142,32 +142,40 @@ export function PortfolioAnalytics() {
 				</div>
 			)}
 
-			{/* Compact stat tiles */}
-			<div className={cn("grid grid-cols-2 lg:grid-cols-4 gap-2.5", hasMeters && "mt-5")}>
-				<StatTile
+			{/* Compact stat tiles. These are the SAME component as the KPI strip
+			    above the fold — they used to be two near-identical tile designs
+			    30px apart, which is what read as sloppiness. The only difference
+			    that survives is the one that means something: these are `inset`
+			    because they live inside a panel. */}
+			<StatRow className={cn(hasMeters && "mt-5")}>
+				<Stat
+					inset
 					icon={FileText}
 					label="Aktif sözleşme"
 					value={String(activeLeases)}
 				/>
-				<StatTile
+				<Stat
+					inset
 					icon={CalendarClock}
 					label="90 gün içinde bitecek"
 					value={String(leasesExpiringSoon)}
-					tone={leasesExpiringSoon > 0 ? "warning" : undefined}
+					tone={leasesExpiringSoon > 0 ? "warning" : "neutral"}
 				/>
-				<StatTile
+				<Stat
+					inset
 					icon={Wallet}
 					label="Geciken ödeme"
 					value={String(overdue.count)}
-					sub={overdue.count > 0 && overdueAmounts ? overdueAmounts : undefined}
-					tone={overdue.count > 0 ? "error" : undefined}
+					detail={overdue.count > 0 && overdueAmounts ? overdueAmounts : undefined}
+					tone={overdue.count > 0 ? "error" : "neutral"}
 				/>
-				<StatTile
+				<Stat
+					inset
 					icon={PhoneMissed}
 					label="Hiç aranmamış müşteri"
 					value={String(leadsWithNoActivity)}
 				/>
-			</div>
+			</StatRow>
 
 			{/* Worst-offender rentals */}
 			<div className="mt-5">
@@ -201,54 +209,6 @@ export function PortfolioAnalytics() {
 				)}
 			</div>
 		</Card>
-	);
-}
-
-function StatTile({
-	icon: Icon,
-	label,
-	value,
-	sub,
-	tone,
-}: {
-	icon: React.ComponentType<{ className?: string }>;
-	label: string;
-	value: string;
-	sub?: string;
-	tone?: "warning" | "error";
-}) {
-	// This used to be the app's SECOND stat-tile design, sitting roughly 30px
-	// below DashboardStats' first one: same 14px icon, same 12px label, same
-	// 4-across grid — but rounded-xl vs rounded-2xl, px-3 py-2.5 vs px-4 py-3.5,
-	// text-lg vs text-xl, tinted vs shadowed. Near-repetition is what the eye
-	// reads as sloppiness rather than system, so both are now the same Surface
-	// at the same padding, differing only where they mean something different:
-	// this one is inset (it lives inside a panel) and carries a tone.
-	return (
-		<Surface tier="inset" tone={tone ?? "neutral"} padding="sm">
-			<div className="flex items-center gap-1.5">
-				<Icon
-					className={cn(
-						"w-3.5 h-3.5 shrink-0",
-						tone === "error" ? "text-error" : tone === "warning" ? "text-warning" : "text-base-content/50",
-					)}
-				/>
-				<p className="text-xs font-semibold text-base-content/60 truncate">{label}</p>
-			</div>
-			<p
-				className={cn(
-					"font-numeric text-xl font-semibold mt-1",
-					tone === "error" ? "text-error" : tone === "warning" ? "text-warning" : "text-base-content",
-				)}
-			>
-				{value}
-			</p>
-			{sub && (
-				<p className="font-numeric text-xs font-semibold text-error/80 truncate" title={sub}>
-					{sub}
-				</p>
-			)}
-		</Surface>
 	);
 }
 

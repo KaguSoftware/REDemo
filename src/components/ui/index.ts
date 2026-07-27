@@ -3,6 +3,10 @@ export { ThemeToggle, ThemeToggleButton } from "./ThemeToggle";
 export { Button, type ButtonProps } from "./Button";
 export { Card, CardLabel } from "./Card";
 export { Heading, SectionHeading, type HeadingSize } from "./Heading";
+export { Stat, StatRow } from "./Stat";
+export { Tabs, type TabOption } from "./Tabs";
+export { Menu, MenuItem } from "./Menu";
+export { Thead, Th, SortableTh, Tr, Td, type SortDirection } from "./Table";
 export {
 	Surface,
 	SurfaceButton,

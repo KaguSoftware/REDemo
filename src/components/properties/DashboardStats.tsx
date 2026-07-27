@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useAppStore, useTeamReady } from "@/src/store";
 import { getDashboardStats } from "@/src/lib/db/stats";
 import { useCachedResource } from "@/src/lib/useCachedResource";
-import { cn, StatsSkeleton, SurfaceButton } from "@/src/components/ui";
+import { StatsSkeleton, Stat, StatRow } from "@/src/components/ui";
 import { Home, KeyRound, Wallet, Users } from "lucide-react";
 
 function fmtAmount(n: number): string {
@@ -43,8 +43,8 @@ export function DashboardStats() {
 	const activeLeads = leadsByStatus.new + leadsByStatus.follow_up + leadsByStatus.interested;
 
 	return (
-		<div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
-			<StatCard
+		<StatRow>
+			<Stat
 				icon={Home}
 				label="Portföy"
 				value={String(properties.vacant + properties.occupied + properties.sold)}
@@ -52,7 +52,7 @@ export function DashboardStats() {
 				onClick={() => { resetFilters(); router.push("/properties"); }}
 				hint="Tüm taşınmazları göster"
 			/>
-			<StatCard
+			<Stat
 				icon={KeyRound}
 				label="Aylık kira"
 				value={rent ?? "—"}
@@ -60,16 +60,16 @@ export function DashboardStats() {
 				onClick={() => { setFilters({ status: "occupied" }); router.push("/properties"); }}
 				hint="Kiradaki taşınmazları göster"
 			/>
-			<StatCard
+			<Stat
 				icon={Wallet}
 				label="Bekleyen tahsilat"
 				value={outstanding ?? "0"}
 				detail={outstanding ? "etkin sözleşmelerde ödenmemiş" : "tümü ödendi"}
-				danger={!!outstanding}
+				tone={outstanding ? "error" : "neutral"}
 				onClick={() => { setFilters({ status: "occupied" }); router.push("/properties"); }}
 				hint="Kiradaki taşınmazları göster"
 			/>
-			<StatCard
+			<Stat
 				icon={Users}
 				label="Müşteriler"
 				value={String(totalLeads)}
@@ -77,50 +77,6 @@ export function DashboardStats() {
 				onClick={() => router.push("/leads")}
 				hint="Müşterileri aç"
 			/>
-		</div>
-	);
-}
-
-function StatCard({
-	icon: Icon,
-	label,
-	value,
-	detail,
-	danger,
-	onClick,
-	hint,
-}: {
-	icon: React.ComponentType<{ className?: string }>;
-	label: string;
-	value: string;
-	detail: string;
-	danger?: boolean;
-	onClick?: () => void;
-	hint?: string;
-}) {
-	return (
-		<SurfaceButton onClick={onClick} title={hint} padding="md">
-			<div className="flex items-center gap-1.5 mb-1">
-				<Icon className="w-3.5 h-3.5 text-base-content/50" />
-				<p className="text-xs font-semibold text-base-content/55">{label}</p>
-			</div>
-			{/* Money is the reason an office owner opens this app, and it used to
-			    be the worst-rendered thing on the page. The value shrank to
-			    `text-sm` — nav-label size — as soon as it exceeded 12 characters,
-			    which is precisely what a two-currency total does. It also used
-			    font-display rather than font-numeric, so the tabular numerals
-			    this project commits to never touched its headline figures.
-			    Now: one size, always tabular, wrapping rather than shrinking. */}
-			<p
-				className={cn(
-					"font-numeric text-xl font-semibold text-base-content wrap-break-word",
-					danger && "text-error",
-				)}
-				title={value}
-			>
-				{value}
-			</p>
-			<p className="text-xs text-base-content/60 mt-0.5 truncate" title={detail}>{detail}</p>
-		</SurfaceButton>
+		</StatRow>
 	);
 }

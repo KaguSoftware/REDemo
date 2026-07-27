@@ -4,7 +4,7 @@ import { useState, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useAppStore, useIsWritable } from "@/src/store";
 import type { Property } from "@/src/lib/db/types";
-import { Badge, Button, Card, TableSkeleton, EmptyState, Pagination, usePagination, BulkActionBar, ConfirmDialog, toast, type BadgeTone } from "@/src/components/ui";
+import { Badge, Button, Card, TableSkeleton, EmptyState, Pagination, usePagination, BulkActionBar, ConfirmDialog, toast, Thead, Th, SortableTh, type BadgeTone } from "@/src/components/ui";
 import { useMultiSelect } from "@/src/hooks/useMultiSelect";
 import { downloadCsv } from "@/src/lib/csv";
 import { deleteProperties, warmProperty } from "@/src/lib/db/properties";
@@ -278,9 +278,10 @@ export function PropertyTable({ isLoading = false }: { isLoading?: boolean }) {
 		);
 	}
 
-	const headerCls = "text-left px-4 py-3 text-xs font-semibold text-base-content/50 cursor-pointer select-none hover:text-base-content/80";
-	const staticHeaderCls = "text-left px-4 py-3 text-xs font-semibold text-base-content/50";
-	const sortArrow = (k: SortKey) => sortKey === k ? (sortDir === "asc" ? "↑" : "↓") : "";
+	// Sort state used to be a literal "↑"/"↓" appended to the header's TEXT, which
+	// meant the column's accessible name changed as you sorted it, no aria-sort
+	// was ever emitted, and a screen-reader user could not tell the table was
+	// sorted at all. SortableTh carries the state where assistive tech looks.
 
 	return (
 		<>
@@ -364,9 +365,9 @@ export function PropertyTable({ isLoading = false }: { isLoading?: boolean }) {
 			<Card padded={false} className="hidden sm:block overflow-hidden">
 				<div className="overflow-x-auto">
 					<table className="w-full min-w-160 text-sm">
-						<thead className="bg-base-200/60 border-b border-base-300">
+						<Thead>
 							<tr>
-								<th className="px-4 py-3 w-10">
+								<th className="px-4 py-2.5 w-10">
 									<input
 										type="checkbox"
 										checked={allSelected(pageIds)}
@@ -375,16 +376,16 @@ export function PropertyTable({ isLoading = false }: { isLoading?: boolean }) {
 										className="checkbox checkbox-sm checkbox-primary align-middle"
 									/>
 								</th>
-								<th className={staticHeaderCls}><span className="sr-only">Fotoğraf</span></th>
-								<th className={headerCls} onClick={() => toggle("homeowner_name")}>Mülk sahibi {sortArrow("homeowner_name")}</th>
-								<th className={headerCls} onClick={() => toggle("address_line")}>Adres {sortArrow("address_line")}</th>
-								<th className={headerCls} onClick={() => toggle("size_sqm")}>Büyüklük (m²) {sortArrow("size_sqm")}</th>
-								<th className={staticHeaderCls}>İlan</th>
-								<th className={staticHeaderCls}>Durum</th>
-								<th className={headerCls} onClick={() => toggle("list_price")}>Fiyat {sortArrow("list_price")}</th>
-								<th className={headerCls} onClick={() => toggle("updated_at")}>Güncellendi {sortArrow("updated_at")}</th>
+								<Th><span className="sr-only">Fotoğraf</span></Th>
+								<SortableTh active={sortKey === "homeowner_name"} direction={sortDir} onSort={() => toggle("homeowner_name")}>Mülk sahibi</SortableTh>
+								<SortableTh active={sortKey === "address_line"} direction={sortDir} onSort={() => toggle("address_line")}>Adres</SortableTh>
+								<SortableTh active={sortKey === "size_sqm"} direction={sortDir} onSort={() => toggle("size_sqm")}>Büyüklük (m²)</SortableTh>
+								<Th>İlan</Th>
+								<Th>Durum</Th>
+								<SortableTh active={sortKey === "list_price"} direction={sortDir} onSort={() => toggle("list_price")}>Fiyat</SortableTh>
+								<SortableTh active={sortKey === "updated_at"} direction={sortDir} onSort={() => toggle("updated_at")}>Güncellendi</SortableTh>
 							</tr>
-						</thead>
+						</Thead>
 						<tbody>
 							{pageItems.map((p) => (
 								<tr
