@@ -2,7 +2,7 @@
 
 > Read this first when starting a fresh chat. Companions: [PRODUCT.md](PRODUCT.md) ·
 > [README.md](README.md) · [AGENTS.md](AGENTS.md) · [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) ·
-> plan file: `C:SERSP.MANSOURI.CLAUDEPLANSI-KNOW-MASSIVE-SCOPE-FANCY-TOUCAN.MD` (UI RECOMPOSITION)
+> plan file (UI recomposition): `~/.claude/plans/i-know-massive-scope-fancy-toucan.md`
 
 ## Working style
 - **Collaborate**: propose with a recommendation before locking user-facing or
