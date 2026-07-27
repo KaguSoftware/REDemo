@@ -126,10 +126,10 @@ export function Sidebar() {
 						</span>
 					)}
 					<div className="min-w-0 flex-1">
-						<p className="font-display text-[15px] font-semibold text-white leading-tight truncate">
+						<p className="font-display text-body font-semibold text-white leading-tight truncate">
 							{team?.name ?? "Kagu Emlak"}
 						</p>
-						<p className="text-[11px] text-white/40 truncate">{team ? "Çalışma alanı" : "Yönetici"}</p>
+						<p className="text-micro text-white/40 truncate">{team ? "Çalışma alanı" : "Yönetici"}</p>
 					</div>
 					<ThemeToggleButton className="-mr-1.5" />
 				</div>
@@ -154,7 +154,7 @@ export function Sidebar() {
 				{groups.map((g, gi) => (
 					<div key={g.label ?? gi} className="pt-6 first:pt-0">
 						{g.label && (
-							<p className="mb-1.5 pl-10 text-[11px] font-semibold text-white/30">{g.label}</p>
+							<p className="mb-1.5 pl-10 text-micro font-semibold text-white/30">{g.label}</p>
 						)}
 						<ul>
 							{g.items.map(({ href, label, icon: Icon }) => {

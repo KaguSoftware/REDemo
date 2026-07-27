@@ -65,7 +65,7 @@ export function MatchingLeads({ property }: { property: Property }) {
 							</p>
 						</div>
 						<span
-							className="text-[11px] font-semibold text-success whitespace-nowrap"
+							className="text-micro font-semibold text-success whitespace-nowrap"
 							title="Eşleşme gücü, taşınmazın karşıladığı tercih sayısına göre hesaplanır"
 						>
 							{result.score >= 5 ? "Güçlü eşleşme" : "Eşleşme"}

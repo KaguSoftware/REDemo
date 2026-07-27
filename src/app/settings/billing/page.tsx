@@ -211,7 +211,7 @@ export default function BillingPage() {
 									)}
 									<span className="relative">{PERIOD_LABEL[m]}</span>
 									{PERIOD_DISCOUNTS[m] > 0 && (
-										<span className="relative text-[10px] font-semibold text-success">
+										<span className="relative text-micro font-semibold text-success">
 											%{Math.round(PERIOD_DISCOUNTS[m] * 100)} indirim
 										</span>
 									)}

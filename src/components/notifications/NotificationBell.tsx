@@ -81,7 +81,7 @@ export function NotificationBell() {
 			>
 				<Bell className="w-5 h-5 origin-top group-hover:animate-wiggle-loop" />
 				{unread > 0 && (
-					<span className="absolute top-1.5 right-1.5 min-w-4 h-4 px-1 rounded-full bg-primary text-primary-content text-[10px] font-bold flex items-center justify-center">
+					<span className="absolute top-1.5 right-1.5 min-w-4 h-4 px-1 rounded-full bg-primary text-primary-content text-micro font-bold flex items-center justify-center">
 						{unread > 9 ? "9+" : unread}
 					</span>
 				)}

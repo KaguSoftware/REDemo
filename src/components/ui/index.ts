@@ -2,6 +2,7 @@ export { cn } from "./cn";
 export { ThemeToggle, ThemeToggleButton } from "./ThemeToggle";
 export { Button, type ButtonProps } from "./Button";
 export { Card, CardLabel } from "./Card";
+export { Heading, SectionHeading, type HeadingSize } from "./Heading";
 export {
 	Surface,
 	SurfaceButton,

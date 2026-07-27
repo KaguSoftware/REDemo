@@ -164,7 +164,7 @@ export function LandingPage() {
 							<Building2 className="w-5 h-5" />
 						</span>
 						<h3 className="font-display mt-5 text-2xl font-bold text-base-content">Portföy yönetimi</h3>
-						<p className="mt-2 max-w-md text-[15px] text-base-content/70 leading-relaxed">
+						<p className="mt-2 max-w-md text-body text-base-content/70 leading-relaxed">
 							Satılık ve kiralık taşınmazlarınız; tapu bilgileri, fotoğraflar ve
 							harita üzerinde konumlarıyla tek yerde.
 						</p>

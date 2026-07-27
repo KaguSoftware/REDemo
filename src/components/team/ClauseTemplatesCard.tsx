@@ -180,7 +180,7 @@ export function ClauseTemplatesCard() {
 			<div id={bodyId}>
 			<p className="text-xs text-base-content/60 mt-1">
 				Sözleşmelerinizin standart maddelerini ofisinize göre düzenleyin. Süslü parantezli
-				alanlar (ör. <code className="font-mono text-[11px]">{"{monthly_rent}"}</code>) belge
+				alanlar (ör. <code className="font-mono text-micro">{"{monthly_rent}"}</code>) belge
 				oluşturulurken gerçek değerlerle doldurulur. Değişiklikler yalnızca yeni belgeleri etkiler.
 			</p>
 
@@ -238,7 +238,7 @@ export function ClauseTemplatesCard() {
 											value={clause}
 											rows={2}
 											disabled={locked}
-											className="min-h-16 [field-sizing:content] text-[13px]"
+											className="min-h-16 [field-sizing:content] text-label"
 											onFocus={() => { focusedRow.current = { kind: tab, index: i }; }}
 											onChange={(e) => updateClause(i, e.target.value)}
 											aria-label={`Madde ${i + 1}`}
@@ -283,7 +283,7 @@ export function ClauseTemplatesCard() {
 									disabled={locked}
 									onClick={() => insertToken(p.token)}
 									title={`Örnek: ${p.example}`}
-									className="rounded-field border border-base-300 bg-base-200 px-2 py-1 font-mono text-[11px] text-base-content/70 hover:border-base-content/30 hover:text-base-content transition-colors disabled:opacity-50"
+									className="rounded-field border border-base-300 bg-base-200 px-2 py-1 font-mono text-micro text-base-content/70 hover:border-base-content/30 hover:text-base-content transition-colors disabled:opacity-50"
 								>
 									{`{${p.token}}`}
 									<span className="ml-1 font-sans text-base-content/50">{p.label}</span>

@@ -63,6 +63,14 @@ describe("cn", () => {
 		expect(cn("animate-dropdown-in", "animate-none")).toBe("animate-none");
 	});
 
+	it("dedupes the named type scale", () => {
+		// Heading's base carries text-label; a caller passing a Tailwind step must
+		// replace it, not stack on top of it.
+		expect(cn("text-label", "text-sm")).toBe("text-sm");
+		expect(cn("text-sm", "text-body")).toBe("text-body");
+		expect(cn("text-title", "text-display")).toBe("text-display");
+	});
+
 	it("does not merge daisyUI semantic colours into the font-size group", () => {
 		// `text-base-content` must classify as a text COLOUR, not as the
 		// `text-base` font size, or every label in the app loses its size.

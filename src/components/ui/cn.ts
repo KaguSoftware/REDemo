@@ -49,6 +49,11 @@ export const cn = extendTailwindMerge({
 			rounded: [{ rounded: ["box", "field", "selector"] }],
 			// Custom keyframes registered in globals.css.
 			animate: [{ animate: ["wiggle", "wiggle-loop", "theme-swap", "dropdown-in"] }],
+			// The named type scale (--text-micro … --text-display). Without this,
+			// `cn("text-label", "text-sm")` keeps BOTH and the element renders at
+			// whichever the stylesheet emits last — the exact class of bug this
+			// file exists to remove, reintroduced by the scale meant to fix it.
+			"font-size": [{ text: ["micro", "label", "body", "subtitle", "title", "display"] }],
 		},
 	},
 });

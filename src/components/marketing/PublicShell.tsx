@@ -64,9 +64,14 @@ export function LegalArticle({ title, updated, children }: {
 }) {
 	return (
 		<article className="mx-auto max-w-3xl safe-x py-10 sm:py-14">
-			<h1 className="font-display text-3xl sm:text-4xl font-semibold text-base-content">{title}</h1>
-			<p className="mt-1 text-sm text-base-content/50">Son güncelleme: {updated}</p>
-			<div className="mt-8 space-y-6 text-[15px] leading-relaxed text-base-content/80 [&_h2]:text-lg [&_h2]:font-bold [&_h2]:text-base-content [&_h2]:mt-8 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1.5 [&_strong]:text-base-content">
+			<h1 className="font-display text-display sm:text-4xl font-semibold text-base-content">{title}</h1>
+			<p className="mt-2 text-label text-base-content/50">Son güncelleme: {updated}</p>
+			{/* The legal pages emit bare <h2>/<p>/<ul> against Preflight's reset, so
+			    every rule they get comes from here. `max-w-[68ch]` holds the body
+			    measure in the 65–75ch band; without it a 3xl container runs long
+			    lines that are genuinely hard to read at 15px. More space above a
+			    heading than below it — mt-10 against the list's own rhythm. */}
+			<div className="mt-8 max-w-[68ch] space-y-5 text-body text-base-content/80 [&_h2]:font-display [&_h2]:text-subtitle [&_h2]:font-semibold [&_h2]:text-base-content [&_h2]:mt-10 [&_h2]:mb-2 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1.5 [&_strong]:font-medium [&_strong]:text-base-content">
 				{children}
 			</div>
 		</article>

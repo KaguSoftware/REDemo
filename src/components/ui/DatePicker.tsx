@@ -235,7 +235,7 @@ export function DatePicker({
 
 					<div className="grid grid-cols-7 gap-0.5 mb-1">
 						{WEEKDAYS.map((w) => (
-							<span key={w} className="h-6 flex items-center justify-center text-[0.65rem] font-semibold text-base-content/45">
+							<span key={w} className="h-6 flex items-center justify-center text-micro font-semibold text-base-content/45">
 								{w}
 							</span>
 						))}

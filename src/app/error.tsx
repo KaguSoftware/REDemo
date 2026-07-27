@@ -46,7 +46,7 @@ export default function RouteError({
 					</Link>
 				</div>
 				{error.digest && (
-					<p className="mt-4 text-[11px] text-base-content/30">Hata referansı: {error.digest}</p>
+					<p className="mt-4 text-micro text-base-content/30">Hata referansı: {error.digest}</p>
 				)}
 			</div>
 		</main>

@@ -109,6 +109,31 @@
 	   visibly resettle when data lands. */
 	--spacing-row: 2.75rem;       /* 44px — standard data row */
 	--spacing-row-media: 3.75rem; /* 60px — row carrying a 44px thumbnail */
+
+	/* ─── Type scale ──────────────────────────────────────────────────────
+	   Six named steps. Before these existed, 89% of every sized element in
+	   the app was text-xs or text-sm: the scale had no top (every 3xl/4xl
+	   instance was on the marketing page) and no middle, so the page title
+	   rendered at 18px inside the chrome bar while the h2 beside the body
+	   copy rendered SMALLER than the body copy. There were also 34 arbitrary
+	   escapes — text-[11px], text-[13px], text-[15px] — sitting between the
+	   Tailwind steps, which is the tell that the default scale did not fit
+	   and nobody adjusted it. These are that adjustment.
+
+	   Sizes are named for their job, not their pixels, so a call site reads
+	   as a hierarchy decision rather than a measurement. */
+	--text-micro: 0.6875rem;            /* 11px — badge / chip only */
+	--text-micro--line-height: 1.45;
+	--text-label: 0.8125rem;            /* 13px — form labels, table headers, meta */
+	--text-label--line-height: 1.45;
+	--text-body: 0.9375rem;             /* 15px — prose and table cells */
+	--text-body--line-height: 1.6;
+	--text-subtitle: 1.125rem;          /* 18px — panel / subsection heading */
+	--text-subtitle--line-height: 1.4;
+	--text-title: 1.5rem;               /* 24px — major section heading */
+	--text-title--line-height: 1.25;
+	--text-display: 2rem;               /* 32px — the page's one h1 */
+	--text-display--line-height: 1.15;
 	/* Exponential ease-out for entrances/slides (no bounce, no elastic). */
 	--ease-fluid: cubic-bezier(0.22, 1, 0.36, 1);
 	/* Bell hover: a short back-and-forth jiggle. Registered here (not in a raw

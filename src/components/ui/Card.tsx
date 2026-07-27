@@ -1,6 +1,6 @@
 import React from "react";
 import { Surface } from "./Surface";
-import { cn } from "./cn";
+import { Heading } from "./Heading";
 
 /**
  * Standard content panel — now a thin alias over `Surface` tier="panel" so the
@@ -27,11 +27,15 @@ export function Card({
 	);
 }
 
-/** Card section label — quiet sentence-case ink, weight carries hierarchy. */
+/**
+ * Card section label. Kept as a named alias because ~40 call sites read better
+ * with it than with `<Heading size="label">`, but it is now the same primitive —
+ * its look used to be re-typed inline in a dozen document forms.
+ */
 export function CardLabel({ children, className }: { children: React.ReactNode; className?: string }) {
 	return (
-		<h2 className={cn("text-sm font-semibold text-base-content/60", className)}>
+		<Heading as="h2" size="label" className={className}>
 			{children}
-		</h2>
+		</Heading>
 	);
 }
