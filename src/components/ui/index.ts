@@ -31,6 +31,5 @@ export {
 	Input,
 	Textarea,
 } from "./FormField";
-export { SectionHeader } from "./SectionHeader";
 export { Pagination, usePagination, DEFAULT_PAGE_SIZE } from "./Pagination";
 export { BulkActionBar } from "./BulkActionBar";

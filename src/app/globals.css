@@ -281,81 +281,11 @@
 	input, select, textarea { font-size: 16px; }
 }
 
-@layer components {
-	.pdf-safe-mode {
-		/* Restores brand colors using safe Hex (kagu red-orange) */
-		--color-primary: #b74427;
-		--color-slate-200: #e2e8f0;
-		--color-slate-900: #0f172a;
-
-		background-color: #ffffff !important;
-		color: #1e293b !important;
-		font-family: var(--font-latin), Arial, sans-serif !important;
-	}
-
-	.pdf-safe-mode h3 {
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		font-weight: 800;
-		border-bottom: 1px solid #e2e8f0;
-		padding-bottom: 0.5rem;
-		margin-bottom: 1rem;
-	}
-
-	/* 1. THE NUCLEAR RESET: Kill borders on EVERYTHING in the PDF area */
-	.pdf-safe-mode * {
-		border-width: 0px !important;
-		border-style: none !important;
-		border-color: transparent !important;
-		color-interpolation: sRGB !important;
-	}
-
-	/* 2. RE-ENABLE ONLY THE BORDERS WE WANT */
-	.pdf-safe-mode .border {
-		border-width: 1px !important;
-		border-style: solid !important;
-		border-color: #e2e8f0 !important;
-	}
-	.pdf-safe-mode .border-b {
-		border-bottom-width: 1px !important;
-		border-style: solid !important;
-		border-color: #e2e8f0 !important;
-	}
-	.pdf-safe-mode .border-t {
-		border-top-width: 1px !important;
-		border-style: solid !important;
-		border-color: #e2e8f0 !important;
-	}
-
-	/* 3. PROTECT THE LOGO / DIVIDERS */
-	.pdf-safe-mode .bg-slate-900 {
-		background-color: #0f172a !important;
-		border: none !important;
-	}
-
-	/* ARABIC MODE — override forced font with NotoSansArabic */
-	.pdf-safe-mode.doc-arabic,
-	.pdf-safe-mode.doc-arabic * {
-		font-family: "NotoSansArabic", Arial, sans-serif !important;
-		direction: rtl !important;
-		text-align: right !important;
-		letter-spacing: 0 !important;
-	}
-
-	/* 4. HIDE UI NOISE */
-	.pdf-safe-mode button,
-	.pdf-safe-mode .btn,
-	.pdf-safe-mode .trash-icon,
-	.pdf-safe-mode [class*="opacity-0"],
-	.pdf-safe-mode .no-print {
-		display: none !important;
-	}
-
-	/* 5. SHOW PRINT-ONLY ELEMENTS */
-	.pdf-safe-mode .print-only {
-		display: block !important;
-	}
-}
-.print-only {
-	display: none;
-}
+/* NOTE: a `.pdf-safe-mode` block used to live here — a "nuclear reset" that
+   zeroed `border-width` on `*` and then re-enabled only `.border`/`.border-b`/
+   `.border-t`. It served an HTML-to-PDF path that no longer exists: every
+   document is rendered by @react-pdf/renderer (src/lib/pdf/*), which never
+   reads the DOM or this stylesheet. Verified unreferenced — no consumer, no
+   `window.print`, no `@media print`, and zero emitters of `.print-only` /
+   `.no-print` — and removed 2026-07-27 because it would have silently fought
+   the hairline/ring treatments in the surface tiers below. */
