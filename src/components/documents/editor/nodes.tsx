@@ -66,14 +66,14 @@ export function SectionChipView({ node, updateAttributes, editor }: NodeViewProp
 	const editable = editor.isEditable;
 	return (
 		<NodeViewWrapper className="doc-block flex items-center gap-2 mt-5 mb-2" data-drag-handle>
-			<span className="h-2 w-2 shrink-0 bg-[var(--doc-accent)]" aria-hidden />
+			<span className="h-2 w-2 shrink-0 bg-[color:var(--doc-accent)]" aria-hidden />
 			{attrs.letter ? (
 				<GhostInput
 					value={attrs.letter}
 					disabled={!editable}
 					onChange={(v) => updateAttributes({ letter: v.toLocaleUpperCase("tr").slice(0, 2) })}
 					aria-label="Bölüm harfi"
-					className="w-7 max-w-7 text-xs font-bold tracking-widest uppercase text-[var(--doc-primary)] text-center"
+					className="w-7 max-w-7 text-xs font-bold tracking-widest uppercase text-[color:var(--doc-primary)] text-center"
 				/>
 			) : null}
 			<GhostInput
@@ -82,7 +82,7 @@ export function SectionChipView({ node, updateAttributes, editor }: NodeViewProp
 				onChange={(v) => updateAttributes({ title: v })}
 				placeholder="Bölüm başlığı"
 				aria-label="Bölüm başlığı"
-				className="text-xs font-bold tracking-widest uppercase text-[var(--doc-primary)]"
+				className="text-xs font-bold tracking-widest uppercase text-[color:var(--doc-primary)]"
 			/>
 		</NodeViewWrapper>
 	);
@@ -110,7 +110,7 @@ export function PartyCardView({ node, updateAttributes, editor }: NodeViewProps)
 		<NodeViewWrapper className="doc-block mb-3" data-drag-handle>
 			<div className="rounded border border-neutral-300 px-3.5 py-3">
 				<div className="flex items-center gap-2 mb-2">
-					<span className="h-5 w-5 shrink-0 rounded-sm bg-[var(--doc-tint)] text-[var(--doc-primary)] text-[11px] font-bold flex items-center justify-center">
+					<span className="h-5 w-5 shrink-0 rounded-sm bg-[color:var(--doc-tint)] text-[color:var(--doc-primary)] text-[11px] font-bold flex items-center justify-center">
 						{initial}
 					</span>
 					<div className="min-w-0 flex-1">
@@ -119,7 +119,7 @@ export function PartyCardView({ node, updateAttributes, editor }: NodeViewProps)
 							disabled={!editable}
 							onChange={(v) => updateAttributes({ role: v })}
 							aria-label="Taraf rolü"
-							className="text-[10px] font-medium uppercase tracking-widest text-[var(--doc-accent)]"
+							className="text-[10px] font-medium uppercase tracking-widest text-[color:var(--doc-accent)]"
 						/>
 						<GhostInput
 							value={party.full_name}
@@ -238,7 +238,7 @@ function MoneyBox({
 		<div
 			className={cn(
 				"flex-1 rounded px-4 py-3",
-				filled ? "bg-[var(--doc-primary)]" : "border border-[var(--doc-accent)]",
+				filled ? "bg-[color:var(--doc-primary)]" : "border border-[color:var(--doc-accent)]",
 			)}
 		>
 			<GhostInput
@@ -248,7 +248,7 @@ function MoneyBox({
 				aria-label="Tutar etiketi"
 				className={cn(
 					"text-[10px] font-medium uppercase tracking-widest mb-1",
-					filled ? "text-white/60 focus:bg-white/10" : "text-[var(--doc-accent)]",
+					filled ? "text-white/60 focus:bg-white/10" : "text-[color:var(--doc-accent)]",
 				)}
 			/>
 			<div className="flex items-baseline gap-1.5">
@@ -260,7 +260,7 @@ function MoneyBox({
 					aria-label="Tutar"
 					className={cn(
 						"text-xl font-bold tabular-nums",
-						filled ? "text-white focus:bg-white/10" : "text-[var(--doc-primary)]",
+						filled ? "text-white focus:bg-white/10" : "text-[color:var(--doc-primary)]",
 					)}
 				/>
 				<GhostInput
@@ -270,7 +270,7 @@ function MoneyBox({
 					aria-label="Para birimi"
 					className={cn(
 						"w-12 max-w-12 text-xs font-bold",
-						filled ? "text-white/60 focus:bg-white/10" : "text-[var(--doc-accent)]",
+						filled ? "text-white/60 focus:bg-white/10" : "text-[color:var(--doc-accent)]",
 					)}
 				/>
 			</div>
@@ -319,7 +319,7 @@ export function SignatureBlockView({ node, updateAttributes, editor }: NodeViewP
 			<div className="mt-6 flex flex-col sm:flex-row gap-6">
 				{signers.map((s, i) => (
 					<div key={i} className="group/sig flex-1 min-w-0">
-						<div className="h-8 border-b border-[var(--doc-primary)]" aria-hidden />
+						<div className="h-8 border-b border-[color:var(--doc-primary)]" aria-hidden />
 						<div className="mt-1.5 flex items-start gap-1">
 							<div className="min-w-0 flex-1">
 								<GhostInput
@@ -447,7 +447,7 @@ export function CalloutView({ node, updateAttributes, editor }: NodeViewProps) {
 			<div
 				className={cn(
 					"flex items-start gap-2 rounded px-3 py-2.5 text-[13px]",
-					tone === "warning" ? "bg-red-50 text-red-700" : "bg-[var(--doc-tint)] text-[var(--doc-primary)]",
+					tone === "warning" ? "bg-red-50 text-red-700" : "bg-[color:var(--doc-tint)] text-[color:var(--doc-primary)]",
 				)}
 			>
 				<button
